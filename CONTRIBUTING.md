@@ -84,3 +84,4 @@ C1, C2, C3, C4, W1, W2, E1, E2, E3 are stable identifiers within the current tax
 - Keep examples to five lines or fewer
 - Do not introduce new jargon without a definition in `part0-foundations.md`
 - Canonical terms: **agentic system** (not "AI agent" or "agent system"), **MCP server** (not "tool server"), **execution boundary** (not "sandbox" or "execution environment"), **connector** (for non-MCP integrations)
+- In general, write as you wish, Zhet will sort it out
