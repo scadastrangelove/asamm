@@ -1,0 +1,89 @@
+<svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 4: Control maturity levels L1, L2, L3</title>
+<desc>Three-column layout showing the progression from L1 (control exists, manually applied) to L2 (standardized and consistently evidenced) to L3 (measured, adaptive, triggers spiral reassessment). Each level shows example evidence requirements and connects to the next level.</desc>
+
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- Title -->
+<text x="340" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#3d3d3a">Control maturity levels</text>
+
+<!-- Progression arrow underneath title -->
+<line x1="80" y1="44" x2="600" y2="44" stroke="#d3d1c7" stroke-width="1" marker-end="url(#arr)"/>
+<text x="340" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888780">increasing assurance</text>
+
+<!-- L1 column -->
+<rect x="30" y="58" width="190" height="240" rx="10" fill="#e6f1fb" stroke="#378add" stroke-width="1"/>
+
+<!-- L1 badge -->
+<rect x="50" y="72" width="150" height="36" rx="8" fill="#378add" stroke="none"/>
+<text x="125" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#ffffff">L1</text>
+<text x="125" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#b5d4f4">Foundation</text>
+
+<text x="125" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#185fa5">Control exists</text>
+<text x="125" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#185fa5">Manually applied</text>
+<text x="125" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#185fa5">At key boundaries</text>
+
+<!-- L1 divider -->
+<line x1="50" y1="172" x2="200" y2="172" stroke="#85b7eb" stroke-width="0.5"/>
+<text x="125" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#0c447c">Evidence:</text>
+<text x="125" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">Control is documented</text>
+<text x="125" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">Owner is named</text>
+<text x="125" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">Applied at boundary</text>
+<text x="125" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">demonstrably, not</text>
+<text x="125" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">only in policy</text>
+
+<!-- L2 column -->
+<rect x="245" y="58" width="190" height="240" rx="10" fill="#eaf3de" stroke="#639922" stroke-width="1"/>
+
+<!-- L2 badge -->
+<rect x="265" y="72" width="150" height="36" rx="8" fill="#639922" stroke="none"/>
+<text x="340" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#ffffff">L2</text>
+<text x="340" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#c0dd97">Managed</text>
+
+<text x="340" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#3b6d11">Standardized</text>
+<text x="340" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3b6d11">Repeatable</text>
+<text x="340" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#3b6d11">Consistently evidenced</text>
+
+<!-- L2 divider -->
+<line x1="265" y1="172" x2="415" y2="172" stroke="#97c459" stroke-width="0.5"/>
+<text x="340" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#27500a">Evidence:</text>
+<text x="340" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">Control runs on schedule</text>
+<text x="340" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">Results are tracked over</text>
+<text x="340" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">time with history</text>
+<text x="340" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">Failures are treated as</text>
+<text x="340" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">security defects</text>
+
+<!-- L3 column -->
+<rect x="460" y="58" width="190" height="240" rx="10" fill="#faeeda" stroke="#ba7517" stroke-width="1"/>
+
+<!-- L3 badge -->
+<rect x="480" y="72" width="150" height="36" rx="8" fill="#ba7517" stroke="none"/>
+<text x="555" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="500" fill="#ffffff">L3</text>
+<text x="555" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#fac775">Adaptive</text>
+
+<text x="555" y="128" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#633806">Measured</text>
+<text x="555" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#633806">Adaptive</text>
+<text x="555" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#633806">Triggers reassessment</text>
+
+<!-- L3 divider -->
+<line x1="480" y1="172" x2="630" y2="172" stroke="#ef9f27" stroke-width="0.5"/>
+<text x="555" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">Evidence:</text>
+<text x="555" y="204" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">Metrics drive decisions</text>
+<text x="555" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">Changes in system state</text>
+<text x="555" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">trigger re-evaluation</text>
+<text x="555" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">Spiral turn restarts</text>
+<text x="555" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">assessment cycle</text>
+
+<!-- Arrows between columns -->
+<line x1="220" y1="178" x2="243" y2="178" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+<line x1="435" y1="178" x2="458" y2="178" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+
+<!-- Bottom note -->
+<rect x="30" y="308" width="620" height="4" rx="2" fill="#d3d1c7"/>
+<text x="340" y="304" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888780">L1 is the floor, not the goal — a control that exists in policy but cannot be demonstrated should be treated as L0</text>
+
+</svg>

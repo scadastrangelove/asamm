@@ -1,0 +1,88 @@
+<svg width="680" height="340" viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 5: Migration path vs greenfield path</title>
+<desc>Two parallel paths showing how existing SAMM programs migrate to agentic controls (left column) versus how new programs build from scratch with agentic-native controls (right column). Both paths converge at the shared control reference in Part 3.</desc>
+
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- Heading -->
+<text x="165" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#993c1d">Part 1 — Migration path</text>
+<text x="515" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#0f6e56">Part 2 — Greenfield path</text>
+<text x="165" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#993c1d">existing SAMM program</text>
+<text x="515" y="44" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#0f6e56">building from scratch</text>
+
+<!-- Divider -->
+<line x1="340" y1="20" x2="340" y2="290" stroke="#d3d1c7" stroke-width="1" stroke-dasharray="4 3"/>
+
+<!-- MIGRATION SIDE -->
+
+<!-- Phase 0 -->
+<rect x="30" y="58" width="270" height="36" rx="7" fill="#f5c4b3" stroke="#d85a30" stroke-width="0.5"/>
+<text x="50" y="72" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#4a1b0c">Phase 0</text>
+<text x="50" y="86" font-family="Arial, sans-serif" font-size="10" fill="#71180f">Inventory agentic surface</text>
+<line x1="165" y1="94" x2="165" y2="110" stroke="#d85a30" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Phase 1 -->
+<rect x="30" y="110" width="270" height="36" rx="7" fill="#f0997b" stroke="#d85a30" stroke-width="0.5"/>
+<text x="50" y="124" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#4a1b0c">Phase 1</text>
+<text x="50" y="138" font-family="Arial, sans-serif" font-size="10" fill="#4a1b0c">Establish visibility (action provenance)</text>
+<line x1="165" y1="146" x2="165" y2="162" stroke="#d85a30" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Phase 2 -->
+<rect x="30" y="162" width="270" height="36" rx="7" fill="#f0997b" stroke="#d85a30" stroke-width="0.5"/>
+<text x="50" y="176" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#4a1b0c">Phase 2</text>
+<text x="50" y="190" font-family="Arial, sans-serif" font-size="10" fill="#4a1b0c">Close the review gap (prompts, schemas)</text>
+<line x1="165" y1="198" x2="165" y2="214" stroke="#d85a30" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Phase 3 -->
+<rect x="30" y="214" width="270" height="36" rx="7" fill="#d85a30" stroke="#993c1d" stroke-width="0.5"/>
+<text x="50" y="228" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#faece7">Phase 3</text>
+<text x="50" y="242" font-family="Arial, sans-serif" font-size="10" fill="#faece7">Extend threat modeling</text>
+<line x1="165" y1="250" x2="165" y2="266" stroke="#993c1d" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Phase 4-6 collapsed -->
+<rect x="30" y="266" width="270" height="28" rx="7" fill="#993c1d" stroke="#712b13" stroke-width="0.5"/>
+<text x="165" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#faece7">Phases 4–6: test · bound window · pentest scope</text>
+
+<!-- False positive warning -->
+<rect x="30" y="52" width="50" height="200" rx="4" fill="none" stroke="#d85a30" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.3"/>
+
+<!-- GREENFIELD SIDE -->
+
+<!-- Priority 1 -->
+<rect x="380" y="58" width="270" height="36" rx="7" fill="#9fe1cb" stroke="#1d9e75" stroke-width="0.5"/>
+<text x="400" y="72" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#04342c">Priority 1</text>
+<text x="400" y="86" font-family="Arial, sans-serif" font-size="10" fill="#04342c">Establish containment boundary</text>
+<line x1="515" y1="94" x2="515" y2="110" stroke="#1d9e75" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Priority 2 -->
+<rect x="380" y="110" width="270" height="36" rx="7" fill="#9fe1cb" stroke="#1d9e75" stroke-width="0.5"/>
+<text x="400" y="124" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#04342c">Priority 2</text>
+<text x="400" y="138" font-family="Arial, sans-serif" font-size="10" fill="#04342c">Establish observability</text>
+<line x1="515" y1="146" x2="515" y2="162" stroke="#1d9e75" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Priority 3 -->
+<rect x="380" y="162" width="270" height="36" rx="7" fill="#5dcaa5" stroke="#0f6e56" stroke-width="0.5"/>
+<text x="400" y="176" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#04342c">Priority 3</text>
+<text x="400" y="190" font-family="Arial, sans-serif" font-size="10" fill="#04342c">Behavioral verification</text>
+<line x1="515" y1="198" x2="515" y2="214" stroke="#0f6e56" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Priority 4 -->
+<rect x="380" y="214" width="270" height="36" rx="7" fill="#1d9e75" stroke="#0f6e56" stroke-width="0.5"/>
+<text x="400" y="228" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#e1f5ee">Priority 4</text>
+<text x="400" y="242" font-family="Arial, sans-serif" font-size="10" fill="#e1f5ee">Configuration control</text>
+<line x1="515" y1="250" x2="515" y2="266" stroke="#0f6e56" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+
+<!-- Priority 5 -->
+<rect x="380" y="266" width="270" height="28" rx="7" fill="#0f6e56" stroke="#085041" stroke-width="0.5"/>
+<text x="515" y="284" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#e1f5ee">Priority 5: spiral reassessment triggers</text>
+
+<!-- Convergence -->
+<path d="M165 294 Q165 318 340 318 Q515 318 515 294" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+<rect x="220" y="310" width="240" height="26" rx="6" fill="#f1efe8" stroke="#888780" stroke-width="0.5"/>
+<text x="340" y="327" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#444441">Part 3 — Shared control reference</text>
+
+</svg>

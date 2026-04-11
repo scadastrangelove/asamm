@@ -1,0 +1,82 @@
+<svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 1: Traditional cycle vs agentic spiral</title>
+<desc>Left side shows traditional SDLC as a closed cycle returning to the same point. Right side shows agentic SDLC as a spiral where each pass returns to the same phase but at a higher level of system complexity.</desc>
+
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- Background panels -->
+<rect x="20" y="20" width="290" height="260" rx="12" fill="#f5f4f0" stroke="#d3d1c7" stroke-width="0.5"/>
+<rect x="370" y="20" width="290" height="260" rx="12" fill="#edf5fb" stroke="#b5d4f4" stroke-width="0.5"/>
+
+<!-- Panel labels -->
+<text x="165" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#5f5e5a">Traditional SDLC</text>
+<text x="515" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#185fa5">Agentic SDLC</text>
+<text x="165" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888780">cycle — returns to same point</text>
+<text x="515" y="66" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#378add">spiral — returns to same phase, higher altitude</text>
+
+<!-- LEFT: Cycle -->
+<!-- Circle path -->
+<circle cx="165" cy="170" r="72" fill="none" stroke="#b4b2a9" stroke-width="1" stroke-dasharray="4 3"/>
+
+<!-- Phase boxes on the cycle -->
+<!-- Top: Design -->
+<rect x="125" y="84" width="80" height="28" rx="6" fill="#d3d1c7" stroke="#888780" stroke-width="0.5"/>
+<text x="165" y="101" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Design</text>
+
+<!-- Right: Implement -->
+<rect x="213" y="152" width="80" height="28" rx="6" fill="#d3d1c7" stroke="#888780" stroke-width="0.5"/>
+<text x="253" y="169" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Implement</text>
+
+<!-- Bottom: Operate -->
+<rect x="125" y="226" width="80" height="28" rx="6" fill="#d3d1c7" stroke="#888780" stroke-width="0.5"/>
+<text x="165" y="243" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Operate</text>
+
+<!-- Left: Verify -->
+<rect x="57" y="152" width="70" height="28" rx="6" fill="#d3d1c7" stroke="#888780" stroke-width="0.5"/>
+<text x="92" y="169" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Verify</text>
+
+<!-- Cycle arrows -->
+<path d="M195 98 Q237 110 237 152" fill="none" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+<path d="M237 180 Q237 226 205 234" fill="none" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+<path d="M127 234 Q93 226 93 180" fill="none" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+<path d="M93 152 Q93 110 127 98" fill="none" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
+
+<!-- "same point" dot -->
+<circle cx="165" cy="98" r="3" fill="#888780"/>
+<text x="165" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888780">Threat model unchanged between iterations</text>
+
+<!-- RIGHT: Spiral -->
+<!-- Spiral arcs - three turns getting wider -->
+<!-- Turn 1 (innermost, top) -->
+<path d="M490 170 Q490 120 515 108 Q540 96 555 118 Q570 140 555 162 Q540 184 510 186 Q475 188 460 160 Q445 130 460 105 Q475 78 510 70 Q545 62 565 82" fill="none" stroke="#b5d4f4" stroke-width="1" stroke-dasharray="3 2"/>
+
+<!-- Turn 2 -->
+<path d="M490 170 Q490 130 510 118 Q530 106 545 120 Q560 134 550 154 Q540 174 515 178 Q485 182 472 158 Q460 132 468 108 Q478 82 508 74 Q540 66 560 82 Q582 98 582 128 Q582 160 565 182 Q548 204 520 208 Q488 212 468 192" fill="none" stroke="#85b7eb" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+<!-- Turn 3 (outermost) -->
+<path d="M490 170 Q490 140 508 128 Q526 116 540 128 Q554 140 546 158 Q538 176 518 180 Q494 184 482 164 Q470 142 476 118 Q484 92 512 84 Q542 76 560 92 Q580 110 580 138 Q580 168 562 188 Q542 208 516 212 Q484 216 464 196 Q442 174 442 146 Q442 114 462 92" fill="none" stroke="#378add" stroke-width="2" marker-end="url(#arr)"/>
+
+<!-- Phase labels on spiral -->
+<text x="514" y="104" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">design</text>
+<text x="562" y="146" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">impl</text>
+<text x="526" y="194" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">verify</text>
+<text x="465" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">operate</text>
+
+<!-- Altitude arrows -->
+<line x1="432" y1="215" x2="432" y2="85" stroke="#378add" stroke-width="1" stroke-dasharray="2 2" marker-end="url(#arr)" opacity="0.5"/>
+<text x="426" y="188" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#378add" opacity="0.7">tool</text>
+<text x="426" y="198" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#378add" opacity="0.7">surface</text>
+<text x="426" y="208" text-anchor="end" font-family="Arial, sans-serif" font-size="9" fill="#378add" opacity="0.7">grows</text>
+
+<!-- Legend turn labels -->
+<text x="515" y="248" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#185fa5">Each turn: same phases,</text>
+<text x="515" y="261" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#185fa5">updated threat model</text>
+
+<!-- Divider -->
+<line x1="340" y1="30" x2="340" y2="270" stroke="#d3d1c7" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="340" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#b4b2a9" transform="rotate(-90, 340, 155)">vs</text>
+</svg>

@@ -1,0 +1,108 @@
+<svg width="680" height="280" viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 3: Autonomy window and temporal blast radius</title>
+<desc>Timeline showing human checkpoints as vertical bars, with autonomy windows (gaps between checkpoints) and blast radius zones. Low blast radius autonomy windows are shown in green, high blast radius in amber/red. The diagram illustrates how risk = autonomy window duration multiplied by blast radius.</desc>
+
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<marker id="arr2" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+<path d="M8 1L2 5L8 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- Title -->
+<text x="340" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#3d3d3a">Risk = Autonomy Window × Temporal Blast Radius</text>
+
+<!-- Timeline base -->
+<line x1="50" y1="130" x2="630" y2="130" stroke="#888780" stroke-width="1.5"/>
+<text x="50" y="148" font-family="Arial, sans-serif" font-size="10" fill="#888780">t</text>
+<line x1="625" y1="126" x2="635" y2="130" stroke="#888780" stroke-width="1.5"/>
+<line x1="625" y1="134" x2="635" y2="130" stroke="#888780" stroke-width="1.5"/>
+
+<!-- Human checkpoints (vertical bars) -->
+<!-- CP1 at x=80 -->
+<rect x="76" y="90" width="8" height="80" rx="2" fill="#185fa5"/>
+<text x="80" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#185fa5">checkpoint</text>
+
+<!-- CP2 at x=200 (short window) -->
+<rect x="196" y="90" width="8" height="80" rx="2" fill="#185fa5"/>
+<text x="200" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#185fa5">checkpoint</text>
+
+<!-- CP3 at x=360 (longer window) -->
+<rect x="356" y="90" width="8" height="80" rx="2" fill="#185fa5"/>
+<text x="360" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#185fa5">checkpoint</text>
+
+<!-- CP4 at x=620 (very long window) -->
+<rect x="616" y="90" width="8" height="80" rx="2" fill="#185fa5"/>
+<text x="620" y="82" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#185fa5">checkpoint</text>
+
+<!-- Window 1: short + low blast radius = safe (green) -->
+<rect x="84" y="100" width="112" height="60" rx="4" fill="#9fe1cb" stroke="#1d9e75" stroke-width="0.5" opacity="0.7"/>
+<text x="140" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="500" fill="#04342c">short window</text>
+<text x="140" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#04342c">low blast radius</text>
+<text x="140" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#085041">→ low risk</text>
+
+<!-- Window 2: medium + medium blast radius = caution (amber) -->
+<rect x="204" y="100" width="152" height="60" rx="4" fill="#fac775" stroke="#ba7517" stroke-width="0.5" opacity="0.7"/>
+<text x="280" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="500" fill="#412402">medium window</text>
+<text x="280" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#412402">medium blast radius</text>
+<text x="280" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">→ approval gating</text>
+<text x="280" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">   required</text>
+
+<!-- Window 3: long + high blast radius = danger (red) -->
+<rect x="364" y="100" width="252" height="60" rx="4" fill="#f09595" stroke="#a32d2d" stroke-width="0.5" opacity="0.7"/>
+<text x="490" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="500" fill="#501313">long window</text>
+<text x="490" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#501313">high blast radius</text>
+<text x="490" y="148" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#791f1f">→ unsafe: compress window</text>
+<text x="490" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#791f1f">   or reduce tool scope</text>
+
+<!-- Width annotations (autonomy window spans) -->
+<line x1="84" y1="175" x2="196" y2="175" stroke="#1d9e75" stroke-width="1" marker-end="url(#arr)" marker-start="url(#arr2)"/>
+<text x="140" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1d9e75">autonomy window</text>
+
+<line x1="204" y1="175" x2="356" y2="175" stroke="#ba7517" stroke-width="1" marker-end="url(#arr)" marker-start="url(#arr2)"/>
+<text x="280" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#ba7517">autonomy window</text>
+
+<line x1="364" y1="175" x2="616" y2="175" stroke="#a32d2d" stroke-width="1" marker-end="url(#arr)" marker-start="url(#arr2)"/>
+<text x="490" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#a32d2d">autonomy window</text>
+
+<!-- Blast radius vertical indicator -->
+<rect x="35" y="100" width="12" height="20" rx="2" fill="#9fe1cb" stroke="#1d9e75" stroke-width="0.5"/>
+<rect x="35" y="120" width="12" height="20" rx="2" fill="#fac775" stroke="#ba7517" stroke-width="0.5"/>
+<rect x="35" y="140" width="12" height="20" rx="2" fill="#f09595" stroke="#a32d2d" stroke-width="0.5"/>
+<text x="28" y="113" text-anchor="end" font-family="Arial, sans-serif" font-size="8" fill="#1d9e75">low</text>
+<text x="28" y="133" text-anchor="end" font-family="Arial, sans-serif" font-size="8" fill="#ba7517">med</text>
+<text x="28" y="153" text-anchor="end" font-family="Arial, sans-serif" font-size="8" fill="#a32d2d">high</text>
+<text x="41" y="96" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#5f5e5a">blast</text>
+<text x="41" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#5f5e5a">radius</text>
+
+<!-- Actions timeline (dots below) -->
+<text x="50" y="220" font-family="Arial, sans-serif" font-size="9" fill="#888780">agent actions:</text>
+<!-- Small action dots -->
+<circle cx="100" cy="220" r="3" fill="#888780" opacity="0.5"/>
+<circle cx="120" cy="220" r="3" fill="#888780" opacity="0.5"/>
+<circle cx="150" cy="220" r="3" fill="#888780" opacity="0.5"/>
+<circle cx="175" cy="220" r="3" fill="#888780" opacity="0.5"/>
+
+<circle cx="220" cy="220" r="3" fill="#ba7517" opacity="0.6"/>
+<circle cx="245" cy="220" r="3" fill="#ba7517" opacity="0.6"/>
+<circle cx="268" cy="220" r="3" fill="#ba7517" opacity="0.6"/>
+<circle cx="295" cy="220" r="3" fill="#ba7517" opacity="0.6"/>
+<circle cx="320" cy="220" r="3" fill="#ba7517" opacity="0.6"/>
+<circle cx="342" cy="220" r="3" fill="#ba7517" opacity="0.6"/>
+
+<circle cx="380" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="410" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="440" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="468" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="498" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="528" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="556" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="585" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+<circle cx="610" cy="220" r="4" fill="#a32d2d" opacity="0.7"/>
+
+<!-- Note -->
+<text x="340" y="256" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#5f5e5a">Each action dot = potential side effect before next human control point</text>
+<text x="340" y="270" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#5f5e5a">Dot size represents individual action blast radius</text>
+</svg>

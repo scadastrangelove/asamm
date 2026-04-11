@@ -1,0 +1,114 @@
+<svg width="680" height="360" viewBox="0 0 680 360" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 6: Threat taxonomy to control families mapping</title>
+<desc>Shows how each threat class and weakness overlay maps to the control families in Part 3. Primary threat classes C1-C4 and overlays W1-W2 connect via lines to the five SAMM-aligned control families: Governance, Design, Implementation, Verification, and Operations.</desc>
+
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- LEFT COLUMN: Threat classes -->
+<text x="120" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#633806">Threat taxonomy</text>
+
+<!-- C1 -->
+<rect x="20" y="36" width="200" height="32" rx="6" fill="#fac775" stroke="#ba7517" stroke-width="0.5"/>
+<text x="120" y="49" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">C1 — Context injection</text>
+<text x="120" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">data becomes instruction</text>
+
+<!-- C2 -->
+<rect x="20" y="84" width="200" height="32" rx="6" fill="#fac775" stroke="#ba7517" stroke-width="0.5"/>
+<text x="120" y="97" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">C2 — Tool abuse</text>
+<text x="120" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">legitimate tool, wrong purpose</text>
+
+<!-- C3 -->
+<rect x="20" y="132" width="200" height="32" rx="6" fill="#fac775" stroke="#ba7517" stroke-width="0.5"/>
+<text x="120" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">C3 — Autonomy window</text>
+<text x="120" y="158" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">harm between checkpoints</text>
+
+<!-- C4 -->
+<rect x="20" y="180" width="200" height="32" rx="6" fill="#fac775" stroke="#ba7517" stroke-width="0.5"/>
+<text x="120" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">C4 — Supply chain ext.</text>
+<text x="120" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">tools, prompts, frameworks</text>
+
+<!-- Separator -->
+<line x1="20" y1="226" x2="220" y2="226" stroke="#d3d1c7" stroke-width="0.5" stroke-dasharray="3 2"/>
+
+<!-- W1 -->
+<rect x="20" y="236" width="200" height="32" rx="6" fill="#85b7eb" stroke="#185fa5" stroke-width="0.5"/>
+<text x="120" y="249" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#042c53">W1 — Constraint failure</text>
+<text x="120" y="262" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#0c447c">policy incomplete or bypassable</text>
+
+<!-- W2 -->
+<rect x="20" y="284" width="200" height="32" rx="6" fill="#85b7eb" stroke="#185fa5" stroke-width="0.5"/>
+<text x="120" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#042c53">W2 — Assurance blindspot</text>
+<text x="120" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#0c447c">monitoring insufficient</text>
+
+<!-- RIGHT COLUMN: Control families -->
+<text x="560" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#3b6d11">Control families (Part 3)</text>
+
+<!-- AG: Governance -->
+<rect x="450" y="36" width="210" height="40" rx="6" fill="#eaf3de" stroke="#639922" stroke-width="0.5"/>
+<text x="555" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#27500a">Governance (AG)</text>
+<text x="555" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">AG-01 registry · AG-02 tools · AG-03 kill switch</text>
+
+<!-- AD: Design -->
+<rect x="450" y="92" width="210" height="40" rx="6" fill="#eaf3de" stroke="#639922" stroke-width="0.5"/>
+<text x="555" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#27500a">Design (AD)</text>
+<text x="555" y="124" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">AD-01 context TM · AD-02 window · AD-03/04 tools</text>
+
+<!-- AI: Implementation -->
+<rect x="450" y="148" width="210" height="40" rx="6" fill="#eaf3de" stroke="#639922" stroke-width="0.5"/>
+<text x="555" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#27500a">Implementation (AI)</text>
+<text x="555" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">AI-01 schema review · AI-02 sandbox · AI-03 scope</text>
+
+<!-- AV: Verification -->
+<rect x="450" y="204" width="210" height="40" rx="6" fill="#eaf3de" stroke="#639922" stroke-width="0.5"/>
+<text x="555" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#27500a">Verification (AV)</text>
+<text x="555" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">AV-01 behavioral · AV-02 adversarial · AV-03 pentest</text>
+
+<!-- AO: Operations -->
+<rect x="450" y="260" width="210" height="40" rx="6" fill="#eaf3de" stroke="#639922" stroke-width="0.5"/>
+<text x="555" y="276" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#27500a">Operations (AO)</text>
+<text x="555" y="292" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#3b6d11">AO-01 provenance · AO-02 gap · AO-03/04 lifecycle</text>
+
+<!-- CONNECTOR LINES -->
+<!-- C1 → AD (context threat modeling), AI (schema review), AV (behavioral) -->
+<line x1="220" y1="52" x2="448" y2="112" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="52" x2="448" y2="168" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="52" x2="448" y2="220" stroke="#ba7517" stroke-width="0.8" opacity="0.35"/>
+
+<!-- C2 → AG (tool registry), AD (tool trust), AI (scope), AV (adversarial) -->
+<line x1="220" y1="100" x2="448" y2="56" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="100" x2="448" y2="112" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="100" x2="448" y2="168" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="100" x2="448" y2="220" stroke="#ba7517" stroke-width="0.8" opacity="0.35"/>
+
+<!-- C3 → AG (autonomy class), AD (window assessment), AV (behavioral), AO (triggers) -->
+<line x1="220" y1="148" x2="448" y2="56" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="148" x2="448" y2="112" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="148" x2="448" y2="220" stroke="#ba7517" stroke-width="0.8" opacity="0.35"/>
+<line x1="220" y1="148" x2="448" y2="280" stroke="#ba7517" stroke-width="0.8" opacity="0.35"/>
+
+<!-- C4 → AG (tool registry), AD (supply chain TM), AI (schema review) -->
+<line x1="220" y1="196" x2="448" y2="56" stroke="#ba7517" stroke-width="0.8" opacity="0.35"/>
+<line x1="220" y1="196" x2="448" y2="112" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+<line x1="220" y1="196" x2="448" y2="168" stroke="#ba7517" stroke-width="0.8" opacity="0.5"/>
+
+<!-- W1 → AD (design), AI (impl), AV (verification) -->
+<line x1="220" y1="252" x2="448" y2="112" stroke="#185fa5" stroke-width="1" opacity="0.5" stroke-dasharray="4 2"/>
+<line x1="220" y1="252" x2="448" y2="168" stroke="#185fa5" stroke-width="1" opacity="0.5" stroke-dasharray="4 2"/>
+<line x1="220" y1="252" x2="448" y2="220" stroke="#185fa5" stroke-width="1" opacity="0.5" stroke-dasharray="4 2"/>
+
+<!-- W2 → AV (verification), AO (operations) -->
+<line x1="220" y1="300" x2="448" y2="220" stroke="#185fa5" stroke-width="1" opacity="0.6" stroke-dasharray="4 2"/>
+<line x1="220" y1="300" x2="448" y2="280" stroke="#185fa5" stroke-width="1.2" opacity="0.7" stroke-dasharray="4 2"/>
+
+<!-- Legend -->
+<rect x="240" y="334" width="200" height="20" rx="4" fill="none"/>
+<line x1="250" y1="344" x2="290" y2="344" stroke="#ba7517" stroke-width="1.5" opacity="0.6"/>
+<text x="300" y="348" font-family="Arial, sans-serif" font-size="9" fill="#633806">primary coverage</text>
+<line x1="390" y1="344" x2="430" y2="344" stroke="#185fa5" stroke-width="1.5" opacity="0.6" stroke-dasharray="4 2"/>
+<text x="440" y="348" font-family="Arial, sans-serif" font-size="9" fill="#185fa5">overlay coverage</text>
+
+</svg>

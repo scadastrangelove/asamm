@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use or adapt this work, please cite it as below."
+type: report
+title: "Agentic SAMM: An OWASP SAMM Extension for AI-Driven Development"
+authors:
+  - family-names: Gordeychik
+    given-names: Sergey
+    email: scadastrangelove@gmail.com
+    affiliation: CyberOK
+date-released: 2026
+version: "0.1.0-draft"
+license: CC-BY-SA-4.0
+repository-code: "https://github.com/scadastrangelove/agentic-samm"
+abstract: >
+  Agentic SAMM extends OWASP SAMM to systems where software is no longer
+  the only actor. It provides a threat taxonomy, migration and greenfield
+  adoption paths, and 17 controls across five SAMM function families for
+  teams building or securing AI-driven development systems.
+keywords:
+  - agentic AI
+  - secure SDLC
+  - OWASP SAMM
+  - application security
+  - AI security
+  - prompt injection
+  - tool abuse
+  - autonomous agents
