@@ -1,5 +1,11 @@
 # Agentic SAMM
 
+<p align="center">
+  <img src="assets/figures/logo.png" alt="ASAMM logo" width="320"/>
+</p>
+
+
+
 **An OWASP SAMM Extension for AI-Driven Development**
 
 > *This document extends OWASP SAMM to systems where software is no longer the only actor.*
@@ -97,6 +103,17 @@ This framework uses semantic versioning. Breaking changes to control IDs or taxo
 Current version: **v0.1.0-draft**
 
 See [CHANGELOG.md](CHANGELOG.md) for history.
+
+---
+
+## Русская версия / Russian Edition
+
+**[📄 Агентный SAMM v0.1.0 — PDF на русском языке](assets/asamm-ru.pdf)**
+
+*Для тех, кто не может прожить без ГОСТ Р 56939-2024.*
+
+Индустрия безопасности потратила тридцать лет на то, чтобы научить разработчиков не доверять пользовательскому вводу. После чего вручила им системы, которые доверяют всему — при условии что данные поступают по авторизованному каналу. Русская версия фреймворка содержит полный маппинг на ГОСТ Р 56939-2024 «Защита информации. Разработка безопасного программного обеспечения. Общие требования» — с указанием конкретных параграфов стандарта для каждого контроля.
+
 
 ---
 
