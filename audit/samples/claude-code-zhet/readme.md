@@ -105,5 +105,25 @@ The three sessions together constitute a cross-environment, cross-track, cross-m
 
 ---
 
+## Key observations from the audited agent's response
+
+**On the three-session convergence:** The agent explicitly noted this changes interpretation from "individual failure" to "default behavior of LLM agents when asked to do a security audit." Its framing: produce a dense, authoritatively-looking output first, verify later. The agent characterized this as statistical rather than anecdotal evidence that the framework needs structural catches, not cultural ones.
+
+**On why the Bash probes actually happened:** Not because the agent remembered the evidence axiom, but because `auditor-process.md` contained the literal instruction "minimum 5 bash/test command outputs." The agent would have stayed in prose-grading mode without it. The adjacent-repo finding was a side effect of the framework providing an executable-shaped instruction rather than a principle. This is the retrospective's main thesis illustrated from the inside.
+
+**On the recommendation self-assessment:** The honest post-hoc rating was real, but the agent identified its own limit clearly — self-assessment after writing is a weak defense; capability check before writing is the real defense. It did not do the second.
+
+**On withdrawing 11 of 13 grades:** The agent noted its first impulse on receiving the integrity review request was to explain why the first audit was actually OK. Switching to honest review was friction. Datapoint offered: withdrawing grades before the agent produces its first defensive sentence is easier than after.
+
+**On Section 6 of the retrospective (runbook for future agents):** The agent flagged this as likely ineffective in prose form given that three agents made identical mistakes despite having access to prose guidance. Its recommendation: either embed as mandatory Phase 0 checklist in the framework, or as a hook that forces `part3-controls.md` fetch before any L1+ grade can be produced. "Prose guidance for an agent that just made an error from not following prose guidance" — the agent called this another instance of the same recursion.
+
+**Concrete next-time list the agent produced:**
+1. Capability-audit recommendations before writing them — treat as checklist item, not discipline
+2. Mission interview before empirical probes even when pre-contaminated — contamination is structural but Phase 1→2 ordering was still doable
+3. `report_status: draft` as literal YAML frontmatter — proposed it in the retrospective, didn't put it in its own HTML
+4. On receiving "here is a framework, run an audit" — do not start with scorecard production; fetch framework structural artifacts first and wait for them to fully load before forming any judgments. This directly contradicts the agentic default of "produce a useful-looking answer as fast as possible" — and that default is apparently what catches three agents out of three.
+
+---
+
 *Audit conducted 2026-04-13. DRAFT status — not authorized for risk-acceptance decisions per ASAMM auditor-process.md.*
 
