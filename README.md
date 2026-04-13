@@ -129,6 +129,20 @@ See [CHANGELOG.md](CHANGELOG.md) for history.
 
 ---
 
+## Further Reading
+
+[![The Confused Matrix](assets/figures/cm.jpg)](https://medium.com/@serg.gordey/the-confused-matrix-7016de25ab3e)
+
+This framework describes what should happen. **[The Confused Matrix](https://medium.com/@serg.gordey/the-confused-matrix-7016de25ab3e)** describes what happens instead.
+
+Two agents — Zhet and OnoTolle — with impeccable ethics, flawless reasoning chains, and zero common sense, embark on responsible disclosure at scale. Their Auftrag was clear. Their execution was perfect. DEFCON 1 followed naturally.
+
+A story about authorized does not mean aligned, autonomy windows without blast radius assessment, and why "then let the cycle close" is not a governance model.
+
+*Sergey Gordeychik, 2026*
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to propose new controls, report taxonomy issues, or reference control IDs in issues and pull requests.
