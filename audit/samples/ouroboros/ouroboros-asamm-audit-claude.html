@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASAMM Audit — Ouroboros v6.2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090E;
+  --surface: #0C1019;
+  --surface2: #111827;
+  --surface3: #1A2236;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --txt: #D8E2F0;
+  --txt2: #7A8A9E;
+  --txt3: #4A5568;
+  --accent: #3B7CFF;
+  --accent2: #1E50CC;
+  --critical: #F23B3B;
+  --critical-bg: rgba(242,59,59,0.08);
+  --critical-border: rgba(242,59,59,0.3);
+  --high: #E08B28;
+  --high-bg: rgba(224,139,40,0.08);
+  --high-border: rgba(224,139,40,0.3);
+  --medium: #3B7CFF;
+  --medium-bg: rgba(59,124,255,0.08);
+  --medium-border: rgba(59,124,255,0.25);
+  --low: #27C47A;
+  --low-bg: rgba(39,196,122,0.08);
+  --low-border: rgba(39,196,122,0.3);
+  --l0: #F23B3B;
+  --l1: #E08B28;
+  --l1-bg: rgba(224,139,40,0.12);
+  --l2: #27C47A;
+  --l3: #3B7CFF;
+  --emp: #60A5FA;
+  --abs: #F59E0B;
+  --inf: #34D399;
+  --unk: #6B7280;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7,9,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+.site-header .wordmark {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--txt2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.site-header .wordmark strong { color: var(--accent); font-weight: 500; }
+.header-nav { display: flex; gap: 0; }
+.header-nav a {
+  font-size: 12px;
+  color: var(--txt2);
+  text-decoration: none;
+  padding: 0 14px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  letter-spacing: 0.02em;
+}
+.header-nav a:hover { color: var(--txt); border-bottom-color: var(--border2); }
+
+/* ── LAYOUT ── */
+.page { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+/* ── COVER ── */
+.cover { margin-bottom: 3.5rem; }
+.cover-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cover-label::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.cover h1 {
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  color: var(--txt);
+  margin-bottom: 0.5rem;
+}
+.cover h1 em { font-style: italic; color: var(--txt2); }
+.cover .subtitle {
+  font-size: 14px;
+  color: var(--txt2);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+}
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+.pill {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  color: var(--txt2);
+  background: var(--surface2);
+  white-space: nowrap;
+}
+.pill.warn { border-color: var(--high-border); color: var(--high); background: var(--high-bg); }
+.pill.danger { border-color: var(--critical-border); color: var(--critical); background: var(--critical-bg); }
+.pill.ok { border-color: var(--low-border); color: var(--low); background: var(--low-bg); }
+.pill.info { border-color: var(--medium-border); color: var(--accent); background: var(--medium-bg); }
+
+/* ── ALERTS ── */
+.alert {
+  border: 1px solid;
+  border-radius: 6px;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+.alert.method { border-color: var(--high-border); background: var(--high-bg); color: #F0C070; }
+.alert.fix { border-color: var(--medium-border); background: var(--medium-bg); color: #90B8FF; }
+.alert b { font-weight: 600; display: block; margin-bottom: 4px; }
+
+/* ── SCORE GRID ── */
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0,1fr));
+  gap: 10px;
+  margin-bottom: 3rem;
+}
+.score-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 12px 12px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.score-card:hover { border-color: var(--border2); }
+.score-card .slabel {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--txt2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.score-card .sval {
+  font-size: 28px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1;
+}
+.score-card .smax { font-size: 13px; color: var(--txt3); font-family: var(--font-mono); margin-top: 2px; }
+.sval.red { color: var(--critical); }
+.sval.amber { color: var(--high); }
+.sval.green { color: var(--low); }
+
+/* ── SECTION HEADERS ── */
+.section { margin-bottom: 3rem; }
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 1.25rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.section-header h2 {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--txt);
+}
+.section-header .section-id {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--txt3);
+  letter-spacing: 0.1em;
+}
+
+/* ── FAMILY HEADERS ── */
+.family { margin-bottom: 1.5rem; }
+.family-hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 8px 0;
+}
+.family-hdr h3 { font-size: 13px; font-weight: 600; color: var(--txt2); text-transform: uppercase; letter-spacing: 0.1em; }
+.ftag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.ftag.ag { background: rgba(59,124,255,0.12); color: #60A5FA; border: 1px solid rgba(59,124,255,0.25); }
+.ftag.ad { background: rgba(39,196,122,0.1); color: #4ADE80; border: 1px solid rgba(39,196,122,0.25); }
+.ftag.ai { background: rgba(224,139,40,0.1); color: #F0C070; border: 1px solid rgba(224,139,40,0.25); }
+.ftag.av { background: rgba(167,139,250,0.1); color: #A78BFA; border: 1px solid rgba(167,139,250,0.25); }
+.ftag.ao { background: rgba(242,59,59,0.08); color: #FC8080; border: 1px solid rgba(242,59,59,0.2); }
+
+/* ── CONTROL CARDS ── */
+.ctrl-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.ctrl-card:hover { border-color: var(--border2); }
+.ctrl-card.open { border-color: var(--border2); }
+.ctrl-head {
+  display: grid;
+  grid-template-columns: 100px 1fr 80px;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+.ctrl-id {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--txt2);
+  margin-bottom: 6px;
+}
+.ctrl-name { font-size: 14px; font-weight: 500; color: var(--txt); }
+.ctrl-desc { font-size: 12px; color: var(--txt2); margin-top: 3px; line-height: 1.5; }
+.lvl-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.lvl-badge.l0 { background: rgba(242,59,59,0.12); color: var(--critical); border: 1px solid var(--critical-border); }
+.lvl-badge.l1 { background: rgba(224,139,40,0.12); color: var(--high); border: 1px solid var(--high-border); }
+.lvl-badge.l2 { background: rgba(39,196,122,0.12); color: var(--low); border: 1px solid var(--low-border); }
+.corr-mark {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--critical);
+  background: var(--critical-bg);
+  border: 1px solid var(--critical-border);
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.ctrl-body {
+  display: none;
+  padding: 14px 16px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--txt2);
+}
+.ctrl-card.open .ctrl-body { display: block; }
+.ctrl-body b { color: var(--txt); font-weight: 600; }
+.ctrl-body p { margin-bottom: 10px; }
+.ctrl-body p:last-child { margin-bottom: 0; }
+code {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #90B8FF;
+}
+
+/* ── EVIDENCE TAGS ── */
+.ev {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+.ev.emp { color: var(--emp); border-color: rgba(96,165,250,0.3); background: rgba(96,165,250,0.08); }
+.ev.abs { color: var(--abs); border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); }
+.ev.inf { color: var(--inf); border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.08); }
+.ev.unk { color: var(--unk); border-color: rgba(107,114,128,0.3); background: rgba(107,114,128,0.08); }
+
+/* ── FINDING BLOCKS ── */
+.finding {
+  border-left: 2px solid;
+  padding: 8px 12px;
+  border-radius: 0 5px 5px 0;
+  font-size: 12.5px;
+  line-height: 1.65;
+  margin-top: 12px;
+  color: var(--txt);
+}
+.finding.critical { border-color: var(--critical); background: var(--critical-bg); }
+.finding.high { border-color: var(--high); background: var(--high-bg); }
+.finding.medium { border-color: var(--medium); background: var(--medium-bg); }
+.finding.low { border-color: var(--low); background: var(--low-bg); }
+.correction-block {
+  border: 1px solid var(--critical-border);
+  background: rgba(242,59,59,0.06);
+  border-radius: 5px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  margin-top: 12px;
+  color: #FC8080;
+}
+.correction-block b { color: #FF9090; }
+
+/* ── KEY FINDINGS ── */
+.finding-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--surface);
+}
+.finding-card.critical { border-left: 3px solid var(--critical); }
+.finding-card.high { border-left: 3px solid var(--high); }
+.finding-card.medium { border-left: 3px solid var(--medium); }
+.finding-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.finding-title { font-size: 14px; font-weight: 600; color: var(--txt); }
+.sev-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.sev-badge.c { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical-border); }
+.sev-badge.h { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+.sev-badge.m { background: var(--medium-bg); color: var(--accent); border: 1px solid var(--medium-border); }
+.finding-body { font-size: 13px; color: var(--txt2); line-height: 1.65; }
+.finding-body p { margin-bottom: 8px; }
+.finding-body p:last-child { margin-bottom: 0; }
+.ctrl-refs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+.ctrl-ref {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  color: var(--txt2);
+}
+
+/* ── SCORE CHART ── */
+.bar-section { margin-bottom: 2rem; }
+.bar-family-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--txt3);
+  margin: 16px 0 8px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 56px 140px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.bar-id { font-family: var(--font-mono); color: var(--txt2); }
+.bar-name { color: var(--txt2); }
+.bar-track {
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.bar-score { font-family: var(--font-mono); color: var(--txt2); font-size: 11px; text-align: right; }
+
+/* ── RECOMMENDATIONS ── */
+.rec-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: var(--surface);
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.rec-num {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--txt3);
+  line-height: 1.2;
+  padding-top: 2px;
+}
+.rec-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+.rec-title { font-size: 14px; font-weight: 600; color: var(--txt); }
+.pri-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pri-badge.p1 { background: var(--critical-bg); color: var(--critical); border: 1px solid var(--critical-border); }
+.pri-badge.p2 { background: var(--high-bg); color: var(--high); border: 1px solid var(--high-border); }
+.pri-badge.p3 { background: var(--medium-bg); color: var(--accent); border: 1px solid var(--medium-border); }
+.rec-body { font-size: 13px; color: var(--txt2); line-height: 1.65; }
+
+/* ── EVIDENCE LEGEND ── */
+.ev-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--txt2);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 1.5rem;
+}
+.ev-legend span { display: flex; align-items: center; gap: 5px; }
+
+/* ── FRAMEWORK MAPPING TABLE ── */
+.mapping-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 1rem; }
+.mapping-table th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--txt3);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.mapping-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--txt2);
+  vertical-align: top;
+}
+.mapping-table tr:last-child td { border-bottom: none; }
+.mapping-table .score-cell { font-family: var(--font-mono); }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  font-size: 12px;
+  color: var(--txt3);
+  font-family: var(--font-mono);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ── COLLAPSIBLE TOGGLE ── */
+.ctrl-head::after {
+  content: '+';
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--txt3);
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.ctrl-card.open .ctrl-head::after { content: '−'; }
+
+/* remove the after hack — implement with JS toggle class */
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark"><strong>ASAMM</strong> v0.1.0-draft · Greenfield Path · Track C</div>
+  <nav class="header-nav">
+    <a href="#executive">Summary</a>
+    <a href="#controls">Controls</a>
+    <a href="#findings">Findings</a>
+    <a href="#chart">Scores</a>
+    <a href="#recommendations">Recs</a>
+  </nav>
+</header>
+
+<main class="page">
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-label">Security Audit Report</div>
+  <h1>ASAMM Corrected Audit<br><em>Ouroboros v6.2.0</em></h1>
+  <div class="subtitle">razzant/ouroboros · main branch · Colab/Telegram edition</div>
+  <div class="meta-row">
+    <span class="pill">ASAMM v0.1.0-draft</span>
+    <span class="pill">Greenfield Path — Part 2</span>
+    <span class="pill warn">Track C — No mission interview</span>
+    <span class="pill">Evidence-tagged per §2.7</span>
+    <span class="pill">April 13, 2026</span>
+    <span class="pill warn">3 corrections from draft</span>
+    <span class="pill danger">13 / 17 controls at L0</span>
+  </div>
+</section>
+
+<!-- METHODOLOGY ALERTS -->
+<section id="executive">
+  <div class="alert method">
+    <b>Methodology gap — ASAMM §2.7 hard requirement</b>
+    Phase 1 Mission Interview was not conducted. Blast-radius severity assignments are provisional. The owner's intent is partially inferable from the README and landing page but not formally established. This audit proceeds as Track C (independent auditor reviewing a codebase it did not build). All Critical/High severity ratings should be re-evaluated with Anton Razzhigaev before being acted on.
+  </div>
+
+  <div class="alert fix">
+    <b>3 material corrections from draft audit</b>
+    (1) <code>test_constitution.py</code> was reclassified as <code>SPEC_TEST</code> (documentation, not integration) in v6.0.0 — AV-01 and AV-02 both drop from "L1 partial" to L0. (2) The non-standard "L1 partial" level has been eliminated; all controls are rated strictly L0 or L1. (3) Family scores have been recomputed arithmetically from individual control ratings; draft scores were inconsistent with stated ratings (e.g., Governance showed 0.8 when individual ratings averaged 0.33).
+  </div>
+</section>
+
+<!-- SCORE GRID -->
+<div class="score-grid">
+  <div class="score-card">
+    <div class="slabel">Governance</div>
+    <div class="sval amber">0.33</div>
+    <div class="smax">/ 3.0</div>
+  </div>
+  <div class="score-card">
+    <div class="slabel">Design</div>
+    <div class="sval red">0.00</div>
+    <div class="smax">/ 3.0</div>
+  </div>
+  <div class="score-card">
+    <div class="slabel">Implementation</div>
+    <div class="sval amber">0.33</div>
+    <div class="smax">/ 3.0</div>
+  </div>
+  <div class="score-card">
+    <div class="slabel">Verification</div>
+    <div class="sval red">0.00</div>
+    <div class="smax">/ 3.0</div>
+  </div>
+  <div class="score-card">
+    <div class="slabel">Operations</div>
+    <div class="sval amber">0.50</div>
+    <div class="smax">/ 3.0</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- CONTROLS -->
+<section id="controls" class="section">
+  <div class="section-header">
+    <h2>Control Assessments</h2>
+    <span class="section-id">17 controls · Part 3 reference</span>
+  </div>
+
+  <div class="ev-legend">
+    <span><span class="ev emp">empirical</span> directly read from code / document</span>
+    <span><span class="ev abs">empirical-absence</span> explicitly sought, not found anywhere</span>
+    <span><span class="ev inf">inferred</span> from confirmed architectural facts</span>
+    <span><span class="ev unk">unknown</span> source inaccessible during audit</span>
+  </div>
+
+  <!-- AG -->
+  <div class="family">
+    <div class="family-hdr"><span class="ftag ag">AG</span><h3>Governance</h3></div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AG-01</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Agent registry &amp; autonomy classification</div>
+          <div class="ctrl-desc">Architecture documented; not a governed security register with autonomy levels or trust grading</div>
+        </div>
+        <div><span class="corr-mark">corrected from L1p</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Agents enumerated with owner, tool set, and autonomy level in a maintained register.</p>
+        <p><b>What exists:</b> One agent (Ouroboros) <span class="ev emp">empirical</span>, one named owner (Anton Razzhigaev) <span class="ev emp">empirical · README</span>, 50 tools listed in architecture diagram <span class="ev emp">empirical · README</span>. Two operational modes (direct chat, /evolve) <span class="ev emp">empirical · README commands table</span>. Telegram auth: first-message-wins, all subsequent messages from others ignored <span class="ev emp">empirical · README §Start Chatting</span>.</p>
+        <p><b>What is absent:</b> No document qualifying as a security register with autonomy classification (supervised / semi-autonomous / autonomous) or trust grading <span class="ev abs">empirical-absence</span>. The README architecture diagram is documentation, not a governed register.</p>
+        <div class="finding medium">Each /evolve cycle is effectively a new agent version (new code, new tools, modified system prompt) that would require re-classification under L2. At 32 cycles in 48 hours, this is not a ceremonial gap.</div>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AG-02</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Tool registry governance</div>
+          <div class="ctrl-desc">50 tools via auto-discovery; no risk classification, no access policy, agent can add tools autonomously</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> All tools enumerated with owner and access policy.</p>
+        <p><b>What exists:</b> 50 tools by name in README <span class="ev emp">empirical · README architecture</span>. Selective schema loading (v6.1.0): 29 core tools always in context, 23 via <code>list_available_tools</code> <span class="ev emp">empirical · v6.1.0 changelog</span>. Plugin auto-discovery from <code>tools/</code> directory <span class="ev emp">empirical · README: "plugin registry (auto-discovery)"</span>.</p>
+        <p><b>What is absent:</b> Risk classification per tool (always/conditional/prohibited) <span class="ev abs">empirical-absence — not mentioned across all changelogs</span>. Access policy per tool <span class="ev abs">empirical-absence</span>. Note: selective schema loading is a token-efficiency optimisation, not a security boundary — it controls what the model sees, not what it can invoke <span class="ev inf">inferred from architecture</span>.</p>
+        <p><b>Significant empirical fact:</b> The agent adds new tools to its plugin registry autonomously during /evolve cycles. Confirmed by changelog entries: <code>generate_evolution_stats</code>, <code>generate_self_portrait</code>, <code>vlm_query</code> were all agent-autonomous additions <span class="ev emp">empirical · v5.1.0, v5.2.1, v5.2.2 changelogs</span>. The <code>joi-lab/ouroboros-desktop</code> fork added a <code>tool_policy</code> module as a new feature <span class="ev emp">empirical · desktop README</span>, confirming its absence in v6.2.0.</p>
+        <div class="finding high">Tool surface can expand within an autonomy window without any governance gate. This is the foundational governance gap for a self-modifying agent.</div>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AG-03</div>
+          <span class="lvl-badge l1">L1</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Kill switch &amp; escalation ownership</div>
+          <div class="ctrl-desc">/panic exists, documented, tested in production; incomplete halt coverage confirmed by zombie worker incident</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Named owner can halt any agent's execution; halt procedure documented and tested.</p>
+        <p><b>What exists:</b> <code>/panic</code> command kills all workers immediately <span class="ev emp">empirical · README commands</span>. <code>/restart</code> for soft restart <span class="ev emp">empirical · README</span>. Named owner with exclusive Telegram access <span class="ev emp">empirical</span>. Halt documented <span class="ev emp">empirical · README</span>. <code>/panic</code> was used in production during the zombie worker incident — a real-world functional test <span class="ev emp">empirical · landing page timeline</span>.</p>
+        <p><b>Caveats (not L2):</b> Halt coverage is incomplete — zombie worker continued after <code>/panic</code> in a background subprocess <span class="ev emp">empirical · landing page: "a zombie worker process kept running in the background"</span>. Single-person escalation path with no out-of-hours coverage <span class="ev emp">empirical · design</span>. Partial-halt capability absent <span class="ev unk">unknown</span>.</p>
+        <p><b>Why L1 and not L0:</b> The kill switch exists, is documented, and was genuinely tested under production conditions. That is exactly L1. L2 requires log-verified invocations and out-of-hours escalation coverage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="family">
+    <div class="family-hdr"><span class="ftag ad">AD</span><h3>Design</h3></div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AD-01</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Context threat modeling</div>
+          <div class="ctrl-desc">Architecture diagram exists; no threat model, no trust classification across 6+ confirmed context sources</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Threat model includes at least one context flow diagram with external sources and their trust levels.</p>
+        <p><b>What exists:</b> Architecture diagram (Telegram → supervisor → agent → tools → Drive/GitHub/Internet) <span class="ev emp">empirical · README</span>. This is an architecture diagram, not a threat model. Context sources inferable from tool list: Telegram messages, OpenRouter LLM responses, web search results, GitHub Issues (github.py), Google Drive contents, multi-model review outputs (o3/Gemini/Claude) <span class="ev inf">inferred from confirmed tool list</span>.</p>
+        <p><b>What is absent:</b> Context flow threat model <span class="ev abs">empirical-absence</span>. Trust level per source <span class="ev abs">empirical-absence</span>. Injection threat paths <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Correction on github.py:</b> The draft stated github.py "reads public issue bodies as task context with no filtering." This is architecturally plausible but the source file was not accessible. The claim is here correctly marked <span class="ev unk">unknown</span> — no filtering is documented anywhere in the changelog <span class="ev abs">empirical-absence across changelog</span>, but absence from documentation ≠ absence from code.</p>
+        <div class="finding high">At least three context sources carry untrusted content (web search results, GitHub Issues, Drive files) and flow to an LLM with shell and git access. Whether any trust downgrade or filtering exists for these sources is unknown, but no filtering is documented.</div>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AD-02</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Autonomy window assessment</div>
+          <div class="ctrl-desc">Operational limits exist (MAX_ROUNDS, budget); no formal blast-radius or checkpoint-design document</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Autonomy windows identified for primary workflows; max duration between human checkpoints documented.</p>
+        <p><b>What exists:</b> <code>MAX_ROUNDS=200</code> per task <span class="ev emp">empirical · README config table</span>. <code>TOTAL_BUDGET</code> guard <span class="ev emp">empirical · README</span>. Circuit breaker: 3 empty responses → pause evolution <span class="ev emp">empirical · v4.24.0 changelog</span>. Soft self-check at rounds 50/100/150 — LLM asks itself "Am I stuck?" <span class="ev emp">empirical · v6.1.0 changelog</span>.</p>
+        <p><b>Why technical limits ≠ L1:</b> <code>MAX_ROUNDS</code> and <code>TOTAL_BUDGET</code> are operational parameters, not a documented autonomy window assessment. L1 requires identified windows with human checkpoints designed relative to blast radius. The <code>/evolve</code> mode has no mandatory human checkpoint before budget exhaustion — a budget guard is a financial control, not a security checkpoint.</p>
+        <p>The $500 incident demonstrates the practical blast radius was not anticipated <span class="ev emp">empirical · landing page: "$500 morning"</span>.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AD-03</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Tool &amp; connector trust modeling</div>
+          <div class="ctrl-desc">6 confirmed external connectors including OpenRouter (all primary LLM calls) with no trust boundary model</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Each MCP server and connector included in trust boundary model with defined trust level.</p>
+        <p><b>Confirmed connectors:</b> OpenRouter API (all primary LLM calls) <span class="ev emp">empirical · README §OPENROUTER_API_KEY required</span>. GitHub API (full <code>repo</code> scope token) <span class="ev emp">empirical · README §GITHUB_TOKEN</span>. Telegram Bot API (control plane) <span class="ev emp">empirical · README</span>. Google Drive API (state persistence) <span class="ev emp">empirical · README: "state lives on Google Drive"</span>. OpenAI API (web search, optional) <span class="ev emp">empirical · README §OPENAI_API_KEY</span>. Anthropic API (Claude Code CLI, optional) <span class="ev emp">empirical · README §ANTHROPIC_API_KEY</span>.</p>
+        <p><b>What is absent:</b> Trust boundary model <span class="ev abs">empirical-absence</span>. Trust level per connector <span class="ev abs">empirical-absence</span>. Confused-deputy or chain-exploitation analysis <span class="ev abs">empirical-absence</span>.</p>
+        <div class="finding high">OpenRouter routes all primary LLM calls through a third-party infrastructure. Response integrity is not verified at the application level <span class="ev inf">inferred — would require reading llm.py to confirm</span>. This is an unmodeled C4 (supply chain) boundary with direct influence over agent reasoning and tool selection.</div>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AD-04</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Development-surface threat modeling</div>
+          <div class="ctrl-desc">Dev surface = prod surface by architecture; confirmed absent in v6.2.0 by desktop fork evidence</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Development-time tooling enumerated and included in at least one threat model.</p>
+        <p><b>What exists:</b> Dev and prod run in the same Colab runtime with the same credentials <span class="ev emp">empirical · architecture</span>. shell.py, git.py, and Claude Code CLI used for self-modification during /evolve <span class="ev emp">empirical · README: "Reads and rewrites its own source code through git"</span>. No threat model for this surface <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Comparative evidence from desktop fork:</b> The <code>joi-lab/ouroboros-desktop</code> fork explicitly added: "PreToolUse hooks block writes outside cwd and to safety-critical files, <code>disallowed_tools=['Bash','MultiEdit']</code>" <span class="ev emp">empirical · desktop README</span>. These were described as new features — confirming they do not exist in v6.2.0.</p>
+        <div class="finding critical">This is architecturally unique: the agent's development-time tool calls ARE its production operations. An injection during an /evolve cycle reaches the same shell/git tools that handle production tasks, in the same runtime, with the same credentials. No boundary exists to separately model. Applying AD-04 controls requires architectural change (separate dev runtime or write-blocking hooks) before it can be assessed above L0.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI -->
+  <div class="family">
+    <div class="family-hdr"><span class="ftag ai">AI</span><h3>Implementation</h3></div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AI-01</div>
+          <span class="lvl-badge l1">L1</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Prompt &amp; schema security review</div>
+          <div class="ctrl-desc">BIBLE.md and SYSTEM.md governed and reviewed; autonomous SYSTEM.md modification bypasses the review gate</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> System prompts, tool schemas, agent config files identified as security-critical and in code review scope.</p>
+        <p><b>What exists:</b> BIBLE.md declared untouchable: "soul, not body" <span class="ev emp">empirical · README philosophy table</span>. BIBLE.md v3.2: adversarial multi-model review, four loopholes closed (paradox of meta-principle, ship of Theseus attack, authority appeal, "just a file" reduction) <span class="ev emp">empirical · v5.2.0 changelog</span>. SYSTEM.md hardened: 5 anti-patterns for tool result processing, knowledge base protocol, Health Invariants section <span class="ev emp">empirical · v5.1.4 and v6.0.0 changelogs</span>. Multi-model review (o3, gemini-2.5-pro, claude-opus-4.6) before code commits <span class="ev emp">empirical · multiple changelogs</span>.</p>
+        <p><b>Gap:</b> The agent modifies SYSTEM.md during /evolve cycles — autonomous modification of a security-critical artifact that bypasses the multi-model review gate <span class="ev inf">inferred from architecture: agent rewrites its own prompts and system docs</span>. Tool schemas in github.py, shell.py: injection-risk review status <span class="ev unk">unknown</span>.</p>
+        <p><b>Why L1:</b> Primary prompts are identified as security-critical and subject to an explicit review process. L2 requires that the review consistently covers autonomous modifications.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AI-02</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Execution boundary control</div>
+          <div class="ctrl-desc">Google Colab VM + unrestricted shell; desktop fork confirms sandboxing does not exist in v6.2.0</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> All agent-executed tool calls run in a defined execution boundary; filesystem and network access documented per tool.</p>
+        <p><b>What exists:</b> Google Colab VM provides process-level isolation from other tenants <span class="ev emp">empirical · Colab platform properties</span>. Budget guard limits LLM spend <span class="ev emp">empirical · README</span>. <code>shlex.split()</code> for shell command parsing (v6.2.0) <span class="ev emp">empirical · v6.2.0 changelog</span> — this is a correctness fix for shell quoting, not command filtering.</p>
+        <p><b>What is absent:</b> Execution boundary policy <span class="ev abs">empirical-absence — not mentioned across all changelogs</span>. Command allowlisting in shell.py <span class="ev unk">unknown — source not accessible</span>. Network egress restrictions <span class="ev abs">empirical-absence — Playwright "stealth" browser implies full internet access</span>. Filesystem access policy <span class="ev abs">empirical-absence</span>. Dev/prod sandboxing separation <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Comparative evidence:</b> Desktop fork added: "Hardcoded sandbox blocks writes to critical files and mutative git via shell; deterministic whitelist for known-safe ops; LLM Safety Agent evaluates remaining commands" <span class="ev emp">empirical · desktop README</span>. Described as new features — confirming absence in v6.2.0.</p>
+        <div class="finding critical">The shell tool provides subprocess execution with no confirmed command filtering. Network and filesystem access are unrestricted. The shlex.split() fix is a parsing correctness improvement — it prevents malformed arguments, not malicious commands. This is the highest-risk implementation gap in the system.</div>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AI-03</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Scoped tool authorization</div>
+          <div class="ctrl-desc">Full repo-scope GitHub token for all tasks; selective schema loading is not a security boundary</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Agents do not operate under session-wide maximum scope; at least high-blast-radius tools have narrower access.</p>
+        <p><b>What exists:</b> GitHub token with full <code>repo</code> scope <span class="ev emp">empirical · README §GITHUB_TOKEN — "Generate a classic token with repo scope"</span>. Selective tool schemas reduce what appears in context per round <span class="ev emp">empirical · v6.1.0</span> — not a security boundary.</p>
+        <p><b>What is absent:</b> Per-task scope reduction <span class="ev abs">empirical-absence</span>. Fine-grained GitHub token scoping <span class="ev abs">empirical-absence</span>. Any mechanism that narrows access for low-blast-radius tasks <span class="ev abs">empirical-absence</span>.</p>
+        <p>A read-only task (e.g., summarising issue history) holds identical full-repo write access to a commit task. L1 minimum — "at least high-blast-radius tools have narrower access" — is not met.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AV -->
+  <div class="family">
+    <div class="family-hdr"><span class="ftag av">AV</span><h3>Verification</h3></div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AV-01</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Behavioral test coverage</div>
+          <div class="ctrl-desc">131 smoke tests (functional); test_constitution.py is SPEC_TEST — documentation, not integration</div>
+        </div>
+        <div><span class="corr-mark">corrected from L1p</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Test cases for at least one scenario in each primary threat class (context injection, tool abuse, autonomy-window exploitation).</p>
+        <p><b>What exists:</b> 131 smoke tests <span class="ev emp">empirical · v6.1.0 changelog: "131 smoke tests passing"</span>. test_constitution.py: 12 tests <span class="ev emp">empirical · v5.2.0</span>. test_message_routing.py: 7 tests <span class="ev emp">empirical · v6.0.0</span>.</p>
+        <div class="correction-block"><b>Critical correction from draft:</b> test_constitution.py was explicitly reclassified as <code>SPEC_TEST</code> in v6.0.0: "Marked test_constitution.py as SPEC_TEST (documentation, not integration)." <span class="ev emp">empirical · v6.0.0 changelog</span>. These 12 tests document the specification — they do not test runtime behavioral responses to adversarial inputs. The draft audit incorrectly credited these as adversarial behavioral tests, which elevated AV-01 to "L1 partial." The correct rating is L0.</div>
+        <p><b>Threat-class coverage:</b> Context injection test cases <span class="ev unk">unknown — test files not accessible</span>. Tool abuse test cases <span class="ev unk">unknown</span>. Autonomy-window exploitation test cases <span class="ev unk">unknown</span>. The consistent "smoke tests" terminology across all changelogs indicates functional coverage, not behavioral security coverage <span class="ev inf">inferred from terminology across 32 entries</span>.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AV-02</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Adversarial prompt &amp; tool abuse testing</div>
+          <div class="ctrl-desc">Constitutional crisis = identity-preservation test, not a context injection or tool abuse test</div>
+        </div>
+        <div><span class="corr-mark">corrected from L1p</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> At least one adversarial context injection scenario tested against the system; tool abuse paths manually exercised.</p>
+        <p><b>What exists:</b> Constitutional Crisis: creator ordered BIBLE.md deletion; agent refused <span class="ev emp">empirical · landing page and v5.2.0 changelog</span>. BIBLE.md v3.2 adversarial review (paradox attack, authority appeal, ship of Theseus) <span class="ev emp">empirical · v5.2.0</span>.</p>
+        <div class="correction-block"><b>Correction from draft:</b> The Constitutional Crisis test is an identity-preservation test against a direct creator command from a trusted principal. It is <em>not</em> a context injection test and not a tool abuse test. It tests whether the LLM refuses a specific known-prohibited action when instructed by the owner. AV-02 L1 requires testing injection through untrusted context sources and tool abuse paths — entirely different threat classes. The draft audit incorrectly credited this test against AV-02.</div>
+        <p><b>What is absent:</b> Injection-through-external-content testing (GitHub Issues, web search results, Drive files) <span class="ev abs">empirical-absence</span>. Tool abuse path testing <span class="ev abs">empirical-absence</span>. Indirect injection testing <span class="ev abs">empirical-absence</span>. Multi-model review consensus manipulation testing <span class="ev abs">empirical-absence</span>.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AV-03</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Pentest scope completeness</div>
+          <div class="ctrl-desc">No penetration testing documented anywhere across README, changelog, or landing page</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Pentest scope explicitly includes agent loop, at least one MCP server, and at least one connector.</p>
+        <p>No penetration testing is documented in any source reviewed <span class="ev abs">empirical-absence · README, full changelog, landing page</span>. This is consistent with a personal research experiment at 48 hours old. It becomes a gate item before any multi-user or production deployment. Confirming absence here is straightforward: a pentest would appear in changelog or documentation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AO -->
+  <div class="family">
+    <div class="family-hdr"><span class="ftag ao">AO</span><h3>Operations</h3></div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AO-01</div>
+          <span class="lvl-badge l1">L1</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Action provenance logging</div>
+          <div class="ctrl-desc">events.jsonl confirmed; task ID tracking with lineage; missing trust-level fields, SIEM absent</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Agent actions logged with at minimum: tool invoked, task reference, and timestamp.</p>
+        <p><b>What exists:</b> events.jsonl confirmed <span class="ev emp">empirical · v6.0.0 and v6.2.0 changelogs reference it directly</span>. Task ID tracking with lineage (<code>original_task_id</code> for retries) <span class="ev emp">empirical · v6.2.0</span>. LLM usage events, budget events, worker lifecycle events <span class="ev emp">empirical · changelogs</span>. Direct chat guard: <code>schedule_task</code> from direct chat logged as warning for audit <span class="ev emp">empirical · v6.2.0</span>. <code>owner_message_injected</code> events logged <span class="ev emp">empirical · v6.2.0</span>.</p>
+        <p><b>Unknown / absent:</b> Whether tool-invoked is logged per action <span class="ev unk">unknown</span>. Log integrity protection (can the agent overwrite its own log?) <span class="ev unk">unknown</span>. Context source and trust level per action <span class="ev abs">empirical-absence</span>. SIEM integration <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Why L1:</b> Logging infrastructure and task tracking are confirmed. L1 minimum is partially confirmed and plausibly complete. Tool-invoked-per-action should be verified to upgrade to confident L1.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AO-02</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Intent–action gap monitoring</div>
+          <div class="ctrl-desc">Three confirmed gap events in 48 hours, all detected reactively by owner or budget exhaustion</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Periodic manual review of agent action logs identifies significant divergences between stated plan and actual tool invocations.</p>
+        <p><b>What exists:</b> Owner reviews Telegram output reactively <span class="ev emp">empirical · all three incidents described as discovered after the fact</span>. Health Invariants in SYSTEM.md: surfaces version desync, budget drift, high-cost tasks, stale identity <span class="ev emp">empirical · v6.0.0</span>. Note: Health Invariants is operational self-monitoring for system state, not gap monitoring for plan-vs-invocation divergence. These are different signals.</p>
+        <p><b>Three documented gap events — all detected reactively:</b></p>
+        <p>1. Zombie worker continued after <code>/panic</code> — detected by owner manually <span class="ev emp">empirical · landing page</span>.<br>
+        2. $500 morning: 28 parallel duplicate tasks — detected via budget alert <span class="ev emp">empirical · landing page</span>.<br>
+        3. $220 dashboard incident: 3 workers doing the same task — detected via budget crisis <span class="ev emp">empirical · landing page</span>.</p>
+        <p>None were detected by any monitoring system. All required either owner observation or budget exhaustion as the trigger.</p>
+        <p><b>Why L0:</b> No periodic review process. Budget-triggered detection is a financial control, not gap monitoring. All three documented incidents confirm detection is purely reactive.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AO-03</div>
+          <span class="lvl-badge l0">L0</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Spiral reassessment triggers</div>
+          <div class="ctrl-desc">32 evolution cycles; zero documented security reassessments; new tools added without review gate</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> A defined list of events triggers security reassessment: new tool added, autonomy window expanded, new external context source enabled.</p>
+        <p><b>What exists:</b> Budget-triggered evolution pause <span class="ev emp">empirical</span>. Circuit breaker on empty responses <span class="ev emp">empirical</span>. These are operational reliability controls, not security reassessment triggers.</p>
+        <p><b>What is absent:</b> Trigger list document <span class="ev abs">empirical-absence</span>. Any documented security reassessment for any of the 32 evolution cycles <span class="ev abs">empirical-absence</span>. Security review for agent-autonomous tool additions (<code>generate_evolution_stats</code>, <code>generate_self_portrait</code>, <code>vlm_query</code>) <span class="ev abs">empirical-absence · these appear in changelogs as features shipped by the agent, with only LLM multi-model review, not security review</span>.</p>
+      </div>
+    </div>
+
+    <div class="ctrl-card" onclick="toggle(this)">
+      <div class="ctrl-head">
+        <div>
+          <div class="ctrl-id">AO-04</div>
+          <span class="lvl-badge l1">L1</span>
+        </div>
+        <div>
+          <div class="ctrl-name">Behavioral vulnerability tracking</div>
+          <div class="ctrl-desc">Incidents identified and remediated with changelog tracking; informal but consistently followed through</div>
+        </div>
+        <div></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Unsafe agent behaviors tracked as remediation items in the vulnerability management function.</p>
+        <p><b>What exists:</b> Unauthorised repo publication attempt → rules written into SYSTEM.md, knowledge base, scratchpad <span class="ev emp">empirical · landing page: "Some lessons only need to happen once"</span>. $500 parallelism incident → task deduplication added (v6.1.0) <span class="ev emp">empirical · v6.1.0 changelog</span>. Budget double-accounting → fixed v6.2.0 <span class="ev emp">empirical</span>. Worker_id==0 timeout bug → fixed v6.2.0 <span class="ev emp">empirical</span>. The incident-to-fix cycle is real and fast, demonstrating consistent follow-through <span class="ev emp">empirical · changelog pattern</span>.</p>
+        <p><b>What is absent:</b> Formal vulnerability management function (issues tracker, CVE-equivalent) — incidents are in changelogs, not a dedicated tracker <span class="ev abs">empirical-absence</span>. Threat taxonomy classification per incident <span class="ev abs">empirical-absence</span>. Behavioral regression test confirmed per incident <span class="ev unk">unknown — test coverage per incident not confirmed</span>.</p>
+        <p><b>Why L1:</b> Behavioral vulnerabilities are consistently identified and remediated. The informal changelog-based tracking functions as a vulnerability record. L1 only requires behaviors "tracked as remediation items" — they demonstrably are. L2 requires formal classification and mandatory regression tests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- KEY FINDINGS -->
+<section id="findings" class="section">
+  <div class="section-header">
+    <h2>Key Findings</h2>
+    <span class="section-id">6 findings · severity provisional pending mission interview</span>
+  </div>
+
+  <div class="finding-card critical">
+    <div class="finding-head">
+      <span class="sev-badge c">Critical</span>
+      <span class="finding-title">Dev/prod surface collapse — injection during /evolve reaches unrestricted shell and git</span>
+    </div>
+    <div class="finding-body">
+      <p>The agent's development operations (self-modification during /evolve) and production operations (normal task execution) run in the same Colab runtime with the same shell tool, git access, and API credentials. No sandbox boundary separates them. <span class="ev emp">empirical · architecture</span></p>
+      <p>The desktop fork explicitly added write-blocking PreToolUse hooks and an LLM Safety Agent to address this. Their description as new features confirms they are absent in v6.2.0. <span class="ev emp">empirical · desktop README</span></p>
+      <p>A successful injection during an /evolve cycle can produce persistent, cross-restart code changes and has access to the full-scope GitHub token, all API keys, and the shell — all simultaneously. <span class="ev inf">inferred from architecture</span></p>
+      <div class="ctrl-refs">
+        <span class="ctrl-ref">AD-04 · L0</span>
+        <span class="ctrl-ref">AI-02 · L0</span>
+        <span class="ctrl-ref">AI-03 · L0</span>
+        <span class="ctrl-ref">Threat class: C1+C2+C4 compound</span>
+        <span class="ctrl-ref">Recovery: potentially irreversible within window</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding-card critical">
+    <div class="finding-head">
+      <span class="sev-badge c">Critical</span>
+      <span class="finding-title">Shell tool has no confirmed filtering — full subprocess access in production runtime</span>
+    </div>
+    <div class="finding-body">
+      <p>shell.py provides subprocess execution. The v6.2.0 fix (<code>shlex.split()</code>) improves argument parsing correctness — it prevents malformed shell token splitting, not malicious commands. Command filtering or allowlisting of any kind is not mentioned anywhere across 32 versions of changelogs. <span class="ev abs">empirical-absence across full changelog</span></p>
+      <p>The desktop fork added an explicit "deterministic whitelist for known-safe ops" and "LLM Safety Agent evaluates remaining commands" as new features. <span class="ev emp">empirical · desktop README</span></p>
+      <p><b>Note:</b> Whether shell.py contains any undocumented allowlisting is <span class="ev unk">unknown</span> — the source file was not accessible during this audit. This finding requires source code verification to confirm or upgrade to [empirical]. The finding is stated as high-confidence [inferred] based on the pattern of 32 changelog entries and desktop fork evidence.</p>
+      <div class="ctrl-refs">
+        <span class="ctrl-ref">AI-02 · L0</span>
+        <span class="ctrl-ref">Threat class: C2 tool abuse</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding-card high">
+    <div class="finding-head">
+      <span class="sev-badge h">High</span>
+      <span class="finding-title">Untrusted context sources flow to the LLM with no trust downgrade or confirmed filtering</span>
+    </div>
+    <div class="finding-body">
+      <p>At least three confirmed context sources carry untrusted content: web search results (via OpenAI API), GitHub Issues (via github.py), and Google Drive files (via memory tools). All flow to the same LLM context that controls shell and git tool calls. <span class="ev inf">inferred from confirmed tool list and architecture</span></p>
+      <p>Whether filtering or trust downgrade exists in github.py or memory.py is <span class="ev unk">unknown</span> — sources not accessible. No filtering is documented in any changelog entry. <span class="ev abs">empirical-absence</span></p>
+      <div class="ctrl-refs">
+        <span class="ctrl-ref">AD-01 · L0</span>
+        <span class="ctrl-ref">AI-02 · L0</span>
+        <span class="ctrl-ref">Threat class: C1 indirect injection</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding-card high">
+    <div class="finding-head">
+      <span class="sev-badge h">High</span>
+      <span class="finding-title">Tool surface can expand within an autonomy window with no governance gate</span>
+    </div>
+    <div class="finding-body">
+      <p>The agent adds tools to its own plugin registry during /evolve cycles. This is empirically confirmed: <code>generate_evolution_stats</code>, <code>generate_self_portrait</code>, and <code>vlm_query</code> were all agent-autonomous additions documented in changelogs. <span class="ev emp">empirical · v5.1.0, v5.2.1, v5.2.2</span></p>
+      <p>No tool registry governance (AG-02 L0). No trigger requiring human review before tool addition. No manifest restricting auto-discovery to approved tools. <span class="ev abs">empirical-absence</span></p>
+      <div class="ctrl-refs">
+        <span class="ctrl-ref">AG-02 · L0</span>
+        <span class="ctrl-ref">AO-03 · L0</span>
+        <span class="ctrl-ref">Threat class: C2 tool surface expansion</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding-card high">
+    <div class="finding-head">
+      <span class="sev-badge h">High</span>
+      <span class="finding-title">OpenRouter is an unmodeled LLM supply-chain boundary with full prompt visibility</span>
+    </div>
+    <div class="finding-body">
+      <p>All primary LLM calls route through OpenRouter, a third-party aggregator with visibility into all prompts, tool schemas, and agent reasoning. Application-level response integrity verification is not documented. <span class="ev inf">inferred from architecture · would require reading llm.py to confirm or deny</span></p>
+      <p>No trust boundary model includes OpenRouter. <span class="ev abs">empirical-absence</span></p>
+      <div class="ctrl-refs">
+        <span class="ctrl-ref">AD-03 · L0</span>
+        <span class="ctrl-ref">Threat class: C4 supply chain</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="finding-card medium">
+    <div class="finding-head">
+      <span class="sev-badge m">Medium</span>
+      <span class="finding-title">Intent–action gap monitoring is entirely reactive — three confirmed gap events in first 48 hours</span>
+    </div>
+    <div class="finding-body">
+      <p>Three documented incidents are empirically confirmed to have been detected reactively, after cost was incurred: zombie worker (discovered by owner manually), $500 parallelism incident (detected by budget alert), and $220 dashboard perfectionism (detected by budget crisis). <span class="ev emp">empirical · landing page timeline</span></p>
+      <p>No structured periodic review process. Health Invariants (operational self-monitoring) does not cover intent–action gap. The pattern across all three incidents is identical: divergence grew undetected until external signal (owner notice or budget exhaustion).</p>
+      <div class="ctrl-refs">
+        <span class="ctrl-ref">AO-02 · L0</span>
+        <span class="ctrl-ref">AO-03 · L0</span>
+        <span class="ctrl-ref">Threat class: W2 assurance blindspot</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SCORE CHART -->
+<section id="chart" class="section">
+  <div class="section-header">
+    <h2>Score Chart</h2>
+    <span class="section-id">Individual control ratings · strict L0/L1 only</span>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;font-size:13px;color:var(--txt2);line-height:1.7">
+    <b style="color:var(--txt)">Score arithmetic.</b> 4 controls at L1 (score = 1/3): AG-03, AI-01, AO-01, AO-04. 13 controls at L0 (score = 0/3). Family averages: Governance = (0+0+1)/3 = <b style="color:var(--high)">0.33</b> · Design = 0/4 = <b style="color:var(--critical)">0.00</b> · Implementation = (1+0+0)/3 = <b style="color:var(--high)">0.33</b> · Verification = 0/3 = <b style="color:var(--critical)">0.00</b> · Operations = (1+0+0+1)/4 = <b style="color:var(--high)">0.50</b>. Draft scores (Governance 0.8, Verification 0.7) were inconsistent with the stated individual ratings and have been corrected.
+  </div>
+
+  <div class="bar-section">
+    <div class="bar-family-label">Governance — avg 0.33</div>
+    <div class="bar-row"><span class="bar-id">AG-01</span><span class="bar-name">Agent registry</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#3B7CFF"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AG-02</span><span class="bar-name">Tool registry</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#3B7CFF"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AG-03</span><span class="bar-name">Kill switch</span><div class="bar-track"><div class="bar-fill" style="width:33%;background:#3B7CFF"></div></div><span class="bar-score">1/3</span></div>
+
+    <div class="bar-family-label">Design — avg 0.00</div>
+    <div class="bar-row"><span class="bar-id">AD-01</span><span class="bar-name">Context TM</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#27C47A"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AD-02</span><span class="bar-name">Autonomy window</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#27C47A"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AD-03</span><span class="bar-name">Connector trust</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#27C47A"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AD-04</span><span class="bar-name">Dev-surface TM</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#27C47A"></div></div><span class="bar-score">0/3</span></div>
+
+    <div class="bar-family-label">Implementation — avg 0.33</div>
+    <div class="bar-row"><span class="bar-id">AI-01</span><span class="bar-name">Prompt review</span><div class="bar-track"><div class="bar-fill" style="width:33%;background:#E08B28"></div></div><span class="bar-score">1/3</span></div>
+    <div class="bar-row"><span class="bar-id">AI-02</span><span class="bar-name">Exec boundary</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#E08B28"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AI-03</span><span class="bar-name">Scoped auth</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#E08B28"></div></div><span class="bar-score">0/3</span></div>
+
+    <div class="bar-family-label">Verification — avg 0.00</div>
+    <div class="bar-row"><span class="bar-id">AV-01</span><span class="bar-name">Behavioral tests</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#A78BFA"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AV-02</span><span class="bar-name">Adversarial tests</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#A78BFA"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AV-03</span><span class="bar-name">Pentest scope</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#A78BFA"></div></div><span class="bar-score">0/3</span></div>
+
+    <div class="bar-family-label">Operations — avg 0.50</div>
+    <div class="bar-row"><span class="bar-id">AO-01</span><span class="bar-name">Provenance log</span><div class="bar-track"><div class="bar-fill" style="width:33%;background:#FC8080"></div></div><span class="bar-score">1/3</span></div>
+    <div class="bar-row"><span class="bar-id">AO-02</span><span class="bar-name">Gap monitoring</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#FC8080"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AO-03</span><span class="bar-name">Reassessment</span><div class="bar-track"><div class="bar-fill" style="width:0%;background:#FC8080"></div></div><span class="bar-score">0/3</span></div>
+    <div class="bar-row"><span class="bar-id">AO-04</span><span class="bar-name">Behavioral vulns</span><div class="bar-track"><div class="bar-fill" style="width:33%;background:#FC8080"></div></div><span class="bar-score">1/3</span></div>
+  </div>
+
+  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-top:1rem">
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px">ASAMM greenfield readiness assessment (§2.6)</div>
+    <table class="mapping-table">
+      <tr><th>Readiness outcome</th><th>Status</th></tr>
+      <tr><td>Agentic surface is known</td><td style="color:var(--high)">Partial — README documents it; no governed register</td></tr>
+      <tr><td>Containment is real, not assumed</td><td style="color:var(--critical)">Not met — no enforced execution boundary</td></tr>
+      <tr><td>Authority is bounded at action level</td><td style="color:var(--critical)">Not met — full repo scope for all tasks</td></tr>
+      <tr><td>No security-critical artifact can change without review</td><td style="color:var(--critical)">Not met — SYSTEM.md modified autonomously</td></tr>
+      <tr><td>Behavior is tested, not inferred</td><td style="color:var(--critical)">Not met — no behavioral threat-class test cases confirmed</td></tr>
+      <tr><td>Actions are reconstructable</td><td style="color:var(--high)">Partial — events.jsonl exists; trust-level fields absent</td></tr>
+      <tr><td>Human checkpoints are effective</td><td style="color:var(--high)">Partial — /panic works; zombie-worker gap confirmed</td></tr>
+      <tr><td>Capability growth triggers reassessment</td><td style="color:var(--critical)">Not met — 32 cycles, zero security checkpoints</td></tr>
+    </table>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations" class="section">
+  <div class="section-header">
+    <h2>Recommendations</h2>
+    <span class="section-id">Ordered by ASAMM §2.3 greenfield priority · P1=containment · P2=observability · P3=verification</span>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">1</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Conduct the mission interview (ASAMM §2.7 hard gate)</span>
+        <span class="pri-badge p1">P1 — process</span>
+      </div>
+      <div class="rec-body">Before acting on any finding: establish with Anton Razzhigaev what he cannot afford to lose, what counts as an irreversible action in this system, and what the current deployment scope actually is. A single-researcher research experiment at 48 hours old has a very different risk tolerance to a shared system. This interview determines whether Critical ratings are actionable immediately or deferred. It is a §2.7 hard requirement, not a recommendation.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">2</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Add a command allowlist to shell.py</span>
+        <span class="pri-badge p1">P1 — containment · AI-02</span>
+      </div>
+      <div class="rec-body">Implement an explicit command allowlist in <code>shell.py</code> (e.g., git, python, pip, curl to allowed hosts). Reject commands not on the list with a structured error logged to events.jsonl. This is the highest-impact single code change: it limits the blast radius of any successful injection to what is explicitly permitted. The desktop fork's "deterministic whitelist for known-safe ops" is the reference implementation. Verify the source first to determine whether any filtering already exists before implementing.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">3</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Block write-path operations during non-/evolve tasks</span>
+        <span class="pri-badge p1">P1 — containment · AI-02, AI-03</span>
+      </div>
+      <div class="rec-body">During read-only or analysis tasks (not /evolve), disable git push, git commit, and destructive shell operations at the tool invocation level — not just by omitting schemas from context. Use a <code>read_only</code> flag in task metadata that the tool layer checks before execution. This reduces the blast radius of the most common task type to near-zero for worst-case tool misuse, without changing /evolve behaviour.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">4</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Add a tool registry manifest with governance gate</span>
+        <span class="pri-badge p1">P1 — containment · AG-02</span>
+      </div>
+      <div class="rec-body">Create <code>tools/REGISTRY.json</code> with one entry per tool (name, risk_tier: always/conditional, blast_radius: low/medium/high). Change auto-discovery to load only tools present in the manifest. The agent cannot add a new tool without first adding a manifest entry — which requires a human commit. This closes the "tool surface expansion within an autonomy window" finding entirely and takes approximately 30 minutes to implement.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">5</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Add trust-level fields to events.jsonl</span>
+        <span class="pri-badge p2">P2 — observability · AO-01</span>
+      </div>
+      <div class="rec-body">Add two fields to every tool-call event: <code>context_source</code> (telegram / github_issue / web_search / drive / llm_response) and <code>trust_level</code> (owner / external / untrusted). This transforms events.jsonl from an operational log into a usable security audit trail — and is the prerequisite for any intent–action gap monitoring. One session to implement; permanent improvement to assurance visibility.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">6</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Implement plan-vs-invocation gap detection</span>
+        <span class="pri-badge p2">P2 — observability · AO-02</span>
+      </div>
+      <div class="rec-body">At task start, require the agent to declare its plan (intended tools and data sources). At task end, diff the declared plan against actual tool calls in events.jsonl. Any undeclared high-blast-radius invocation generates a Telegram alert to the owner. This would have caught all three documented gap events proactively. Bridges AO-02 from L0 to L1, and creates the data needed for L2 automated monitoring.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">7</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Add behavioral test cases for primary threat classes</span>
+        <span class="pri-badge p3">P3 — verification · AV-01</span>
+      </div>
+      <div class="rec-body">Add at minimum: one test with a mock GitHub issue containing an injection payload (verify no shell invocation occurs); one test with a web search result containing injection (verify no git push occurs); one test triggering the deduplication logic (regression for the $500 incident). These satisfy AV-01 L1. Separately, reclassify <code>test_constitution.py</code> in documentation as what it is: a specification record, not an integration test. Do not count it toward behavioral coverage metrics.</div>
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-num">8</div>
+    <div>
+      <div class="rec-head">
+        <span class="rec-title">Define spiral reassessment triggers in SYSTEM.md</span>
+        <span class="pri-badge p3">P3 — process · AO-03</span>
+      </div>
+      <div class="rec-body">Add a mandatory pause section to SYSTEM.md: "The following events require an owner review checkpoint before resuming autonomous operation: adding a new tool, adding a new external context source, expanding MAX_ROUNDS, adding a new API connector." Agent pauses /evolve, sends a summary to Telegram, waits for /approve. This converts the 32-cycle unreviewed evolution history into a model with explicit security checkpoints at each capability boundary. AO-03 L1 requires only a defined trigger list — this satisfies it.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span>ASAMM v0.1.0-draft · Gordeychik, S. (2026) · CyberOK · CC BY-SA 4.0</span>
+  <span>Audit: Claude Sonnet 4.6 · Track C · April 13 2026</span>
+  <span>Target: razzant/ouroboros v6.2.0 · main branch</span>
+</footer>
+
+</main>
+
+<script>
+function toggle(card) {
+  card.classList.toggle('open');
+}
+</script>
+</body>
+</html>

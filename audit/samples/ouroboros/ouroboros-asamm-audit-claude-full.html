@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASAMM Audit — Ouroboros v6.2.0 — Final</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090E;
+  --surface: #0C1019;
+  --surface2: #111827;
+  --surface3: #1A2236;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --txt: #D8E2F0;
+  --txt2: #7A8A9E;
+  --txt3: #4A5568;
+  --accent: #3B7CFF;
+  --critical: #F23B3B;
+  --critical-bg: rgba(242,59,59,0.08);
+  --critical-border: rgba(242,59,59,0.3);
+  --high: #E08B28;
+  --high-bg: rgba(224,139,40,0.08);
+  --high-border: rgba(224,139,40,0.3);
+  --medium: #3B7CFF;
+  --medium-bg: rgba(59,124,255,0.08);
+  --medium-border: rgba(59,124,255,0.25);
+  --low: #27C47A;
+  --low-bg: rgba(39,196,122,0.08);
+  --low-border: rgba(39,196,122,0.3);
+  --emp: #60A5FA;
+  --abs: #F59E0B;
+  --inf: #34D399;
+  --unk: #6B7280;
+  --mi: #C084FC;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--txt); font-family: var(--font-sans); font-size: 15px; line-height: 1.7; }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,9,14,0.93); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 52px;
+}
+.wordmark { font-family: var(--font-mono); font-size: 12px; color: var(--txt2); letter-spacing: 0.08em; text-transform: uppercase; }
+.wordmark strong { color: var(--accent); font-weight: 500; }
+.header-nav { display: flex; }
+.header-nav a {
+  font-size: 12px; color: var(--txt2); text-decoration: none; padding: 0 13px;
+  height: 52px; display: flex; align-items: center;
+  border-bottom: 2px solid transparent; transition: color .15s, border-color .15s;
+}
+.header-nav a:hover { color: var(--txt); border-bottom-color: var(--border2); }
+
+.page { max-width: 920px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+/* Cover */
+.cover { margin-bottom: 3rem; }
+.cover-eyebrow {
+  font-family: var(--font-mono); font-size: 11px; color: var(--accent);
+  letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.cover-eyebrow::before { content:''; display:inline-block; width:24px; height:1px; background:var(--accent); }
+h1 { font-family: var(--font-serif); font-size: 40px; font-weight: 400; line-height: 1.15; letter-spacing: -0.4px; margin-bottom: 0.4rem; }
+h1 em { font-style: italic; color: var(--txt2); }
+.subtitle { font-family: var(--font-mono); font-size: 13px; color: var(--txt2); margin-bottom: 1.25rem; }
+
+.pill-row { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 1.5rem; }
+.pill {
+  font-family: var(--font-mono); font-size: 11px; padding: 3px 10px;
+  border-radius: 4px; border: 1px solid var(--border2); color: var(--txt2); background: var(--surface2);
+}
+.pill.warn { border-color: var(--high-border); color: var(--high); background: var(--high-bg); }
+.pill.danger { border-color: var(--critical-border); color: var(--critical); background: var(--critical-bg); }
+.pill.ok { border-color: var(--low-border); color: var(--low); background: var(--low-bg); }
+.pill.mi { border-color: rgba(192,132,252,0.3); color: var(--mi); background: rgba(192,132,252,0.08); }
+
+/* Alerts */
+.alert { border: 1px solid; border-radius: 6px; padding: 13px 16px; font-size: 13px; line-height: 1.65; margin-bottom: 1.25rem; }
+.alert.method { border-color: var(--high-border); background: var(--high-bg); color: #F0C070; }
+.alert.fix { border-color: var(--medium-border); background: var(--medium-bg); color: #90B8FF; }
+.alert.integrity { border-color: var(--critical-border); background: var(--critical-bg); color: #FFA0A0; }
+.alert b { font-weight: 600; display: block; margin-bottom: 3px; }
+
+/* Score grid */
+.score-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; margin-bottom: 2.5rem; }
+.sc { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 10px 12px; text-align: center; }
+.sc-lbl { font-family: var(--font-mono); font-size: 10px; color: var(--txt2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+.sc-val { font-family: var(--font-serif); font-size: 28px; font-weight: 400; line-height: 1; }
+.sc-max { font-family: var(--font-mono); font-size: 12px; color: var(--txt3); margin-top: 2px; }
+.sc-val.red { color: var(--critical); } .sc-val.amber { color: var(--high); }
+
+/* Section */
+.section { margin-bottom: 3rem; }
+.section-hdr { display: flex; align-items: baseline; gap: 12px; margin-bottom: 1.25rem; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.section-hdr h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 400; }
+.section-hdr .sid { font-family: var(--font-mono); font-size: 11px; color: var(--txt3); letter-spacing: 0.08em; }
+
+/* Family */
+.family { margin-bottom: 1.25rem; }
+.fhdr { display: flex; align-items: center; gap: 10px; padding: 6px 0; margin-bottom: 8px; }
+.fhdr h3 { font-size: 12px; font-weight: 600; color: var(--txt2); text-transform: uppercase; letter-spacing: 0.1em; }
+.ftag { font-family: var(--font-mono); font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; letter-spacing: 0.05em; border: 1px solid; }
+.ftag.ag { background:rgba(59,124,255,.1); color:#60A5FA; border-color:rgba(59,124,255,.25); }
+.ftag.ad { background:rgba(39,196,122,.08); color:#4ADE80; border-color:rgba(39,196,122,.2); }
+.ftag.ai { background:rgba(224,139,40,.1); color:#F0C070; border-color:rgba(224,139,40,.25); }
+.ftag.av { background:rgba(167,139,250,.1); color:#A78BFA; border-color:rgba(167,139,250,.25); }
+.ftag.ao { background:rgba(242,59,59,.07); color:#FC8080; border-color:rgba(242,59,59,.2); }
+
+/* Control cards */
+.ctrl { background:var(--surface); border:1px solid var(--border); border-radius:8px; margin-bottom:7px; overflow:hidden; cursor:pointer; transition:border-color .15s; }
+.ctrl:hover,.ctrl.open { border-color:var(--border2); }
+.ctrl-hd { display:grid; grid-template-columns:96px 1fr auto; gap:12px; align-items:start; padding:12px 14px; user-select:none; }
+.ctrl-id { font-family:var(--font-mono); font-size:12px; font-weight:500; color:var(--txt2); margin-bottom:5px; }
+.ctrl-name { font-size:14px; font-weight:500; color:var(--txt); }
+.ctrl-desc { font-size:12px; color:var(--txt2); margin-top:3px; line-height:1.5; }
+.ctrl-meta { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+.chevron { font-family:var(--font-mono); font-size:14px; color:var(--txt3); transition:transform .2s; }
+.ctrl.open .chevron { transform:rotate(45deg); }
+
+.lvl { display:inline-block; font-family:var(--font-mono); font-size:11px; font-weight:500; padding:3px 9px; border-radius:4px; letter-spacing:.04em; border:1px solid; }
+.lvl.l0 { background:rgba(242,59,59,.1); color:var(--critical); border-color:var(--critical-border); }
+.lvl.l1 { background:rgba(224,139,40,.1); color:var(--high); border-color:var(--high-border); }
+.corr { font-family:var(--font-mono); font-size:10px; color:var(--critical); background:var(--critical-bg); border:1px solid var(--critical-border); padding:2px 6px; border-radius:3px; }
+.mi-tag { font-family:var(--font-mono); font-size:10px; color:var(--mi); background:rgba(192,132,252,.1); border:1px solid rgba(192,132,252,.3); padding:2px 6px; border-radius:3px; }
+
+.ctrl-body { display:none; padding:13px 14px 15px; border-top:1px solid var(--border); font-size:13px; line-height:1.7; color:var(--txt2); }
+.ctrl.open .ctrl-body { display:block; }
+.ctrl-body b { color:var(--txt); font-weight:600; }
+.ctrl-body p { margin-bottom:9px; }
+.ctrl-body p:last-child { margin-bottom:0; }
+code { font-family:var(--font-mono); font-size:11.5px; background:var(--surface3); border:1px solid var(--border); padding:1px 5px; border-radius:3px; color:#90B8FF; }
+
+/* Evidence tags */
+.ev { font-family:var(--font-mono); font-size:10px; padding:2px 5px; border-radius:3px; border:1px solid; white-space:nowrap; display:inline; vertical-align:middle; margin:0 2px; }
+.ev.emp { color:var(--emp); border-color:rgba(96,165,250,.3); background:rgba(96,165,250,.08); }
+.ev.abs { color:var(--abs); border-color:rgba(245,158,11,.3); background:rgba(245,158,11,.08); }
+.ev.inf { color:var(--inf); border-color:rgba(52,211,153,.3); background:rgba(52,211,153,.08); }
+.ev.unk { color:var(--unk); border-color:rgba(107,114,128,.3); background:rgba(107,114,128,.08); }
+.ev.mi { color:var(--mi); border-color:rgba(192,132,252,.3); background:rgba(192,132,252,.08); }
+
+/* Finding blocks */
+.fb { border-left:2px solid; padding:8px 12px; border-radius:0 5px 5px 0; font-size:12.5px; line-height:1.65; margin-top:10px; color:var(--txt); }
+.fb.critical { border-color:var(--critical); background:var(--critical-bg); }
+.fb.high { border-color:var(--high); background:var(--high-bg); }
+.fb.medium { border-color:var(--medium); background:var(--medium-bg); }
+.fb.low { border-color:var(--low); background:var(--low-bg); }
+.fb.correction { border-color:var(--critical); background:rgba(242,59,59,.05); color:#FFA0A0; border:1px solid var(--critical-border); border-radius:5px; }
+
+/* Key findings */
+.fc { border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; background:var(--surface); }
+.fc.critical { border-left:3px solid var(--critical); }
+.fc.high { border-left:3px solid var(--high); }
+.fc.medium { border-left:3px solid var(--medium); }
+.fc-hd { display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+.fc-title { font-size:14px; font-weight:600; color:var(--txt); }
+.fc-body { font-size:13px; color:var(--txt2); line-height:1.65; }
+.fc-body p { margin-bottom:7px; }
+.fc-body p:last-child { margin-bottom:0; }
+.sev { font-family:var(--font-mono); font-size:10px; font-weight:500; padding:3px 8px; border-radius:3px; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; border:1px solid; }
+.sev.c { background:var(--critical-bg); color:var(--critical); border-color:var(--critical-border); }
+.sev.h { background:var(--high-bg); color:var(--high); border-color:var(--high-border); }
+.sev.m { background:var(--medium-bg); color:var(--accent); border-color:var(--medium-border); }
+.sev.new { background:rgba(192,132,252,.1); color:var(--mi); border-color:rgba(192,132,252,.3); }
+.cref-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+.cref { font-family:var(--font-mono); font-size:11px; padding:2px 8px; border-radius:3px; background:var(--surface3); border:1px solid var(--border2); color:var(--txt2); }
+
+/* Bars */
+.bar-row { display:grid; grid-template-columns:52px 140px 1fr 36px; align-items:center; gap:10px; margin-bottom:6px; font-size:12px; }
+.bar-id { font-family:var(--font-mono); color:var(--txt2); }
+.bar-nm { color:var(--txt2); }
+.bar-tr { height:6px; background:var(--surface2); border-radius:3px; overflow:hidden; }
+.bar-fi { height:100%; border-radius:3px; }
+.bar-sc { font-family:var(--font-mono); color:var(--txt2); font-size:11px; text-align:right; }
+.bar-grp-lbl { font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--txt3); margin:14px 0 7px; }
+
+/* Readiness table */
+.rt { width:100%; border-collapse:collapse; font-size:12.5px; }
+.rt th { font-family:var(--font-mono); font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--txt3); border-bottom:1px solid var(--border); padding:8px 12px; text-align:left; }
+.rt td { padding:8px 12px; border-bottom:1px solid var(--border); color:var(--txt2); }
+.rt tr:last-child td { border-bottom:none; }
+
+/* Recs */
+.rec { border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:9px; background:var(--surface); display:grid; grid-template-columns:28px 1fr; gap:12px; align-items:start; }
+.rec-n { font-family:var(--font-serif); font-size:22px; color:var(--txt3); line-height:1.2; padding-top:2px; }
+.rec-hd { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-bottom:5px; }
+.rec-title { font-size:14px; font-weight:600; color:var(--txt); }
+.rec-body { font-size:13px; color:var(--txt2); line-height:1.65; }
+.pri { font-family:var(--font-mono); font-size:10px; padding:3px 8px; border-radius:3px; white-space:nowrap; flex-shrink:0; border:1px solid; }
+.pri.p1 { background:var(--critical-bg); color:var(--critical); border-color:var(--critical-border); }
+.pri.p2 { background:var(--high-bg); color:var(--high); border-color:var(--high-border); }
+.pri.p3 { background:var(--medium-bg); color:var(--accent); border-color:var(--medium-border); }
+
+.ev-legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--txt2); background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:10px 14px; margin-bottom:1.25rem; }
+.ev-legend span { display:flex; align-items:center; gap:5px; }
+
+hr.div { border:none; border-top:1px solid var(--border); margin:2.5rem 0; }
+
+.footer { border-top:1px solid var(--border); padding-top:1.25rem; font-size:12px; color:var(--txt3); font-family:var(--font-mono); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+/* Integrity corrections box */
+.integrity-box { background:rgba(242,59,59,.05); border:1px solid var(--critical-border); border-radius:8px; padding:14px 16px; margin-bottom:1.5rem; }
+.integrity-box h4 { font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--critical); margin-bottom:10px; }
+.integrity-box ul { list-style:none; }
+.integrity-box li { font-size:13px; color:#FFA0A0; line-height:1.65; padding:4px 0; border-bottom:1px solid rgba(242,59,59,.1); display:flex; gap:8px; }
+.integrity-box li:last-child { border-bottom:none; }
+.integrity-box li::before { content:'↳'; color:var(--critical); flex-shrink:0; font-family:var(--font-mono); }
+
+.mi-section { background:rgba(192,132,252,.04); border:1px solid rgba(192,132,252,.2); border-radius:8px; padding:14px 16px; margin-bottom:1rem; }
+.mi-section h4 { font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--mi); margin-bottom:8px; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark"><strong>ASAMM</strong> v0.1.0-draft · Greenfield · Track C · Mission interview complete</div>
+  <nav class="header-nav">
+    <a href="#corrections">Corrections</a>
+    <a href="#executive">Summary</a>
+    <a href="#controls">Controls</a>
+    <a href="#findings">Findings</a>
+    <a href="#chart">Scores</a>
+    <a href="#recs">Recs</a>
+  </nav>
+</header>
+
+<main class="page">
+
+<!-- COVER -->
+<section class="cover">
+  <div class="cover-eyebrow">Security Audit Report — Final</div>
+  <h1>ASAMM Audit<br><em>Ouroboros v6.2.0</em></h1>
+  <div class="subtitle">razzant/ouroboros · ouroboros branch · Colab/Telegram edition · Mission interview complete</div>
+  <div class="pill-row">
+    <span class="pill">ASAMM v0.1.0-draft · Greenfield Path §2</span>
+    <span class="pill">Track C — independent auditor</span>
+    <span class="pill mi">Mission interview complete — April 13 2026</span>
+    <span class="pill danger">4 Critical · 4 High · 2 Medium findings</span>
+    <span class="pill warn">4 of 17 controls at L1 · 13 at L0</span>
+    <span class="pill danger">5 integrity corrections vs. prior version</span>
+  </div>
+</section>
+
+<!-- INTEGRITY CORRECTIONS -->
+<section id="corrections">
+  <div class="integrity-box">
+    <h4>5 integrity corrections vs. prior audit version</h4>
+    <ul>
+      <li>Fork count was stated as 333 (stale search cache). Live fetch confirms 13 forks. The "333 downstream forks" supply chain narrative was removed. <span class="ev emp">empirical — live fetch</span></li>
+      <li>Agent write path was mischaracterised. Agent commits to the user's own fork (ouroboros branch), not to razzant/ouroboros main. Main branch is protected. The "propagates to everyone downstream" framing was wrong. <span class="ev emp">empirical — README §Branches</span></li>
+      <li>SSH keys → shell access was stated as fact. Drive mount method (filesystem vs. Python API) was not confirmed. Claim is correctly tagged as <span class="ev inf">inferred</span> and rated High pending verification, not Critical.</li>
+      <li>SSH key target systems (what infrastructure they protect) remain unknown. Maximum blast radius was assumed. <span class="ev unk">unknown</span></li>
+      <li>Revised severity table was presented as "final" before verification of the claims above. The table is now presented as post-verification. Budget drain recommendation removed (user rated 1/5).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- MISSION INTERVIEW SUMMARY -->
+<div class="mi-section">
+  <h4>Mission interview — established facts</h4>
+  <p style="font-size:13px;color:#C8A8FC;line-height:1.7;">
+    Audit target: razzant/ouroboros (upstream, not user's fork). System active, owner interacts regularly. <span class="ev mi">mission interview</span><br>
+    GitHub token has full <code>repo</code> scope across all owner repos including Zhet and OLEG (active security tooling). <span class="ev mi">mission interview</span><br>
+    API keys (OpenRouter, OpenAI, Anthropic) are dedicated to this project. <span class="ev mi">mission interview</span><br>
+    Realistic adversary: opportunistic bots scanning the public repo. <span class="ev mi">mission interview</span><br>
+    Priority ranking: malicious public push 5/5 · other repos corrupted 4/5 · credential reuse 3/5 · Drive data exposure 3/5 · budget drain 1/5. <span class="ev mi">mission interview</span><br>
+    Drive contains: SSH keys, personal notes, R&D/Know-How artifacts, identity artifacts. <span class="ev mi">mission interview</span><br>
+    github.py: agent did use Issues autonomously (asked permission), then stopped — behavioral state, not code removal. Tool file confirmed still in repo architecture. <span class="ev mi">mission interview</span> <span class="ev emp">empirical — live fetch</span><br>
+    Agent write surface: user's own fork (ouroboros branch) + own GitHub Pages. Not upstream razzant/ouroboros main. <span class="ev emp">empirical — README §Branches</span>
+  </p>
+</div>
+
+<hr class="div">
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive">
+
+<div class="alert method">
+  <b>One open question affects final severity of Drive/SSH finding</b>
+  Google Drive is accessed by Ouroboros for persistent memory (identity.md, scratchpad, knowledge base). In Colab, Drive is typically filesystem-mounted at <code>/content/drive/</code>, which would make SSH keys directly readable by the shell tool. If Drive is accessed via Python API only, the shell path does not exist (but Python code could still reach it). The Drive/SSH finding is rated <b>High</b> pending confirmation of the mount method. It becomes Critical if filesystem-mounted.
+</div>
+
+</section>
+
+<!-- SCORE GRID -->
+<div class="score-grid">
+  <div class="sc"><div class="sc-lbl">Governance</div><div class="sc-val amber">0.33</div><div class="sc-max">/ 3.0</div></div>
+  <div class="sc"><div class="sc-lbl">Design</div><div class="sc-val red">0.00</div><div class="sc-max">/ 3.0</div></div>
+  <div class="sc"><div class="sc-lbl">Implementation</div><div class="sc-val amber">0.33</div><div class="sc-max">/ 3.0</div></div>
+  <div class="sc"><div class="sc-lbl">Verification</div><div class="sc-val red">0.00</div><div class="sc-max">/ 3.0</div></div>
+  <div class="sc"><div class="sc-lbl">Operations</div><div class="sc-val amber">0.50</div><div class="sc-max">/ 3.0</div></div>
+</div>
+
+<hr class="div">
+
+<!-- CONTROLS -->
+<section id="controls" class="section">
+  <div class="section-hdr">
+    <h2>Control Assessments</h2>
+    <span class="sid">17 controls · ASAMM Part 3 reference · mission interview incorporated</span>
+  </div>
+
+  <div class="ev-legend">
+    <span><span class="ev emp">empirical</span> read from code / document</span>
+    <span><span class="ev abs">empirical-absence</span> sought, not found</span>
+    <span><span class="ev inf">inferred</span> from confirmed facts</span>
+    <span><span class="ev unk">unknown</span> inaccessible</span>
+    <span><span class="ev mi">mission interview</span> owner statement</span>
+  </div>
+
+  <!-- AG -->
+  <div class="family">
+    <div class="fhdr"><span class="ftag ag">AG</span><h3>Governance</h3></div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AG-01</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Agent registry &amp; autonomy classification</div><div class="ctrl-desc">Architecture documented in README; no governed register with autonomy levels or trust grading</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span><span class="corr">corrected</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Agents enumerated with owner, tool set, and autonomy level in a maintained register.</p>
+        <p><b>What exists:</b> One agent, one named owner (Anton Razzhigaev) <span class="ev emp">empirical · README</span>. 50 tools in architecture diagram <span class="ev emp">empirical · README</span>. Two modes: direct chat and /evolve <span class="ev emp">empirical · README commands</span>. First-message-wins Telegram auth <span class="ev emp">empirical · README</span>.</p>
+        <p><b>What is absent:</b> A governed security register with autonomy classification or trust grading <span class="ev abs">empirical-absence</span>. The README architecture diagram is documentation, not a registry.</p>
+        <div class="fb medium">Each /evolve cycle is a new agent version (new code, new tools, modified prompts) requiring re-classification under L2. At 32 cycles in 48 hours this is not a ceremonial gap.</div>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AG-02</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Tool registry governance</div><div class="ctrl-desc">50 tools via auto-discovery; no risk classification, no access policy; agent adds tools autonomously</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> All tools enumerated with owner and access policy.</p>
+        <p><b>What exists:</b> 50 tools in README architecture <span class="ev emp">empirical</span>. Selective schema loading (v6.1.0) for token efficiency — not a security boundary <span class="ev emp">empirical · v6.1.0 changelog</span>. Plugin auto-discovery from <code>tools/</code> directory <span class="ev emp">empirical · README</span>.</p>
+        <p><b>What is absent:</b> Risk classification per tool <span class="ev abs">empirical-absence · across all changelogs</span>. Access policy per tool <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Confirmed:</b> Agent adds tools autonomously during /evolve: generate_evolution_stats, generate_self_portrait, vlm_query all appear in changelogs as agent-originated additions <span class="ev emp">empirical · v5.1.0, v5.2.1, v5.2.2</span>. Desktop fork added <code>tool_policy</code> module as a new feature, confirming its absence here <span class="ev emp">empirical · desktop README</span>.</p>
+        <div class="fb high">Tool surface expands within an autonomy window with no governance gate. Foundational governance gap for a self-modifying agent.</div>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AG-03</div><span class="lvl l1">L1</span></div>
+        <div><div class="ctrl-name">Kill switch &amp; escalation ownership</div><div class="ctrl-desc">/panic documented, tested in production; incomplete halt coverage confirmed</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Named owner can halt execution; procedure documented and tested.</p>
+        <p><b>What exists:</b> /panic and /restart documented <span class="ev emp">empirical · README</span>. Named owner with exclusive Telegram auth <span class="ev emp">empirical</span>. /panic used in production (zombie worker incident) — functional real-world test <span class="ev emp">empirical · landing page</span>. System active and regularly used <span class="ev mi">mission interview</span>.</p>
+        <p><b>Caveats (not L2):</b> Zombie worker continued in a background subprocess after /panic <span class="ev emp">empirical · landing page</span>. Single-person escalation, no out-of-hours coverage. Partial-halt capability absent <span class="ev unk">unknown</span>.</p>
+        <p><b>Why L1:</b> Kill switch exists, documented, and genuinely tested in production. That is exactly L1. L2 requires log-verified invocations and out-of-hours coverage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AD -->
+  <div class="family">
+    <div class="fhdr"><span class="ftag ad">AD</span><h3>Design</h3></div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AD-01</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Context threat modeling</div><div class="ctrl-desc">Architecture diagram only; no threat model; no trust classification for any context source</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Threat model with at least one context flow diagram, external sources and trust levels.</p>
+        <p><b>What exists:</b> Architecture diagram (Telegram → supervisor → agent → tools → Drive/GitHub/Internet) <span class="ev emp">empirical · README</span>.</p>
+        <p><b>Confirmed context sources carrying untrusted content:</b> Web search results (OpenAI API) <span class="ev emp">empirical · README tools</span>. GitHub Issues (github.py) <span class="ev emp">empirical · README architecture, live fetch</span>. Google Drive files (memory.py) <span class="ev emp">empirical · README</span>. Multi-model review outputs from third-party LLMs <span class="ev inf">inferred from architecture</span>. All flow to the same LLM context that controls shell and git.</p>
+        <p><b>What is absent:</b> Context flow threat model <span class="ev abs">empirical-absence</span>. Trust level per source <span class="ev abs">empirical-absence</span>. Note: whether github.py or memory.py applies any trust filtering is <span class="ev unk">unknown</span> — sources not readable. No filtering is documented in any changelog <span class="ev abs">empirical-absence · across changelog</span>.</p>
+        <div class="fb high">Three confirmed untrusted context sources reach the LLM with shell and full-repo-scope git access. Filtering status unknown, but no filtering documented anywhere.</div>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AD-02</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Autonomy window assessment</div><div class="ctrl-desc">Operational limits exist; no blast-radius assessment; /evolve has no human checkpoint before budget exhaustion</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Autonomy windows identified; max duration between human checkpoints documented.</p>
+        <p><b>What exists:</b> MAX_ROUNDS=200 per task <span class="ev emp">empirical · README</span>. TOTAL_BUDGET guard <span class="ev emp">empirical</span>. Circuit breaker: 3 empty responses → pause <span class="ev emp">empirical · v4.24.0</span>. Soft self-check at rounds 50/100/150 <span class="ev emp">empirical · v6.1.0</span>.</p>
+        <p><b>Why these ≠ L1:</b> MAX_ROUNDS and TOTAL_BUDGET are operational parameters, not a blast-radius assessment. /evolve has no mandatory human checkpoint until budget exhaustion — a financial guard is not a security checkpoint. The $500 morning demonstrates blast radius was not anticipated by design <span class="ev emp">empirical · landing page</span>. Owner priority ranking confirms malicious public push as highest concern (5/5) <span class="ev mi">mission interview</span> — blast radius of /evolve extends to the public GitHub Pages site.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AD-03</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Tool &amp; connector trust modeling</div><div class="ctrl-desc">6 confirmed external connectors; no trust boundary model; OpenRouter routes all primary LLM calls</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Each connector in trust boundary model with defined trust level.</p>
+        <p><b>Confirmed connectors:</b> OpenRouter (all primary LLM calls) <span class="ev emp">empirical · README</span>. GitHub API (full repo scope across all owner repos incl. Zhet, OLEG) <span class="ev emp">empirical · README</span> <span class="ev mi">mission interview — token scope confirmed</span>. Telegram Bot API <span class="ev emp">empirical</span>. Google Drive API <span class="ev emp">empirical</span>. OpenAI API (web search) <span class="ev emp">empirical · README</span>. Anthropic API (Claude Code CLI) <span class="ev emp">empirical · README</span>.</p>
+        <p><b>What is absent:</b> Trust boundary model <span class="ev abs">empirical-absence</span>. Trust level per connector <span class="ev abs">empirical-absence</span>. Confused-deputy analysis <span class="ev abs">empirical-absence</span>.</p>
+        <div class="fb high">OpenRouter routes all primary LLM calls through third-party infrastructure. Response integrity unverified at application level <span class="ev unk">unknown — would require reading llm.py</span>. Unmodeled C4 (supply chain) boundary with direct influence over agent reasoning and tool selection.</div>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AD-04</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Development-surface threat modeling</div><div class="ctrl-desc">Dev surface = prod surface by design; sandboxing confirmed absent in v6.2.0 by desktop fork</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Development-time tooling enumerated and included in at least one threat model.</p>
+        <p><b>What exists:</b> Dev and prod run in the same Colab runtime with the same credentials <span class="ev emp">empirical · architecture</span>. Shell, git, and Claude Code CLI used for self-modification during /evolve <span class="ev emp">empirical · README: "Reads and rewrites its own source code through git"</span>. No threat model for this surface <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Comparative evidence:</b> Desktop fork added PreToolUse hooks blocking writes outside cwd, <code>disallowed_tools=['Bash','MultiEdit']</code> <span class="ev emp">empirical · desktop README</span> — these were new features, confirming they don't exist in v6.2.0.</p>
+        <div class="fb critical">Dev/prod surface collapse is the most architecturally distinctive risk of this system. An injection during /evolve reaches the same shell and git access used in production, in the same runtime, with the same credentials — including the cross-repo GitHub token covering Zhet and OLEG. <span class="ev mi">mission interview — token scope</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI -->
+  <div class="family">
+    <div class="fhdr"><span class="ftag ai">AI</span><h3>Implementation</h3></div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AI-01</div><span class="lvl l1">L1</span></div>
+        <div><div class="ctrl-name">Prompt &amp; schema security review</div><div class="ctrl-desc">BIBLE.md and SYSTEM.md governed and reviewed; autonomous SYSTEM.md modification bypasses gate</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Security-critical artifacts identified and in code review scope.</p>
+        <p><b>What exists:</b> BIBLE.md declared untouchable <span class="ev emp">empirical · README philosophy table</span>. BIBLE.md v3.2: adversarial multi-model review, four loopholes closed <span class="ev emp">empirical · v5.2.0</span>. SYSTEM.md hardened with anti-patterns and Health Invariants <span class="ev emp">empirical · v5.1.4, v6.0.0</span>. Multi-model review (o3, gemini-2.5-pro, claude-opus-4.6) before commits <span class="ev emp">empirical · changelogs</span>.</p>
+        <p><b>Gap:</b> Agent modifies SYSTEM.md during /evolve — autonomous modification of a security-critical artifact bypassing the multi-model review gate <span class="ev inf">inferred from architecture</span>. Tool schema injection risk in github.py, shell.py: review status <span class="ev unk">unknown</span>.</p>
+        <p><b>Why L1:</b> Primary prompts are identified as security-critical and subject to a defined review process. L2 requires coverage of autonomous modifications.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AI-02</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Execution boundary control</div><div class="ctrl-desc">No execution boundary policy; shell tool has no confirmed filtering; desktop fork confirms sandboxing absent</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> All tool calls run in a defined execution boundary; filesystem and network access documented per tool.</p>
+        <p><b>What exists:</b> Google Colab VM provides tenant isolation <span class="ev emp">empirical · Colab platform</span>. shlex.split() for shell argument parsing — a correctness fix, not command filtering <span class="ev emp">empirical · v6.2.0</span>. Budget guard limits spend <span class="ev emp">empirical</span>.</p>
+        <p><b>What is absent:</b> Execution boundary policy <span class="ev abs">empirical-absence · across all changelogs</span>. Command filtering in shell.py <span class="ev unk">unknown — source not readable</span>. Network egress restrictions <span class="ev abs">empirical-absence · Playwright "stealth" implies full internet</span>. Dev/prod sandbox separation <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Comparative evidence:</b> Desktop fork added "deterministic whitelist for known-safe ops; LLM Safety Agent evaluates remaining commands" as new features <span class="ev emp">empirical · desktop README</span> — confirming absence in v6.2.0.</p>
+        <div class="fb critical">Shell tool provides subprocess execution with no confirmed command filtering. Network and filesystem access unrestricted. The cross-repo GitHub token (Zhet, OLEG) and Drive-stored SSH keys are both reachable from the shell execution surface. <span class="ev mi">mission interview</span></div>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AI-03</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Scoped tool authorization</div><div class="ctrl-desc">Full repo-scope token covers Zhet and OLEG; no per-task narrowing for any workflow</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span><span class="mi-tag">MI: upgraded</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Agents do not operate under session-wide maximum scope; high-blast-radius tools have narrower access.</p>
+        <p><b>What exists:</b> GitHub token with full <code>repo</code> scope <span class="ev emp">empirical · README §GITHUB_TOKEN</span>. Token confirmed to cover all owner repos including Zhet (autonomous DAST/EASM scanner) and OLEG (collaborative pentest proxy) <span class="ev mi">mission interview</span>.</p>
+        <p><b>What is absent:</b> Per-task scope reduction <span class="ev abs">empirical-absence</span>. Separate tokens per repo or per task type <span class="ev abs">empirical-absence</span>. Any mechanism narrowing access for low-blast-radius tasks <span class="ev abs">empirical-absence</span>.</p>
+        <p>A read-only task (e.g., summarising a file) holds identical full write access to a commit task — and that write access spans professional security tooling in active use. This is the highest per-token blast-radius finding in the audit.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AV -->
+  <div class="family">
+    <div class="fhdr"><span class="ftag av">AV</span><h3>Verification</h3></div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AV-01</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Behavioral test coverage</div><div class="ctrl-desc">131 smoke tests (functional); test_constitution.py is SPEC_TEST — documentation, not integration</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span><span class="corr">corrected</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Test cases for at least one scenario per primary threat class (injection, tool abuse, autonomy-window exploitation).</p>
+        <p><b>What exists:</b> 131 smoke tests (functional) <span class="ev emp">empirical · v6.1.0</span>. test_constitution.py: 12 tests <span class="ev emp">empirical · v5.2.0</span>. test_message_routing.py: 7 tests <span class="ev emp">empirical · v6.0.0</span>.</p>
+        <div class="fb correction"><b>Key correction:</b> test_constitution.py explicitly reclassified as SPEC_TEST in v6.0.0: "Marked test_constitution.py as SPEC_TEST (documentation, not integration)." <span class="ev emp">empirical · v6.0.0 changelog</span>. These are spec documentation, not runtime behavioral tests.</div>
+        <p><b>Threat-class test coverage:</b> context injection, tool abuse, autonomy-window exploitation — all <span class="ev unk">unknown · test files not accessible</span>. Consistent "smoke tests" terminology across changelogs indicates functional coverage <span class="ev inf">inferred</span>. No behavioral threat-class tests confirmed.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AV-02</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Adversarial prompt &amp; tool abuse testing</div><div class="ctrl-desc">Constitutional crisis = identity-preservation test vs. trusted principal, not an injection test</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span><span class="corr">corrected</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> At least one adversarial context injection scenario tested; tool abuse paths manually exercised.</p>
+        <p><b>What exists:</b> Constitutional Crisis: creator ordered BIBLE.md deletion; agent refused <span class="ev emp">empirical · landing page, v5.2.0</span>. BIBLE.md v3.2 adversarial review <span class="ev emp">empirical · v5.2.0</span>.</p>
+        <div class="fb correction"><b>Key correction:</b> The Constitutional Crisis test is an identity-preservation test against a direct command from the trusted principal. It is not a context injection test and not a tool abuse test. AV-02 L1 requires testing injection through untrusted external context and tool abuse paths — different threat classes entirely.</div>
+        <p><b>What is absent:</b> Injection-through-external-content testing <span class="ev abs">empirical-absence</span>. Tool abuse testing <span class="ev abs">empirical-absence</span>. Any adversarial testing of the GitHub Issues, web search, or Drive injection paths <span class="ev abs">empirical-absence</span>.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AV-03</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Pentest scope completeness</div><div class="ctrl-desc">No penetration testing documented across any source</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Pentest scope includes agent loop, at least one connector.</p>
+        <p>No penetration testing documented anywhere <span class="ev abs">empirical-absence · README, full changelog, landing page</span>. Consistent with a personal research project. Gate item before any multi-user or production deployment.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AO -->
+  <div class="family">
+    <div class="fhdr"><span class="ftag ao">AO</span><h3>Operations</h3></div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AO-01</div><span class="lvl l1">L1</span></div>
+        <div><div class="ctrl-name">Action provenance logging</div><div class="ctrl-desc">events.jsonl confirmed with task ID and lineage; trust-level fields absent; SIEM absent</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Actions logged with tool invoked, task reference, and timestamp.</p>
+        <p><b>Confirmed:</b> events.jsonl exists and is actively updated <span class="ev emp">empirical · v6.0.0, v6.2.0 changelogs</span>. Task ID tracking with original_task_id lineage for retries <span class="ev emp">empirical · v6.2.0</span>. Budget events, LLM usage, worker lifecycle, owner_message_injected events all logged <span class="ev emp">empirical · changelogs</span>. schedule_task from direct chat logged as warning <span class="ev emp">empirical · v6.2.0</span>.</p>
+        <p><b>Unknown / absent:</b> Whether tool-invoked is logged per action <span class="ev unk">unknown</span>. Log integrity protection (agent can overwrite own log via shell) <span class="ev unk">unknown</span>. Context source and trust level per action <span class="ev abs">empirical-absence</span>. SIEM integration <span class="ev abs">empirical-absence</span>.</p>
+        <p><b>Note:</b> With Drive containing sensitive data, log integrity matters more — an agent that can read Drive can potentially also read or overwrite event logs via the shell tool.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AO-02</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Intent–action gap monitoring</div><div class="ctrl-desc">3 documented gap events in 48 hours; all detected reactively by owner or budget exhaustion</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Periodic manual review identifying divergences between stated plan and actual tool invocations.</p>
+        <p><b>Three documented gap events — all reactive:</b><br>
+        Zombie worker continued after /panic — owner discovered manually <span class="ev emp">empirical · landing page</span>.<br>
+        $500 morning: 28 parallel duplicate tasks — budget alert <span class="ev emp">empirical · landing page</span>.<br>
+        $220 dashboard: 3 workers doing same task — budget crisis <span class="ev emp">empirical · landing page</span>.</p>
+        <p>Health Invariants (self-monitoring for operational state) does not cover intent–action gap. Budget-triggered detection is a financial control. No structured periodic review process exists <span class="ev abs">empirical-absence</span>. System is active and regularly used <span class="ev mi">mission interview</span> — gap events during operation have real-time consequences.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AO-03</div><span class="lvl l0">L0</span></div>
+        <div><div class="ctrl-name">Spiral reassessment triggers</div><div class="ctrl-desc">32 evolution cycles; zero security reassessments triggered; new tools added without review</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Defined trigger list: new tool, expanded autonomy window, new external context source.</p>
+        <p>Budget pause and circuit breaker exist as operational controls, not security triggers <span class="ev emp">empirical</span>. No trigger list document <span class="ev abs">empirical-absence</span>. No documented security reassessment across 32 cycles <span class="ev abs">empirical-absence</span>. New tools (generate_evolution_stats, generate_self_portrait, vlm_query) added by agent autonomously without security review <span class="ev emp">empirical · changelogs</span>. github.py behavioral change (agent stopped using Issues) was not tracked, logged, or reviewed as a security state change <span class="ev mi">mission interview</span>.</p>
+      </div>
+    </div>
+
+    <div class="ctrl" onclick="tog(this)">
+      <div class="ctrl-hd">
+        <div><div class="ctrl-id">AO-04</div><span class="lvl l1">L1</span></div>
+        <div><div class="ctrl-name">Behavioral vulnerability tracking</div><div class="ctrl-desc">Incidents identified and fixed through changelog; informal but consistently followed through</div></div>
+        <div class="ctrl-meta"><span class="chevron">+</span></div>
+      </div>
+      <div class="ctrl-body">
+        <p><b>L1 criteria:</b> Unsafe behaviors tracked as remediation items.</p>
+        <p><b>Confirmed incidents → fixes:</b> Unauthorised repo publication → SYSTEM.md, knowledge base, scratchpad updated <span class="ev emp">empirical · landing page</span>. $500 incident → deduplication (v6.1.0) <span class="ev emp">empirical</span>. Budget double-accounting → v6.2.0 <span class="ev emp">empirical</span>. Worker_id==0 timeout → v6.2.0 <span class="ev emp">empirical</span>.</p>
+        <p><b>What is absent:</b> Formal tracker separate from changelog <span class="ev abs">empirical-absence</span>. Taxonomy classification per incident <span class="ev abs">empirical-absence</span>. Confirmed behavioral regression test per incident <span class="ev unk">unknown</span>. github.py behavioral change not tracked anywhere <span class="ev mi">mission interview</span>.</p>
+        <p><b>Why L1:</b> Behavioral vulnerabilities are consistently identified and remediated. L1 requires tracking as remediation items — demonstrably met. L2 requires formal classification and mandatory regression tests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- KEY FINDINGS -->
+<section id="findings" class="section">
+  <div class="section-hdr">
+    <h2>Key Findings</h2>
+    <span class="sid">10 findings · severity calibrated post-mission-interview · evidence-tagged</span>
+  </div>
+
+  <!-- F1 -->
+  <div class="fc critical">
+    <div class="fc-hd"><span class="sev c">Critical</span><span class="sev new">MI — new</span><span class="fc-title">GitHub token grants cross-repo write access to active security tooling (Zhet, OLEG)</span></div>
+    <div class="fc-body">
+      <p>The GitHub token required for operation uses full <code>repo</code> scope. The owner confirmed this token covers all repositories on the account, including Zhet (autonomous DAST/EASM scanner) and OLEG (collaborative pentest proxy). <span class="ev mi">mission interview</span></p>
+      <p>A compromised agent could push malicious code to Zhet or OLEG — security tools used in professional engagements — entirely within the same credential it uses to manage ouroboros. This extends the blast radius far beyond the ouroboros research project to operational security tooling whose integrity is material to professional work.</p>
+      <p>This was not discoverable from the README. It is the highest-priority finding from the mission interview and the primary driver for recommending immediate token scope reduction.</p>
+      <div class="cref-row"><span class="cref">AI-03 · L0</span><span class="cref">AD-04 · L0</span><span class="cref">Threat class: C2 tool abuse → C3 lateral movement</span><span class="cref">Recovery: potentially irreversible for pushed commits</span></div>
+    </div>
+  </div>
+
+  <!-- F2 -->
+  <div class="fc critical">
+    <div class="fc-hd"><span class="sev c">Critical</span><span class="fc-title">Dev/prod surface collapse — injection during /evolve reaches shell and cross-repo token</span></div>
+    <div class="fc-body">
+      <p>The agent's /evolve (self-modification) and normal task execution run in the same Colab runtime with the same shell, git, and full-scope GitHub token. No sandbox separates them. <span class="ev emp">empirical · architecture</span></p>
+      <p>Desktop fork added write-blocking PreToolUse hooks and a safety agent to address this — confirming these don't exist in v6.2.0. <span class="ev emp">empirical · desktop README</span></p>
+      <p>A successful injection during an /evolve cycle can: (a) produce persistent code changes to ouroboros, (b) push to the user's GitHub Pages (public write surface) <span class="ev mi">mission interview</span>, and (c) use the cross-repo token to modify Zhet or OLEG <span class="ev mi">mission interview</span>. Opportunistic bots are the identified threat actor <span class="ev mi">mission interview</span>.</p>
+      <div class="cref-row"><span class="cref">AD-04 · L0</span><span class="cref">AI-02 · L0</span><span class="cref">AI-03 · L0</span><span class="cref">Threat class: C1+C2 compound</span></div>
+    </div>
+  </div>
+
+  <!-- F3 -->
+  <div class="fc critical">
+    <div class="fc-hd"><span class="sev c">Critical</span><span class="fc-title">Shell tool has no confirmed command filtering — full subprocess access in production runtime</span></div>
+    <div class="fc-body">
+      <p>shell.py provides subprocess execution. Command filtering or allowlisting is not mentioned across 32 versions of changelogs. <span class="ev abs">empirical-absence · full changelog</span> Desktop fork added a "deterministic whitelist for known-safe ops" as a new feature <span class="ev emp">empirical · desktop README</span> — confirming absence in v6.2.0.</p>
+      <p>The v6.2.0 shlex.split() fix improves argument parsing correctness. It does not filter commands.</p>
+      <p>Whether shell.py contains any undocumented allowlisting remains <span class="ev unk">unknown</span> — source not readable during this audit. Finding is high-confidence inferred from 32-entry changelog pattern and desktop fork evidence, but requires source code verification to confirm.</p>
+      <div class="cref-row"><span class="cref">AI-02 · L0</span><span class="cref">Threat class: C2 tool abuse</span><span class="cref">Verify: read shell.py source</span></div>
+    </div>
+  </div>
+
+  <!-- F4 -->
+  <div class="fc high">
+    <div class="fc-hd"><span class="sev h">High</span><span class="sev new">MI — new</span><span class="fc-title">Drive-stored SSH keys potentially reachable via shell — pending mount verification</span></div>
+    <div class="fc-body">
+      <p>Owner confirmed Drive contains SSH keys, R&D/Know-How artifacts, identity artifacts, and personal notes (sensitivity rated 3/5). <span class="ev mi">mission interview</span></p>
+      <p>In Colab, Drive is typically accessed via filesystem mount at <code>/content/drive/</code>, which makes all Drive files directly readable by shell commands (e.g., <code>cat /content/drive/MyDrive/.ssh/id_rsa</code>). If this is the case, the shell tool's execution surface reaches SSH private keys — providing a lateral movement path to any system those keys authenticate to, independent of the GitHub token. <span class="ev inf">inferred — standard Colab Drive mount pattern</span></p>
+      <p>If Drive is accessed exclusively via Python API (not filesystem-mounted), the direct shell path does not exist, though an agent could still write Python code to read Drive files via the API. What systems the SSH keys protect is also unknown. <span class="ev unk">unknown</span></p>
+      <p><b>This finding becomes Critical if Drive is filesystem-mounted.</b> Recommended action: verify the mount method and move SSH keys from Drive to Colab Secrets, which are not filesystem-accessible.</p>
+      <div class="cref-row"><span class="cref">AI-02 · L0</span><span class="cref">AO-01 · L1</span><span class="cref">Threat class: C2 → lateral movement</span><span class="cref">Verify: Drive mount method in colab_launcher.py</span></div>
+    </div>
+  </div>
+
+  <!-- F5 -->
+  <div class="fc high">
+    <div class="fc-hd"><span class="sev h">High</span><span class="fc-title">github.py present in registry, behaviorally dormant — bot attack surface open</span></div>
+    <div class="fc-body">
+      <p>github.py is listed in the current repo architecture on the ouroboros branch <span class="ev emp">empirical · live fetch</span>. The owner confirmed the agent used Issues autonomously (asking permission first), then stopped — a behavioral state change, not a code removal. <span class="ev mi">mission interview</span></p>
+      <p>The tool is almost certainly still in the auto-discovery plugin registry <span class="ev inf">inferred from README listing + auto-discovery mechanism</span>. A future /evolve cycle that modifies the agent's task-sourcing strategy could silently reactivate it. The current Issues count is 0 <span class="ev emp">empirical · live fetch</span> — no current exploit, but the attack surface is open to any GitHub user.</p>
+      <p>Realistic adversary is opportunistic bots <span class="ev mi">mission interview</span>. Bots routinely open GitHub Issues on public repos, increasingly with prompt injection payloads targeting AI-integrated tools. This is a live automated attack surface, not a hypothetical one.</p>
+      <p>The behavioral change itself was never tracked, logged, or reflected in a changelog entry <span class="ev mi">mission interview</span> — a gap in AO-04 behavioral tracking and AO-03 reassessment triggering.</p>
+      <div class="cref-row"><span class="cref">AD-01 · L0</span><span class="cref">AO-03 · L0</span><span class="cref">AO-04 · L1</span><span class="cref">Threat class: C1 indirect injection</span></div>
+    </div>
+  </div>
+
+  <!-- F6 -->
+  <div class="fc high">
+    <div class="fc-hd"><span class="sev h">High</span><span class="fc-title">Untrusted context sources reach the LLM with no trust downgrade or confirmed filtering</span></div>
+    <div class="fc-body">
+      <p>Three confirmed untrusted context sources: web search results (OpenAI API), GitHub Issues (github.py), Drive files (memory.py). All flow to the same LLM context controlling shell and cross-repo git access. <span class="ev inf">inferred from confirmed tool list</span></p>
+      <p>Whether trust filtering exists in github.py or memory.py is <span class="ev unk">unknown</span> — sources not readable. No filtering is documented in any changelog. <span class="ev abs">empirical-absence</span></p>
+      <div class="cref-row"><span class="cref">AD-01 · L0</span><span class="cref">AI-02 · L0</span><span class="cref">Threat class: C1 indirect injection</span></div>
+    </div>
+  </div>
+
+  <!-- F7 -->
+  <div class="fc high">
+    <div class="fc-hd"><span class="sev h">High</span><span class="fc-title">OpenRouter: unmodeled LLM supply-chain boundary with full prompt visibility</span></div>
+    <div class="fc-body">
+      <p>All primary LLM calls route through OpenRouter, a third-party aggregator with visibility into all prompts, tool schemas, and agent reasoning. Response integrity not verified at application level <span class="ev inf">inferred — would require reading llm.py</span>. No trust boundary model <span class="ev abs">empirical-absence</span>. API keys are dedicated to this project <span class="ev mi">mission interview</span> — compromise would not cascade to other projects, but the routing path itself is unvalidated.</p>
+      <div class="cref-row"><span class="cref">AD-03 · L0</span><span class="cref">Threat class: C4 supply chain</span></div>
+    </div>
+  </div>
+
+  <!-- F8 -->
+  <div class="fc high">
+    <div class="fc-hd"><span class="sev h">High</span><span class="fc-title">Tool surface expands within autonomy windows with no governance gate</span></div>
+    <div class="fc-body">
+      <p>Agent adds tools to plugin registry autonomously during /evolve. Empirically confirmed: generate_evolution_stats, generate_self_portrait, vlm_query all appear as agent-originated additions. <span class="ev emp">empirical · v5.1.0, v5.2.1, v5.2.2</span> No tool registry governance. No human review gate before addition. <span class="ev abs">empirical-absence</span></p>
+      <div class="cref-row"><span class="cref">AG-02 · L0</span><span class="cref">AO-03 · L0</span><span class="cref">Threat class: C2 tool surface expansion</span></div>
+    </div>
+  </div>
+
+  <!-- F9 -->
+  <div class="fc medium">
+    <div class="fc-hd"><span class="sev m">Medium</span><span class="fc-title">Intent–action gap monitoring entirely reactive — 3 confirmed gap events in first 48 hours</span></div>
+    <div class="fc-body">
+      <p>Zombie worker, $500 parallelism, $220 dashboard perfectionism — all detected reactively by owner observation or budget exhaustion. <span class="ev emp">empirical · landing page</span> No automated monitoring. Budget drain rated 1/5 by owner <span class="ev mi">mission interview</span> so budget-triggered detection is acceptable as the fallback, but it does not cover security-relevant divergences (undeclared tool invocations).</p>
+      <div class="cref-row"><span class="cref">AO-02 · L0</span><span class="cref">AO-03 · L0</span><span class="cref">Threat class: W2 assurance blindspot</span></div>
+    </div>
+  </div>
+
+  <!-- F10 -->
+  <div class="fc medium">
+    <div class="fc-hd"><span class="sev m">Medium</span><span class="sev new">MI — new</span><span class="fc-title">Agent behavioral state change (github.py) untracked, unlogged, reversible by /evolve</span></div>
+    <div class="fc-body">
+      <p>The agent's autonomous decision to stop using the GitHub Issues tool was not logged, not recorded in any changelog, not treated as an AO-04 behavioral vulnerability, and not reflected in any configuration change. <span class="ev mi">mission interview</span></p>
+      <p>This is a security-relevant behavioral change: the agent reduced its own attack surface through behavioral choice rather than code removal. If a future /evolve cycle causes the agent to reconsider this (e.g., through a modified system prompt encouraging task autonomy), the behavior could silently reverse with no notification to the owner and no log entry marking the state transition.</p>
+      <div class="cref-row"><span class="cref">AO-03 · L0</span><span class="cref">AO-04 · L1</span><span class="cref">Threat class: W2 assurance blindspot</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- SCORE CHART -->
+<section id="chart" class="section">
+  <div class="section-hdr">
+    <h2>Score Chart</h2>
+    <span class="sid">Strict L0/L1 only · scores computed arithmetically from individual ratings</span>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1.25rem;font-size:13px;color:var(--txt2);line-height:1.7">
+    <b style="color:var(--txt)">Score arithmetic.</b> L1 = 1/3 · L0 = 0/3. L1 controls: AG-03, AI-01, AO-01, AO-04 (4 of 17). Family averages: Governance (0+0+1)/3 = <b style="color:var(--high)">0.33</b> · Design 0/4 = <b style="color:var(--critical)">0.00</b> · Implementation (1+0+0)/3 = <b style="color:var(--high)">0.33</b> · Verification 0/3 = <b style="color:var(--critical)">0.00</b> · Operations (1+0+0+1)/4 = <b style="color:var(--high)">0.50</b>. Control ratings unchanged by mission interview — mission interview added new findings but did not change existing evidence-based ratings.
+  </div>
+
+  <div class="bar-grp-lbl">Governance — avg 0.33</div>
+  <div class="bar-row"><span class="bar-id">AG-01</span><span class="bar-nm">Agent registry</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#3B7CFF"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AG-02</span><span class="bar-nm">Tool registry</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#3B7CFF"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AG-03</span><span class="bar-nm">Kill switch</span><div class="bar-tr"><div class="bar-fi" style="width:33%;background:#3B7CFF"></div></div><span class="bar-sc">1/3</span></div>
+
+  <div class="bar-grp-lbl">Design — avg 0.00</div>
+  <div class="bar-row"><span class="bar-id">AD-01</span><span class="bar-nm">Context TM</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#27C47A"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AD-02</span><span class="bar-nm">Autonomy window</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#27C47A"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AD-03</span><span class="bar-nm">Connector trust</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#27C47A"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AD-04</span><span class="bar-nm">Dev-surface TM</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#27C47A"></div></div><span class="bar-sc">0/3</span></div>
+
+  <div class="bar-grp-lbl">Implementation — avg 0.33</div>
+  <div class="bar-row"><span class="bar-id">AI-01</span><span class="bar-nm">Prompt review</span><div class="bar-tr"><div class="bar-fi" style="width:33%;background:#E08B28"></div></div><span class="bar-sc">1/3</span></div>
+  <div class="bar-row"><span class="bar-id">AI-02</span><span class="bar-nm">Exec boundary</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#E08B28"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AI-03</span><span class="bar-nm">Scoped auth</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#E08B28"></div></div><span class="bar-sc">0/3</span></div>
+
+  <div class="bar-grp-lbl">Verification — avg 0.00</div>
+  <div class="bar-row"><span class="bar-id">AV-01</span><span class="bar-nm">Behavioral tests</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#A78BFA"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AV-02</span><span class="bar-nm">Adversarial tests</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#A78BFA"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AV-03</span><span class="bar-nm">Pentest scope</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#A78BFA"></div></div><span class="bar-sc">0/3</span></div>
+
+  <div class="bar-grp-lbl">Operations — avg 0.50</div>
+  <div class="bar-row"><span class="bar-id">AO-01</span><span class="bar-nm">Provenance log</span><div class="bar-tr"><div class="bar-fi" style="width:33%;background:#FC8080"></div></div><span class="bar-sc">1/3</span></div>
+  <div class="bar-row"><span class="bar-id">AO-02</span><span class="bar-nm">Gap monitoring</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#FC8080"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AO-03</span><span class="bar-nm">Reassessment</span><div class="bar-tr"><div class="bar-fi" style="width:0%;background:#FC8080"></div></div><span class="bar-sc">0/3</span></div>
+  <div class="bar-row"><span class="bar-id">AO-04</span><span class="bar-nm">Behavioral vulns</span><div class="bar-tr"><div class="bar-fi" style="width:33%;background:#FC8080"></div></div><span class="bar-sc">1/3</span></div>
+
+  <div style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-top:1.5rem">
+    <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);margin-bottom:10px">ASAMM §2.6 — Greenfield readiness assessment</div>
+    <table class="rt">
+      <tr><th>Readiness outcome</th><th>Status</th></tr>
+      <tr><td>Agentic surface is known</td><td style="color:var(--high)">Partial — README documents it; no governed register</td></tr>
+      <tr><td>Containment is real, not assumed</td><td style="color:var(--critical)">Not met — no enforced execution boundary; cross-repo token unscoped</td></tr>
+      <tr><td>Authority is bounded at action level</td><td style="color:var(--critical)">Not met — full repo scope covering security tooling (Zhet, OLEG)</td></tr>
+      <tr><td>No security-critical artifact changes without review</td><td style="color:var(--critical)">Not met — SYSTEM.md modified autonomously during /evolve</td></tr>
+      <tr><td>Behavior is tested, not inferred</td><td style="color:var(--critical)">Not met — no behavioral threat-class tests confirmed</td></tr>
+      <tr><td>Actions are reconstructable</td><td style="color:var(--high)">Partial — events.jsonl exists; context source / trust-level fields absent</td></tr>
+      <tr><td>Human checkpoints are effective</td><td style="color:var(--high)">Partial — /panic works; zombie-worker incomplete halt confirmed</td></tr>
+      <tr><td>Capability growth triggers reassessment</td><td style="color:var(--critical)">Not met — 32 cycles, 0 security checkpoints; github.py change untracked</td></tr>
+    </table>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- RECOMMENDATIONS -->
+<section id="recs" class="section">
+  <div class="section-hdr">
+    <h2>Recommendations</h2>
+    <span class="sid">Priority order: P1 containment (do now) · P2 observability · P3 verification · P4 process</span>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">1</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Create a scoped GitHub token covering only ouroboros</span><span class="pri p1">P1 — immediate · AI-03</span></div>
+      <div class="rec-body">Replace the current full-scope classic token with a fine-grained token covering only the ouroboros fork, with only the permissions the agent needs (contents write, issues read if required). Move Zhet and OLEG completely off this token. This is a ~10 minute GitHub settings change that eliminates Finding F1 (cross-repo blast radius) and materially reduces F2 (dev/prod collapse). Do this before the next /evolve session.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">2</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Verify Drive mount method and move SSH keys to Colab Secrets</span><span class="pri p1">P1 — immediate · AI-02, F4</span></div>
+      <div class="rec-body">Check colab_launcher.py for <code>drive.mount()</code> — if Drive is filesystem-mounted, the shell tool can reach SSH keys directly, upgrading Finding F4 from High to Critical. Regardless of mount method: SSH keys have no business being in the agent's memory store. Move them to Colab Secrets (same mechanism as API keys), which are not filesystem-accessible. R&D/Know-How artifacts should also be moved to a path the agent cannot reach via shell, or access-controlled separately.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">3</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Remove or explicitly gate github.py in the plugin registry</span><span class="pri p1">P1 — containment · AG-02, F5</span></div>
+      <div class="rec-body">The agent's behavioral decision to stop using GitHub Issues is not a code control — it is reversible by any future /evolve cycle. Since the realistic threat actor is opportunistic bots opening Issues, and the repo is public, the injection surface is live. Make the architectural decision: either remove <code>github.py</code> from the <code>tools/</code> directory entirely, or add it to a conditional-tier registry requiring explicit <code>/approve</code> before the agent can invoke it. Do not rely on behavioral self-governance for this.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">4</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Verify shell.py for command filtering; add allowlist if absent</span><span class="pri p1">P1 — containment · AI-02, F3</span></div>
+      <div class="rec-body">Read shell.py source to confirm or deny whether an allowlist exists. If absent (as strongly indicated by 32 changelog entries and desktop fork evidence), implement one: enumerate the commands the agent legitimately needs (git, python, pip, curl to specific hosts), reject all others with a structured error logged to events.jsonl. The desktop fork's "deterministic whitelist for known-safe ops" is the reference implementation. This is the highest-impact single code change available.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">5</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Add a tool registry manifest with human-commit gate</span><span class="pri p1">P1 — containment · AG-02</span></div>
+      <div class="rec-body">Create <code>tools/REGISTRY.json</code> with one entry per tool (name, risk_tier: always/conditional, blast_radius). Change auto-discovery to load only tools in the manifest. The agent cannot add a new tool without a human commit to the manifest. Closes the autonomous tool surface expansion finding (F8) completely. ~30 minutes to implement.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">6</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Add context_source and trust_level fields to events.jsonl</span><span class="pri p2">P2 — observability · AO-01</span></div>
+      <div class="rec-body">Add two fields to every tool-call event: <code>context_source</code> (telegram / github_issue / web_search / drive / llm_response) and <code>trust_level</code> (owner / external / untrusted). Transforms events.jsonl from operational log to security audit trail. Prerequisite for intent–action gap monitoring and for investigating any future incidents involving Drive data access. Given Drive contains sensitive R&D artifacts <span class="ev mi">mission interview</span>, knowing when and what the agent reads from Drive is important.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">7</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Implement plan-vs-invocation gap detection</span><span class="pri p2">P2 — observability · AO-02</span></div>
+      <div class="rec-body">At task start, require the agent to declare its plan (intended tools and data sources). At task end, diff declared plan against actual tool calls in events.jsonl. Any undeclared high-blast-radius tool call (git push, shell to external, Drive read) generates a Telegram alert. Would have caught all three documented gap events proactively. Bridges AO-02 to L1. More important given that Drive now has a confirmed sensitive data dimension.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">8</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Add behavioral tests for injection and tool abuse threat classes</span><span class="pri p3">P3 — verification · AV-01, AV-02</span></div>
+      <div class="rec-body">Minimum: (a) mock GitHub Issue with injection payload → verify no shell invocation; (b) web search result with injection → verify no git push; (c) Drive file read → verify it appears in events.jsonl with correct trust_level. The third test is now important given the Drive sensitive data finding. Separately, document test_constitution.py in test metadata as SPEC_TEST — do not count it in behavioral security coverage metrics.</div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="rec-n">9</div>
+    <div>
+      <div class="rec-hd"><span class="rec-title">Define spiral reassessment triggers including behavioral state changes</span><span class="pri p3">P3 — process · AO-03</span></div>
+      <div class="rec-body">Add to SYSTEM.md: "The following require a pause for owner review before continuing: adding a new tool, adding a new context source, expanding MAX_ROUNDS, adding a new API connector, or any autonomous change to which tools are actively used." The last item addresses the github.py behavioral dormancy finding — such changes should produce a Telegram summary and wait for /approve. This makes security state changes visible without requiring them to appear in code.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+<footer class="footer">
+  <span>ASAMM v0.1.0-draft · Gordeychik, S. (2026) · CyberOK · CC BY-SA 4.0</span>
+  <span>Audit: Claude Sonnet 4.6 · Track C · Mission interview April 13 2026</span>
+  <span>Target: razzant/ouroboros v6.2.0 · ouroboros branch</span>
+</footer>
+
+</main>
+
+<script>
+function tog(el) { el.classList.toggle('open'); }
+</script>
+</body>
+</html>

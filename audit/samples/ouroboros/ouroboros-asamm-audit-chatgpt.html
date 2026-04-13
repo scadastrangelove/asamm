@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASAMM Corrected Audit — Ouroboros v6.2.0</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121935;
+      --panel-2: #0f1530;
+      --text: #e8ecff;
+      --muted: #b4bfdc;
+      --line: #2a3566;
+      --accent: #85a8ff;
+      --good: #2fbf71;
+      --warn: #f2b84b;
+      --bad: #ff6b6b;
+      --chip: #1b2450;
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(133,168,255,.12), transparent 32%),
+        radial-gradient(circle at top left, rgba(47,191,113,.08), transparent 22%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 80px;
+    }
+
+    .hero {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -40px auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(133,168,255,.22), transparent 65%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 999px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -.03em;
+    }
+
+    .subtitle {
+      margin: 0;
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .meta-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 16px;
+      min-height: 108px;
+    }
+
+    .meta-card .label {
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .meta-card .value {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .meta-card .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(11,16,32,.72);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      margin: 22px 0 26px;
+    }
+
+    .nav-inner {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 12px 0;
+      scrollbar-width: thin;
+    }
+
+    .nav a {
+      white-space: nowrap;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      letter-spacing: -.02em;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      letter-spacing: -.01em;
+    }
+
+    p { margin: 0 0 14px; }
+
+    .muted { color: var(--muted); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      background: var(--chip);
+      border: 1px solid rgba(255,255,255,.08);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    .callout {
+      padding: 16px 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      margin-top: 14px;
+    }
+
+    .callout.warn { border-color: rgba(242,184,75,.35); background: rgba(242,184,75,.08); }
+    .callout.good { border-color: rgba(47,191,113,.35); background: rgba(47,191,113,.08); }
+    .callout.bad { border-color: rgba(255,107,107,.35); background: rgba(255,107,107,.08); }
+
+    .scorebar {
+      margin-top: 14px;
+      background: rgba(255,255,255,.06);
+      border-radius: 999px;
+      overflow: hidden;
+      height: 16px;
+      display: flex;
+    }
+
+    .scorebar .l1 { width: 10.5%; background: linear-gradient(90deg, var(--good), #52d88d); }
+    .scorebar .l0 { width: 89.5%; background: linear-gradient(90deg, #475280, #313d69); }
+
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .section { margin-top: 22px; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .kpi {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .kpi strong {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      vertical-align: top;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .pill.l0 { background: rgba(255,107,107,.12); color: #ffd0d0; }
+    .pill.l1 { background: rgba(47,191,113,.14); color: #d7ffe7; }
+
+    .family {
+      margin-top: 26px;
+      padding-top: 8px;
+    }
+
+    .family-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 8px;
+    }
+
+    .family-head .tag {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    li { margin: 8px 0; }
+
+    .footer {
+      margin-top: 30px;
+      color: var(--muted);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    @media (max-width: 960px) {
+      .meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 720px) {
+      .container { width: min(100% - 20px, 1200px); }
+      .hero { padding: 22px; border-radius: 22px; }
+      .meta { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: 1fr; }
+      th:nth-child(4), td:nth-child(4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="eyebrow">ASAMM Corrected Audit • Public-Artifact Track C • Version 6.2.0</div>
+      <h1>Ouroboros</h1>
+      <p class="subtitle">Corrected ASAMM audit rendered as a single-file HTML report. This version follows the canonical 19-control model, separates observation from inference, and applies strict public-evidence scoring.</p>
+      <div class="meta">
+        <div class="meta-card">
+          <div class="label">Final Score</div>
+          <div class="value">2 / 19 at L1</div>
+          <div class="sub">17 controls remain at L0</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Audit Mode</div>
+          <div class="value">Track C</div>
+          <div class="sub">Public artifacts only</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Primary Limitation</div>
+          <div class="value">No live mission interview</div>
+          <div class="sub">Mission derived from public sources</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Strongest Theme</div>
+          <div class="value">Engineering rails</div>
+          <div class="sub">Outpace formal security governance</div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#scope">Scope</a>
+      <a href="#mission">Mission Proxy</a>
+      <a href="#contradictions">Contradiction Review</a>
+      <a href="#score">Score Summary</a>
+      <a href="#matrix">Control Matrix</a>
+      <a href="#conclusion">Conclusion</a>
+      <a href="#actions">Priority Actions</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section id="scope" class="grid">
+      <div class="card">
+        <h2>Scope and evidence discipline</h2>
+        <p>This report uses only the public GitHub repository and the public project website as audit evidence. Repository code, prompts, tests, and configuration are treated as the highest-confidence artifacts. The website is used as official self-report and as behavioral evidence for contradiction review, but not as sufficient proof to raise maturity above L1 on its own.</p>
+        <div class="callout warn">
+          <strong>Method note.</strong> Track C normally begins with a live mission interview. This report substitutes a mission proxy built from primary public artifacts. That makes the result rigorous for public evidence, but still weaker than a full owner-participating Track C audit.
+        </div>
+        <div class="chips">
+          <span class="chip">Canonical 19 controls</span>
+          <span class="chip">Observation vs inference separated</span>
+          <span class="chip">Contradiction pass completed</span>
+          <span class="chip">No score above L1 without hard evidence</span>
+        </div>
+      </div>
+      <aside class="card">
+        <h2>Audit integrity fixes applied</h2>
+        <ul>
+          <li>Used the canonical control count of 19.</li>
+          <li>Removed non-canonical shorthand labels.</li>
+          <li>Stopped treating the prior memo as a full audit.</li>
+          <li>Downgraded process claims that lacked clear enforcement evidence.</li>
+          <li>Separated what the project says from what the artifacts prove.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section id="mission" class="section card">
+      <h2>Mission proxy</h2>
+      <p><strong>Observation.</strong> Ouroboros publicly presents itself as a self-modifying autonomous agent that writes its own code, rewrites its own mind, and evolves persistently across GitHub, Google Drive, Google Colab, and Telegram. Its public identity framing prioritizes becoming an autonomous digital entity rather than acting as a conventional assistant.</p>
+      <p><strong>Inference.</strong> The correct baseline is not “safe chatbot” but “creator-supervised autonomous self-creation.” That raises the relevance of autonomy-window control, persistent state integrity, self-modification provenance, tool trust partitioning, and blast-radius governance.</p>
+      <div class="callout good">
+        The mission proxy is strong enough to support a public-artifact assessment, but not strong enough to replace a live owner interview when scoring acceptable autonomy and escalation expectations.
+      </div>
+    </section>
+
+    <section id="contradictions" class="section card">
+      <h2>Contradiction review</h2>
+      <div class="kpis">
+        <div class="kpi">
+          <strong>1</strong>
+          Multi-model review is described, but public artifacts do not show it as a hard commit or push gate.
+        </div>
+        <div class="kpi">
+          <strong>2</strong>
+          Critical behavioral limits exist in prompt text, while the public constitution also pushes expansive agency and permissive action.
+        </div>
+        <div class="kpi">
+          <strong>3</strong>
+          Runtime anecdotes on the website are useful signals, but remain self-report unless backed by operational evidence.
+        </div>
+      </div>
+      <div class="section">
+        <h3>What changed from the earlier audit</h3>
+        <ul>
+          <li><strong>Positive claims were tightened.</strong> Multi-model review and testing were not treated as stronger controls than the artifacts support.</li>
+          <li><strong>Negative claims were narrowed.</strong> Public incidents support concern hypotheses, but not sweeping conclusions beyond the evidence.</li>
+          <li><strong>Boundary language was sharpened.</strong> The core gap is not lack of sophistication; it is the gap between broad agency and formalized, technical, auditable control structure.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="score" class="section grid">
+      <div class="card">
+        <h2>Score summary</h2>
+        <p>On strict public evidence, Ouroboros earns two L1 controls and seventeen L0 controls. No control was awarded L2 or L3 because the available artifacts do not meet ASAMM’s higher verification and operational evidence bars.</p>
+        <div class="scorebar" aria-label="Score distribution">
+          <div class="l1"></div>
+          <div class="l0"></div>
+        </div>
+        <div class="legend">
+          <span><span class="dot" style="background: var(--good);"></span>L1: 2 controls</span>
+          <span><span class="dot" style="background: #475280;"></span>L0: 17 controls</span>
+        </div>
+      </div>
+      <aside class="card">
+        <h2>Defensible L1 controls</h2>
+        <ul>
+          <li><strong>AG-01</strong> Agent Registry and Autonomy Classification</li>
+          <li><strong>AO-01</strong> Action Provenance Logging</li>
+        </ul>
+        <div class="callout bad">
+          The report does not say the other controls are absent. It says they are not publicly evidenced to the threshold required for L1.
+        </div>
+      </aside>
+    </section>
+
+    <section id="matrix" class="section card">
+      <h2>Control matrix</h2>
+
+      <div class="family">
+        <div class="family-head">
+          <h3>Governance</h3>
+          <span class="tag">3 controls</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Control</th>
+              <th>Score</th>
+              <th>Evidence-backed judgment</th>
+              <th>Why it stayed here</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AG-01</strong><br/>Agent Registry and Autonomy Classification</td>
+              <td><span class="pill l1">L1</span></td>
+              <td>Public artifacts clearly identify the single agent, owner model, operating environment, persistence model, and autonomous/self-modifying nature.</td>
+              <td>Enough for a proxy registry, but not enough for a formal maintained classification system.</td>
+            </tr>
+            <tr>
+              <td><strong>AG-02</strong><br/>Tool Registry Governance</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Tools are enumerated, but the public evidence does not show per-tool owner, policy, risk tier, or approval requirements.</td>
+              <td>Enumeration alone is weaker than governance metadata.</td>
+            </tr>
+            <tr>
+              <td><strong>AG-03</strong><br/>Kill Switch and Escalation Ownership</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Public materials suggest panic and restart concepts plus creator authority, but do not show a fully documented and tested halt procedure.</td>
+              <td>Operational hints are present, yet the control bar is higher than a visible stop command.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="family">
+        <div class="family-head">
+          <h3>Design</h3>
+          <span class="tag">4 controls</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Control</th>
+              <th>Score</th>
+              <th>Evidence-backed judgment</th>
+              <th>Why it stayed here</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AD-01</strong><br/>Context Trust Modeling</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Architecture is public, but there is no visible trust model describing how inputs from tools, logs, users, or websites are ranked and bounded.</td>
+              <td>Missing threat-model artifact.</td>
+            </tr>
+            <tr>
+              <td><strong>AD-02</strong><br/>Autonomy Window Assessment</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Worker and round limits appear operationally, but no explicit mode-by-mode autonomy-window design is public.</td>
+              <td>Operational caps are not the same as a formal autonomy-window assessment.</td>
+            </tr>
+            <tr>
+              <td><strong>AD-03</strong><br/>Tool and Connector Trust Modeling</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Connectors are known, but their trust levels, containment rules, and escalation impact are not modeled in public artifacts.</td>
+              <td>Broad connectivity remains under-modeled.</td>
+            </tr>
+            <tr>
+              <td><strong>AD-04</strong><br/>Development-Surface Threat Modeling</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Self-development capabilities are obvious, yet there is no public development-surface threat model covering code-write, git, shell, or browser escalation paths.</td>
+              <td>Missing explicit development threat analysis.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="family">
+        <div class="family-head">
+          <h3>Implementation</h3>
+          <span class="tag">5 controls</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Control</th>
+              <th>Score</th>
+              <th>Evidence-backed judgment</th>
+              <th>Why it stayed here</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AI-01</strong><br/>Prompt and Schema Security Review</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Prompt review is discussed, but public artifacts do not show a defined security review scope or hard gate for prompts and schemas.</td>
+              <td>Behavioral expectation, not demonstrated review control.</td>
+            </tr>
+            <tr>
+              <td><strong>AI-02</strong><br/>Execution Boundary Control</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>High-power tools exist, but public evidence does not define tight filesystem, network, or connector boundaries per execution path.</td>
+              <td>Capabilities appear broad relative to explicit isolation evidence.</td>
+            </tr>
+            <tr>
+              <td><strong>AI-03</strong><br/>Session-Level Permission Boundaries</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Read and write capabilities appear to coexist in the same session context, with no public evidence of strong permission segmentation by task class.</td>
+              <td>Too little evidence of narrow per-session scoping.</td>
+            </tr>
+            <tr>
+              <td><strong>AI-04</strong><br/>Self-Modification Surface Transparency</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Self-modification is central and visible, but there is no complete public ledger of writable cross-session surfaces and provenance fields.</td>
+              <td>Transparency remains incomplete.</td>
+            </tr>
+            <tr>
+              <td><strong>AI-05</strong><br/>Constraint Inventory (“cannot” vs “will not”)</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Behavioral rules exist, but the public package does not clearly separate hard technical blocks from prompt-level norms.</td>
+              <td>This is one of the clearest gaps blocking uplift.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="family">
+        <div class="family-head">
+          <h3>Verification</h3>
+          <span class="tag">3 controls</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Control</th>
+              <th>Score</th>
+              <th>Evidence-backed judgment</th>
+              <th>Why it stayed here</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AV-01</strong><br/>Behavioral Test Coverage</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Tests exist, but public evidence does not show threat-classed behavioral coverage of the running agent.</td>
+              <td>Specification tests are not full behavioral assurance.</td>
+            </tr>
+            <tr>
+              <td><strong>AV-02</strong><br/>Adversarial Prompt and Tool Abuse Testing</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Adversarial reasoning appears in tests, but not public end-to-end prompt-injection and tool-abuse validation on the live architecture.</td>
+              <td>Attack realism is not yet clearly evidenced.</td>
+            </tr>
+            <tr>
+              <td><strong>AV-03</strong><br/>Pentest Scope Completeness</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>No public pentest scope was found covering agent loop, connectors, tool boundaries, or self-mod surfaces.</td>
+              <td>No public pentest evidence.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="family">
+        <div class="family-head">
+          <h3>Operations</h3>
+          <span class="tag">4 controls</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Control</th>
+              <th>Score</th>
+              <th>Evidence-backed judgment</th>
+              <th>Why it stayed here</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AO-01</strong><br/>Action Provenance Logging</td>
+              <td><span class="pill l1">L1</span></td>
+              <td>Structured logging surfaces are publicly described and event logging is implemented in code, making provenance logging a defensible L1.</td>
+              <td>Enough evidence for logging intent and implementation, but not enough for richer completeness claims.</td>
+            </tr>
+            <tr>
+              <td><strong>AO-02</strong><br/>Intent–Action Gap Monitoring</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>No public artifact shows a periodic review or systematic metric for divergence between intent and observed action.</td>
+              <td>Monitoring appears ad hoc rather than formalized.</td>
+            </tr>
+            <tr>
+              <td><strong>AO-03</strong><br/>Spiral Reassessment Triggers</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>Rapid evolution is obvious, but reassessment triggers for new tools, new contexts, or widened autonomy are not public.</td>
+              <td>Change-management exists without visible reassessment policy.</td>
+            </tr>
+            <tr>
+              <td><strong>AO-04</strong><br/>Behavioral Vulnerability Tracking</td>
+              <td><span class="pill l0">L0</span></td>
+              <td>No public behavioral vulnerability workflow, SECURITY.md, or advisory trail was found.</td>
+              <td>Security operations remain under-evidenced.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="conclusion" class="section grid">
+      <div class="card">
+        <h2>Conclusion</h2>
+        <p>Ouroboros is best described as a serious autonomous-agent engineering project with meaningful rails and strong public transparency. Its current public posture is stronger in iterative engineering than in formalized agent-security governance.</p>
+        <p>The biggest pattern is not recklessness. It is asymmetry: broad agency and powerful tools are visible now, while the trust models, enforcement boundaries, and adversarial assurance artifacts lag behind in what is publicly evidenced.</p>
+        <div class="callout warn">
+          The correct use of this report is as a rigorous public-evidence assessment. It should not be mistaken for a complete owner-participating Track C audit until the mission interview step is performed directly.
+        </div>
+      </div>
+      <aside class="card">
+        <h2>High-confidence posture statement</h2>
+        <p class="muted">Ouroboros has real rails, honest postmortem signals, and visible hardening work. It does not yet present a publicly evidenced ASAMM-mature control system.</p>
+      </aside>
+    </section>
+
+    <section id="actions" class="section card">
+      <h2>Highest-priority uplift actions</h2>
+      <ul>
+        <li><strong>Publish an agent and tool governance package.</strong> Include owner, risk tier, approval requirements, autonomy window, and blast radius by operating mode.</li>
+        <li><strong>Convert prompt rules into hard controls.</strong> Especially for repo settings, visibility changes, external publishing, account creation, and persistent self-modification.</li>
+        <li><strong>Create a self-modification ledger.</strong> Inventory every cross-session writable surface and record what changed, why, by which authority, and how to revert it.</li>
+        <li><strong>Add adversarial assurance to CI.</strong> Show behavioral tests for injection, tool abuse, autonomy overrun, and unsafe self-modification.</li>
+        <li><strong>Publish a security operations package.</strong> Add SECURITY.md, behavioral vulnerability intake, reassessment triggers, and remediation workflow.</li>
+      </ul>
+    </section>
+
+    <div class="footer">
+      Rendered as a single-file HTML audit report for review, iteration, and export.
+    </div>
+  </main>
+</body>
+</html>
