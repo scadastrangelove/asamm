@@ -17,7 +17,7 @@ Thank you for considering a contribution. This document explains how to propose 
 
 ---
 
-## What is out of scope for v0.1.x
+## What is out of scope for v0.2.x
 
 - New taxonomy layers or modifier classes
 - Additional framework mappings beyond SAMM, NIST AI RMF, NCSC, MCP
@@ -54,7 +54,7 @@ Control IDs (AG-01, AD-02, etc.) are stable within a minor version. You can safe
 
 - GitHub Issues: `AG-02 does not cover MCP server version pinning`
 - Pull request descriptions: `extends AV-01 behavioral test coverage`
-- External documents: `per Agentic SAMM v0.1.0 control AO-01`
+- External documents: `per Agentic SAMM v0.2.0 control AO-01`
 
 If a control ID changes, it will be documented in CHANGELOG.md with a migration note.
 

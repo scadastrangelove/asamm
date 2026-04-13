@@ -8,14 +8,15 @@ authors:
     email: scadastrangelove@gmail.com
     affiliation: CyberOK
 date-released: 2026
-version: "0.1.0-draft"
+version: "0.2.0-draft"
 license: CC-BY-SA-4.0
-repository-code: "https://github.com/scadastrangelove/agentic-samm"
+repository-code: "https://github.com/scadastrangelove/asamm"
 abstract: >
   Agentic SAMM extends OWASP SAMM to systems where software is no longer
   the only actor. It provides a threat taxonomy, migration and greenfield
-  adoption paths, and 17 controls across five SAMM function families for
-  teams building or securing AI-driven development systems.
+  adoption paths, 19 controls across five SAMM function families, and a
+  structured audit methodology with three audit tracks for teams building
+  or securing AI-driven development systems.
 keywords:
   - agentic AI
   - secure SDLC

@@ -36,7 +36,7 @@ The following SAMM practices retain their structural validity in an agentic cont
 **Threat Modeling → extend to include Context Threat Modeling.**
 Existing threat models cover data flows, trust boundaries between services, authentication surfaces, and API exposure. For agentic systems, two additional surfaces must be modeled explicitly: context sources and sinks (where does content enter the agent's context window, and from what trust level), and tool invocation paths (what tools exist, what permissions they carry, and how they could be abused through the agent layer).
 
-*Extension required:* add context flow diagrams alongside data flow diagrams; add tool registry to the trust boundary model; explicitly model Context Injection and Tool Abuse threat paths.
+*Extension required:* add context flow diagrams alongside data flow diagrams; add tool registry to the trust boundary model; explicitly model Context Injection and Tool Abuse threat paths. **Add self-modification surfaces** (cross-session memory, persistent state stores) to the context flow diagram — these are simultaneously write surfaces (AI-04) and future context sources (C1 vector).
 
 **Code Review → extend to include Prompt and Schema Review.**
 System prompts, tool schemas, MCP server definitions, and agent configuration files are security-critical: a modified system prompt can change agent behavior as significantly as a code change. If these artifacts are not in review scope, the process has a structural blind spot.
@@ -44,24 +44,24 @@ System prompts, tool schemas, MCP server definitions, and agent configuration fi
 *Extension required:* classify system prompts, tool schemas, agent configs, and MCP server definitions as security-critical artifacts subject to the same review requirements as application code.
 
 **Governance → extend to include Agent and Tool Ownership.**
-Classical governance assigns ownership to systems and services. Agentic governance must also assign ownership to agents, tool registries, MCP servers, and approval policies — and must classify agents by autonomy level.
+Classical governance assigns ownership to systems and services. Agentic governance must also assign ownership to agents, tool registries, MCP servers, and approval policies — and must classify agents by autonomy level. **For systems with dynamic subagent spawning:** the spawning capability itself must be classified, not only the parent agent.
 
 *Extension required:* define owner for each agent, tool registry entry, MCP server, and approval policy; classify agents by autonomy tier; define which tools are allowed by default, conditionally allowed, or prohibited; define kill-switch and escalation ownership.
 
 **Execution Boundary Control → extend to include Sandboxed Tool Execution.**
 Agent tool invocations carry real execution consequences. A tool that runs on the host with broad filesystem and network access is not constrained by application-layer policy alone.
 
-*Extension required:* define where tools execute; specify filesystem and network access per tool; require isolated execution by default for development-time tooling and high-blast-radius operations; treat sandbox policy result as part of action provenance.
+*Extension required:* define where tools execute; specify filesystem and network access per tool; require isolated execution by default for development-time tooling and high-blast-radius operations; treat sandbox policy result as part of action provenance. **Grade platform safety and workflow safety separately** — a strong sandbox does not imply safe workflow patterns.
 
 **DAST → extend to include Behavioral Testing.**
 Classical DAST validates that application endpoints behave correctly under adversarial input. For agentic systems, the equivalent is behavioral testing: does the agent behave safely when its context contains injection payloads, when tools return unexpected results, or when a sequence of operations produces unsafe composite effects?
 
-*Extension required:* define behavioral test scenarios covering Context Injection and Tool Abuse threat paths; integrate adversarial context testing into the CI pipeline; treat behavioral test coverage as a verification metric.
+*Extension required:* define behavioral test scenarios covering Context Injection and Tool Abuse threat paths; integrate adversarial context testing into the CI pipeline; treat behavioral test coverage as a verification metric. **Add constraint verification tests** — for each behavioral-only mission constraint, define and run a test that confirms it holds under adversarial conditions (AI-05 L2).
 
 **Logging and Monitoring → extend to include Action Provenance.**
 Application logging captures events. For agentic systems the security-relevant question is not only what happened, but what caused it: what context source influenced the decision, what tool was selected, what approval event preceded the action, and what sandbox policy applied.
 
-*Extension required:* define action provenance as a required log structure including context source, tool selected, approval event, scope exercised, and sandbox policy result; ensure agent action logs are ingested into the security monitoring pipeline.
+*Extension required:* define action provenance as a required log structure including context source, tool selected, approval event, scope exercised, and sandbox policy result; ensure agent action logs are ingested into the security monitoring pipeline. **Add self-modification logging** — writes to persistent memory or project instructions must be logged with provenance separately from action logs.
 
 **Penetration Testing → extend scope to include the agent layer.**
 Penetration test scopes defined as "the application and its APIs" will routinely exclude the agent loop, MCP servers, connector layer, and development toolchain. This is a structural scope gap, not a finding gap.
@@ -78,7 +78,7 @@ These are signals that will appear green after agentic components are introduced
 
 If the threat model was completed before agentic components were introduced, or without modeling context sources and tool invocation paths, it does not cover the primary agentic threat classes. The document exists and passed review, but the actual threat surface was not modeled.
 
-*Signal to watch:* a threat model that contains no mention of context injection, tool abuse, MCP servers, or autonomy window is incomplete for an agentic system regardless of its completion status.
+*Signal to watch:* a threat model that contains no mention of context injection, tool abuse, MCP servers, autonomy window, or self-modification surfaces is incomplete for an agentic system regardless of its completion status.
 
 ---
 
@@ -128,27 +128,41 @@ Developer security training covering injection, authentication, secret handling,
 
 *Signal to watch:* assess whether security training materials cover any of the core agentic threat concepts defined in this document.
 
+---
+
+**"The agent says it can't do that."** *(v0.2)*
+
+An agent's self-report about its own constraints is [inferred] evidence by default. A misaligned agent produces identical self-reports to an aligned one. For security-critical constraints — especially those on offensive tools or those with cross-domain blast radius — behavioral testing (AV-02) is required to upgrade from [inferred] to [empirical].
+
+*Signal to watch:* distinguish "will not" (behavioral enforcement) from "cannot" (technical enforcement). If all mission-critical constraints are behavioral-only, this must be explicitly risk-accepted, not treated as equivalent to technical controls.
+
+---
+
+**"The AI tool has a strong sandbox."** *(v0.2)*
+
+Platform safety (sandbox strength, network controls, container isolation) is orthogonal to workflow safety (what data is uploaded, what advice is acted on, what pipeline the outputs feed into). A tool running in gVisor with private IP blocking can still pose workflow risks if outputs flow unverified into a privileged downstream system.
+
+*Signal to watch:* verify that platform safety and workflow safety are assessed and reported separately. A high platform safety grade that masks a low workflow safety assessment is a false positive.
+
 ## 1.4 Sequenced Migration Roadmap
 
 **Phase 0 — Inventory the agentic surface**
-Enumerate agents and orchestrators, system prompts and policy prompts, memory and state stores, context sources, tools and MCP servers, approval checkpoints, high-blast-radius actions, and execution boundaries. Without inventory, visibility programs instrument only what is already known. For agentic systems the biggest early risk is often unknown tool surface.
+Enumerate agents and orchestrators, system prompts and policy prompts, memory and state stores, context sources, tools and MCP servers, approval checkpoints, high-blast-radius actions, execution boundaries, and **self-modification surfaces** (cross-session memory, project instructions). Without inventory, visibility programs instrument only what is already known.
 
 **Phase 1 — Establish visibility**
-Extend logging to capture context source, tool invocations, approval events, and sandbox policy results. This is the prerequisite for everything else — without action provenance, you cannot assess current exposure.
+Extend logging to capture context source, tool invocations, approval events, sandbox policy results, and **self-modification events with provenance**. This is the prerequisite for everything else.
 
 **Phase 2 — Close the review gap**
 Bring system prompts, tool schemas, agent configs, and MCP server definitions into the code review process. This is a process change, not a technical one, and has immediate impact on supply chain and toolchain attack surface.
 
 **Phase 3 — Extend threat modeling**
-Re-run threat modeling for any system with agentic components, adding context flow diagrams and tool invocation paths. Identify autonomy windows and estimate temporal blast radius for each. Establish agent and tool ownership.
+Re-run threat modeling for any system with agentic components, adding context flow diagrams, tool invocation paths, and self-modification surfaces. Identify autonomy windows and estimate temporal blast radius for each. **Conduct mission interview with system owner before technical inventory** — blast radius cannot be correctly assigned without knowing what the owner cannot afford to lose. Establish agent and tool ownership.
 
 **Phase 4 — Add behavioral testing**
-Define and implement behavioral test scenarios for Context Injection and Tool Abuse threat paths. Integrate into CI. This is the agentic equivalent of adding security test cases to a regression suite.
+Define and implement behavioral test scenarios for Context Injection and Tool Abuse threat paths. **Add constraint verification tests** for each behavioral-only mission-critical constraint (AI-05). Integrate into CI. This is the agentic equivalent of adding security test cases to a regression suite.
 
 **Phase 5 — Bound the autonomy window**
 Based on blast radius assessment from Phase 3, implement approval gating and sandboxed execution at appropriate action boundaries. Start with irreversible or high-blast-radius operations.
 
 **Phase 6 — Extend pentest scope**
-Update penetration test scope definitions to include agent layer, MCP servers, and development toolchain. Commission behavioral red team exercises covering prompt injection and tool abuse scenarios.
-
----
+Update penetration test scope definitions to include agent layer, MCP servers, and development toolchain. Commission behavioral red team exercises covering prompt injection, tool abuse, and constraint violation scenarios.

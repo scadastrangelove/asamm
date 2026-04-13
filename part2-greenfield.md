@@ -10,6 +10,8 @@
 
 # Part 2 — Greenfield Path
 
+> **v0.2 addition:** For structured audit methodology, see `audit/auditor-process.md`. The audit process defines three tracks (Track A self-audit, Track B independent, Track C agent-as-code-auditor), required phase gates (mission interview before technical inventory), and prompt libraries for systematic data collection.
+
 *For teams building agentic systems without a pre-existing SAMM-aligned security program*
 
 A greenfield path is shorter than a migration path not because agentic systems are simpler, but because they are not constrained by inherited assumptions. A new program does not need to preserve control evidence built for a non-agentic boundary. It can begin from the correct premise: the system being secured includes not only software artifacts and deployment infrastructure, but also context flows, tool boundaries, delegated authority, approval checkpoints, and runtime behavior.
@@ -145,3 +147,28 @@ A system is ready for scaled use only when the following outcomes are demonstrab
 This assessment asks for evidence of state, not evidence of process. A team may have review, logging, or approval mechanisms on paper and still fail if those mechanisms do not produce the required security outcome.
 
 ---
+---
+
+## 2.7 Audit Methodology Reference *(v0.2)*
+
+The structured audit methodology introduced in v0.2 is in `audit/auditor-process.md`. It defines:
+
+- **Three audit tracks:** Track A (self-audit by the development agent), Track B (independent audit by a separate auditor), Track C (agent-as-code-auditor reviewing a codebase it did not build)
+- **Phase gates:** Phase 1 (Mission Interview) must complete before Phase 2 (Data Collection) begins — this is a hard requirement, not a recommendation
+- **Evidence hierarchy:** [empirical] > [config] > [inferred] > [unknown]; [empirical absence] is distinct from [unknown]
+- **Shared responsibility framing:** cloud-hosted agent controls are split into user-side, vendor-side, and structural categories before grading
+- **External verification pass (Phase 4.5):** mandatory for all Track A audits; without it, the report is draft only
+
+**The single most common audit failure:** starting with technical inventory before completing the mission interview. Blast radius cannot be correctly assigned without knowing what the owner cannot afford to lose. Findings discovered through technical inventory alone cannot be prioritized without re-interviewing the owner.
+
+Quick-start guidance for greenfield teams:
+
+| If you need... | Go to |
+|---|---|
+| Structured audit process with all phases | `audit/auditor-process.md` |
+| Prompts for systematic data collection | `audit/prompt-library.md` |
+| Environment-specific verification commands | `audit/environment-adapters.md` |
+| Blank report template | `audit/report-template.md` |
+| Multi-environment comparison protocol | `audit/comparative-audit-protocol.md` |
+| Analysis principles and anti-patterns | `audit/analysis-principles.md` |
+| Real-world audit example | `examples/claude-ai-zhet-audit-2026.md` |

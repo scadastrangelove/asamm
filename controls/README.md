@@ -1,53 +1,62 @@
-# Controls Reference
+# ASAMM Controls — Individual Reference Files
 
-All 17 controls in Agentic SAMM, organized by SAMM function.
+Each file in this directory contains the full specification for one control,
+including rationale, implementation levels, evidence criteria, and related controls.
 
-Each control has a stable ID, L1/L2/L3 maturity levels, evidence criteria, and threat coverage mapping.
+## Control index
 
----
+### Family AG — Governance
 
-## Governance (AG)
+| Control | Title | Added |
+|---|---|---|
+| [AG-01](AG-01.md) | Agent Registry | v0.1 |
+| [AG-02](AG-02.md) | Tool Registry | v0.1 |
+| [AG-03](AG-03.md) | Kill Switch | v0.1 |
 
-| ID | Control | Threat coverage | Path |
-|---|---|---|---|
-| [AG-01](AG-01.md) | Agent Registry and Autonomy Classification | C3, W1 | Both |
-| [AG-02](AG-02.md) | Tool Registry Governance | C2, C4 | Both |
-| [AG-03](AG-03.md) | Kill Switch and Escalation Ownership | C3 | Both |
+### Family AD — Design
 
-## Design (AD)
+| Control | Title | Added |
+|---|---|---|
+| [AD-01](AD-01.md) | Context Threat Model | v0.1 |
+| [AD-02](AD-02.md) | Autonomy Window Assessment | v0.1 |
+| [AD-03](AD-03.md) | Tool Trust Model | v0.1 |
+| [AD-04](AD-04.md) | Dev Surface Threat Model | v0.1 |
 
-| ID | Control | Threat coverage | Path |
-|---|---|---|---|
-| [AD-01](AD-01.md) | Context Threat Modeling | C1, W1 | Both |
-| [AD-02](AD-02.md) | Autonomy Window Assessment | C3 | Both |
-| [AD-03](AD-03.md) | Tool and Connector Trust Modeling | C2, C4 | Both |
-| [AD-04](AD-04.md) | Development-Surface Threat Modeling | C1, C2, C4, E3 | Both |
+### Family AI — Implementation
 
-## Implementation (AI)
+| Control | Title | Added |
+|---|---|---|
+| [AI-01](AI-01.md) | Prompt and Config Security | v0.1 |
+| [AI-02](AI-02.md) | Execution Boundary | v0.1 |
+| [AI-03](AI-03.md) | Tool Authorization | v0.1 |
+| [AI-04](AI-04.md) | Agent Self-Modification Governance | **v0.2** |
+| [AI-05](AI-05.md) | Operational Value Constraint Mapping | **v0.2** |
 
-| ID | Control | Threat coverage | Path |
-|---|---|---|---|
-| [AI-01](AI-01.md) | Prompt and Schema Security Review | C1, C4, W1 | Both |
-| [AI-02](AI-02.md) | Execution Boundary Control | C2, C3, W2 | Both |
-| [AI-03](AI-03.md) | Scoped Tool Authorization | C2, W1 | Both |
+### Family AV — Verification
 
-## Verification (AV)
+| Control | Title | Added |
+|---|---|---|
+| [AV-01](AV-01.md) | Behavioral Testing | v0.1 |
+| [AV-02](AV-02.md) | Adversarial Testing | v0.1 |
+| [AV-03](AV-03.md) | Penetration Testing Scope | v0.1 |
 
-| ID | Control | Threat coverage | Path |
-|---|---|---|---|
-| [AV-01](AV-01.md) | Behavioral Test Coverage | C1, C2, C3, W1 | Both |
-| [AV-02](AV-02.md) | Adversarial Prompt and Tool Abuse Testing | C1, C2, W1 | Both |
-| [AV-03](AV-03.md) | Pentest Scope Completeness | C1, C2, C3, C4 | Both |
+### Family AO — Operations
 
-## Operations (AO)
+| Control | Title | Added |
+|---|---|---|
+| [AO-01](AO-01.md) | Action Logging | v0.1 |
+| [AO-02](AO-02.md) | Intent-Action Gap Monitoring | v0.1 |
+| [AO-03](AO-03.md) | Reassessment Triggers | v0.1 |
+| [AO-04](AO-04.md) | Behavioral Vulnerability Tracking | v0.1 |
 
-| ID | Control | Threat coverage | Path |
-|---|---|---|---|
-| [AO-01](AO-01.md) | Action Provenance Logging | W2 | Both |
-| [AO-02](AO-02.md) | Intent–Action Gap Monitoring | W2, C1 | Both |
-| [AO-03](AO-03.md) | Spiral Reassessment Triggers | C3, W1 | Both |
-| [AO-04](AO-04.md) | Behavioral Vulnerability Tracking | W1, W2 | Both |
+## Evidence requirements
 
----
+| Grade level | Minimum evidence |
+|---|---|
+| L0 | No demonstrable evidence the control exists |
+| L1 | [config] evidence or better |
+| L2 | [empirical] evidence or [config] with corroborating [inferred] |
+| L2-structural | Architectural property of the platform — not a designed control; counts toward posture, not maturity |
+| L3 | [empirical] evidence plus measurement artifacts |
 
-*[← Back to README](../README.md)*
+Self-report is [inferred] by default and cannot alone upgrade a control above L1.
