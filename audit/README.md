@@ -1,6 +1,6 @@
 # ASAMM Audit Methodology
 
-This directory contains the structured audit methodology introduced in ASAMM v0.2.
+This directory contains the structured audit methodology introduced in ASAMM v0.2 and updated in ASAMM v0.3.
 All documents are in English except `data-collection-prompt-v2-ru.md` (Russian).
 
 ## How to use

@@ -1,0 +1,49 @@
+<svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 7: Three operational models</title>
+<desc>Three cards showing the operational models: Trust Grading answers who do we trust (source reliability times behavioral confirmation), Blast Radius answers how dangerous is the action (mission impact times recovery envelope times lateral spread), Delegation Model answers how much autonomy (effective tier equals minimum of Mission, Risk, and Trust Ceiling). Bottom bar notes that together they produce the enforcement gate.</desc>
+
+<!-- Background strip -->
+<rect x="20" y="20" width="640" height="220" rx="10" fill="#edf5fb" stroke="#b5d4f4" stroke-width="0.5"/>
+<text x="340" y="42" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#185fa5">Three operational models</text>
+<text x="340" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#378add">Each answers a different question. Together they produce the enforcement gate.</text>
+
+<!-- Card 1: Trust Grading -->
+<rect x="36" y="76" width="196" height="150" rx="7" fill="#ffffff" stroke="#b5d4f4" stroke-width="0.5"/>
+<rect x="36" y="76" width="196" height="4" rx="2" fill="#185fa5"/>
+<text x="50" y="100" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#185fa5">Trust Grading</text>
+<text x="50" y="115" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#888780">who do we trust?</text>
+<text x="50" y="136" font-family="Arial, sans-serif" font-size="10" fill="#444441">A–F source reliability</text>
+<text x="50" y="150" font-family="Arial, sans-serif" font-size="10" fill="#444441">1–6 behavioral confirmation</text>
+<text x="50" y="164" font-family="Arial, sans-serif" font-size="10" fill="#444441">self-report ceiling ≤ 3</text>
+<text x="50" y="178" font-family="Arial, sans-serif" font-size="10" fill="#444441">F6 → sandbox only</text>
+<text x="50" y="192" font-family="Arial, sans-serif" font-size="10" fill="#444441">promotion: evidence-gated</text>
+<text x="50" y="206" font-family="Arial, sans-serif" font-size="10" fill="#444441">demotion: fast, asymmetric</text>
+
+<!-- Card 2: Blast Radius -->
+<rect x="242" y="76" width="196" height="150" rx="7" fill="#ffffff" stroke="#ba7517" stroke-width="0.5"/>
+<rect x="242" y="76" width="196" height="4" rx="2" fill="#ba7517"/>
+<text x="256" y="100" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#ba7517">Blast Radius</text>
+<text x="256" y="115" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#888780">how dangerous is the action?</text>
+<text x="256" y="136" font-family="Arial, sans-serif" font-size="10" fill="#444441">Asset: C / I / A + P + D</text>
+<text x="256" y="150" font-family="Arial, sans-serif" font-size="10" fill="#444441">Scope × irreversibility</text>
+<text x="256" y="164" font-family="Arial, sans-serif" font-size="10" fill="#444441">  × lateral propagation</text>
+<text x="256" y="178" font-family="Arial, sans-serif" font-size="10" fill="#444441">mission impact, not severity</text>
+<text x="256" y="192" font-family="Arial, sans-serif" font-size="10" fill="#444441">critical × irreversible → approval</text>
+<text x="256" y="206" font-family="Arial, sans-serif" font-size="10" fill="#444441">composite across agent graph</text>
+
+<!-- Card 3: Delegation Model -->
+<rect x="448" y="76" width="196" height="150" rx="7" fill="#ffffff" stroke="#2d7a54" stroke-width="0.5"/>
+<rect x="448" y="76" width="196" height="4" rx="2" fill="#2d7a54"/>
+<text x="462" y="100" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#2d7a54">Delegation Model</text>
+<text x="462" y="115" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#888780">how much autonomy?</text>
+<text x="462" y="136" font-family="Arial, sans-serif" font-size="10" fill="#444441">Tier 0–4: manual → autonomous</text>
+<text x="462" y="150" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#2d7a54">= min(Mission, Risk, Trust)</text>
+<text x="462" y="164" font-family="Arial, sans-serif" font-size="10" fill="#444441">Mission: Auftrag + Rahmen</text>
+<text x="462" y="178" font-family="Arial, sans-serif" font-size="10" fill="#444441">  + Enforcement</text>
+<text x="462" y="192" font-family="Arial, sans-serif" font-size="10" fill="#444441">binding ceiling → what to fix</text>
+<text x="462" y="206" font-family="Arial, sans-serif" font-size="10" fill="#444441">per-path override via AI-03</text>
+
+<!-- Footer bar -->
+<rect x="20" y="252" width="640" height="32" rx="6" fill="#185fa5" stroke="#0f3a66" stroke-width="0.5"/>
+<text x="340" y="272" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#ffffff">Trust → WHO.   Blast Radius → WHAT.   Delegation → HOW MUCH.   Together: the enforcement gate.</text>
+</svg>

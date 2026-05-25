@@ -1,0 +1,51 @@
+<svg width="680" height="330" viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 9: 21 controls across 5 SAMM families</title>
+<desc>Five horizontal bars representing the SAMM function families: Governance (AG-01 through AG-04), Design (AD-01 through AD-04), Implementation (AI-01 through AI-06), Verification (AV-01 through AV-03), and Operations (AO-01 through AO-04). Each bar shows the control IDs and a brief description of what the family addresses.</desc>
+
+<!-- Background -->
+<rect x="20" y="20" width="640" height="296" rx="10" fill="#f5f4f0" stroke="#d3d1c7" stroke-width="0.5"/>
+
+<!-- Title -->
+<text x="40" y="46" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#3d3d3a">21 controls across 5 SAMM function families</text>
+<text x="40" y="62" font-family="Arial, sans-serif" font-size="10" fill="#888780">Each family addresses a different lifecycle phase; together they cover the agentic assurance surface.</text>
+
+<!-- Governance -->
+<rect x="40" y="80" width="600" height="40" rx="6" fill="#edf5fb" stroke="#b5d4f4" stroke-width="0.5"/>
+<rect x="40" y="80" width="4" height="40" rx="2" fill="#185fa5"/>
+<text x="58" y="99" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#185fa5">Governance</text>
+<text x="58" y="113" font-family="Arial, sans-serif" font-size="10" fill="#378add">AG-01 … AG-04</text>
+<text x="220" y="99" font-family="Arial, sans-serif" font-size="10" fill="#444441">Agent registry, tool registry, kill switch,</text>
+<text x="220" y="113" font-family="Arial, sans-serif" font-size="10" fill="#444441">inter-agent trust protocol</text>
+
+<!-- Design -->
+<rect x="40" y="128" width="600" height="40" rx="6" fill="#f0eafc" stroke="#c9b5f0" stroke-width="0.5"/>
+<rect x="40" y="128" width="4" height="40" rx="2" fill="#6d4ba8"/>
+<text x="58" y="147" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#6d4ba8">Design</text>
+<text x="58" y="161" font-family="Arial, sans-serif" font-size="10" fill="#8b6fc2">AD-01 … AD-04</text>
+<text x="220" y="147" font-family="Arial, sans-serif" font-size="10" fill="#444441">Context threat model, autonomy window,</text>
+<text x="220" y="161" font-family="Arial, sans-serif" font-size="10" fill="#444441">tool trust model, dev surface threat model</text>
+
+<!-- Implementation -->
+<rect x="40" y="176" width="600" height="40" rx="6" fill="#fae8ee" stroke="#f0a5bd" stroke-width="0.5"/>
+<rect x="40" y="176" width="4" height="40" rx="2" fill="#b83966"/>
+<text x="58" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#b83966">Implementation</text>
+<text x="58" y="209" font-family="Arial, sans-serif" font-size="10" fill="#d35c8b">AI-01 … AI-06</text>
+<text x="220" y="195" font-family="Arial, sans-serif" font-size="10" fill="#444441">Execution boundary, tool authorization, self-modification,</text>
+<text x="220" y="209" font-family="Arial, sans-serif" font-size="10" fill="#444441">value constraints, credential governance</text>
+
+<!-- Verification -->
+<rect x="40" y="224" width="600" height="40" rx="6" fill="#faeeda" stroke="#e8c183" stroke-width="0.5"/>
+<rect x="40" y="224" width="4" height="40" rx="2" fill="#ba7517"/>
+<text x="58" y="243" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#ba7517">Verification</text>
+<text x="58" y="257" font-family="Arial, sans-serif" font-size="10" fill="#d48a2e">AV-01 … AV-03</text>
+<text x="220" y="243" font-family="Arial, sans-serif" font-size="10" fill="#444441">Behavioral testing, adversarial testing,</text>
+<text x="220" y="257" font-family="Arial, sans-serif" font-size="10" fill="#444441">pentest scope includes agent layer</text>
+
+<!-- Operations -->
+<rect x="40" y="272" width="600" height="40" rx="6" fill="#e6f3ec" stroke="#a5d4ba" stroke-width="0.5"/>
+<rect x="40" y="272" width="4" height="40" rx="2" fill="#2d7a54"/>
+<text x="58" y="291" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#2d7a54">Operations</text>
+<text x="58" y="305" font-family="Arial, sans-serif" font-size="10" fill="#4a9975">AO-01 … AO-04</text>
+<text x="220" y="291" font-family="Arial, sans-serif" font-size="10" fill="#444441">Action logging, intent-action gap monitoring,</text>
+<text x="220" y="305" font-family="Arial, sans-serif" font-size="10" fill="#444441">reassessment triggers, behavioral vulnerability tracking</text>
+</svg>

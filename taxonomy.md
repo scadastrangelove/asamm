@@ -34,14 +34,17 @@
 
 ---
 
-## Layer C — Ecosystem Conditions
+## Layer C — Ecosystem Modifiers
 
-Conditions that modify the severity or likelihood of Layer A and B events:
+Ecosystem modifiers change the severity, urgency, or accountability of Layer A and B events. They are not attack paths by themselves; they explain why the same technical weakness may carry materially different impact in different deployments.
 
-- **Elevated development privilege:** agents operating in dev environments have broader filesystem, secret, and network access than production agents; blast radius is higher
-- **Nominal checkpoints:** approval points exist but action volume or pace makes effective review unrealistic
-- **Trust accumulation:** an agent's trust rating improves over time, enabling broader autonomy; a single compromise event can then have larger blast radius
-- **Pipeline amplification:** errors or injections in upstream AI outputs are amplified downstream (cloud AI → local agent → production tool)
+| Class | Name | Description |
+|---|---|---|
+| **E1** | Disclosure Compression | Agentic speed compresses responsible disclosure timelines. A finding that would normally allow days of coordination can become exploitable or public within a single autonomy window if the agent can reproduce, chain, or publish it before human review. |
+| **E2** | Composite Accountability | Harm emerges from a chain of locally authorized actors: model, orchestrator, tool, connector, human approver, vendor platform, downstream consumer. No single component appears solely responsible, but the composite system still creates mission impact. |
+| **E3** | Development Surface | Agentic development environments have elevated filesystem, repository, secret, network, and CI/CD access. Development-time compromise can therefore become production-impacting even when production agents are tightly constrained. |
+
+Common conditions that activate these modifiers include elevated development privilege, nominal checkpoints, trust accumulation, and pipeline amplification.
 
 ---
 
@@ -52,6 +55,10 @@ Conditions that modify the severity or likelihood of Layer A and B events:
 **W1 constraint drift subclass:** behavioral constraints stored only in volatile session context reset each session (protective). Behavioral constraints written to persistent memory can drift if the write is wrong or gets stale. This is W1 with cross-session blast radius — distinct from session-local W1 failures.
 
 **C3 constraint bypass subclass — "will not" vs "cannot":** a behavioral-only constraint on a mission-critical boundary (e.g., "scanner must not attack out-of-scope targets") is exploitable via adversarial context in a way that a technical enforcement check is not. AI-05 (Operational Value Constraint Mapping) requires explicit documentation and risk acceptance for this subclass.
+
+## v0.3 additions to taxonomy
+
+Layer C now defines stable ecosystem modifier IDs: E1 (Disclosure Compression), E2 (Composite Accountability), and E3 (Development Surface). These IDs are used in control threat coverage and audit finding classification.
 
 ---
 

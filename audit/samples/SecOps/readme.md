@@ -36,7 +36,7 @@ The audit also demonstrates **agentic development surface** (Claude Code + PM-as
 
 | File | Description |
 |---|---|
-| `asamm-audit-2026-04-15-public.html` | Full HTML audit report, v3.0 (integrity-reviewed, secrets redacted). 18 findings, 19/19 control matrix, evidence appendix, 3-horizon remediation roadmap |
+| `SecOps-asamm-audit-2026-04-15-public.html` | Full HTML audit report, v3.0 (integrity-reviewed, secrets redacted). 18 findings, 19/19 control matrix, evidence appendix, 3-horizon remediation roadmap |
 | `readme.md` | This file |
 
 ---
@@ -122,7 +122,7 @@ Follow the same methodology on your own agentic system:
 
 1. Clone the ASAMM repo: `git clone https://github.com/scadastrangelove/asamm`
 2. Read the audit prompt: [`audit/samples/ouroboros`](https://github.com/scadastrangelove/asamm/tree/main/audit/samples/ouroboros#how-to-run-this-audit-yourself)
-3. Give the prompt to any LLM with your project URL
+3. Give the prompt to an approved LLM deployment with your project URL
 4. Request an integrity review — this catches the most common failure mode
 5. Conduct the mission interview — blast radius cannot be correctly assigned without it
 

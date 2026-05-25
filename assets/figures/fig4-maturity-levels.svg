@@ -82,8 +82,4 @@
 <line x1="220" y1="178" x2="243" y2="178" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
 <line x1="435" y1="178" x2="458" y2="178" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
 
-<!-- Bottom note -->
-<rect x="30" y="308" width="620" height="4" rx="2" fill="#d3d1c7"/>
-<text x="340" y="304" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#888780">L1 is the floor, not the goal — a control that exists in policy but cannot be demonstrated should be treated as L0</text>
-
 </svg>

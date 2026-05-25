@@ -3,7 +3,7 @@
 **Project:** SecOPS
 **Audit date:** 2026-04-15
 **Framework:** ASAMM v0.2-draft
-**Related artifact:** [`asamm-audit-2026-04-15.html`](./asamm-audit-2026-04-15.html)
+**Related artifact:** [`SecOps-asamm-audit-2026-04-15-public.html`](./SecOps-asamm-audit-2026-04-15-public.html)
 
 ---
 

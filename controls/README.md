@@ -12,6 +12,7 @@ including rationale, implementation levels, evidence criteria, and related contr
 | [AG-01](AG-01.md) | Agent Registry | v0.1 |
 | [AG-02](AG-02.md) | Tool Registry | v0.1 |
 | [AG-03](AG-03.md) | Kill Switch | v0.1 |
+| [AG-04](AG-04.md) | Inter-Agent Trust Protocol | **v0.3** |
 
 ### Family AD — Design
 
@@ -31,6 +32,7 @@ including rationale, implementation levels, evidence criteria, and related contr
 | [AI-03](AI-03.md) | Tool Authorization | v0.1 |
 | [AI-04](AI-04.md) | Agent Self-Modification Governance | **v0.2** |
 | [AI-05](AI-05.md) | Operational Value Constraint Mapping | **v0.2** |
+| [AI-06](AI-06.md) | Agent Identity and Credential Governance | **v0.3** |
 
 ### Family AV — Verification
 

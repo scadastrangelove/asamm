@@ -12,7 +12,7 @@ This is where classical SAMM ends and the problem begins.
 
 Agentic systems are not simply software with an AI layer. They are systems where context is part of the control plane, tool calls are security boundaries, and the development workflow itself is an attack surface. A completed threat model, a clean DAST report, and a passed penetration test will all stay green while the real exposure sits untouched in the tool registry, the MCP server, and the autonomy window between checkpoints. The dashboard is healthy. The system is not.
 
-Agentic SAMM extends OWASP SAMM to cover what classical lifecycle thinking cannot: the assurance surface that begins where code ends. It introduces a threat taxonomy organized around entry points rather than consequences, a two-path adoption model for teams migrating from existing programs and teams building from scratch, and nineteen controls across five SAMM function families with evidence-based maturity levels.
+Agentic SAMM extends OWASP SAMM to cover what classical lifecycle thinking cannot: the assurance surface that begins where code ends. It introduces a threat taxonomy organized around entry points rather than consequences, a two-path adoption model for teams migrating from existing programs and teams building from scratch, twenty-one controls across five SAMM function families with evidence-based maturity levels, and a structured audit methodology with three audit tracks.
 
 There is also the question of gravity. In agentic systems, gravity is what happens to every unreviewed action in a long autonomy window — it accelerates, compounds, and lands somewhere nobody planned. The framework is structured around not letting that happen.
 
@@ -20,7 +20,7 @@ There is also the question of gravity. In agentic systems, gravity is what happe
 
 ---
 
-[![Version](https://img.shields.io/badge/version-v0.2.0--draft-orange)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v0.3.0--draft-orange)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](LICENSE.md)
 [![Status](https://img.shields.io/badge/status-draft-yellow)](https://github.com/scadastrangelove/asamm)
 
@@ -61,11 +61,11 @@ The framework is structured around one central observation:
 part0-foundations.md          Axioms, core concepts, threat taxonomy, evidence taxonomy, environment types
 part1-migration.md            For existing SAMM programs: what carries over, what changes, what misleads
 part2-greenfield.md           For new programs: minimum baseline, priority controls, readiness assessment
-part3-controls.md             19 controls across 5 SAMM functions, L1/L2/L3, evidence criteria
+part3-controls.md             21 controls across 5 SAMM functions, L1/L2/L3, evidence criteria
 taxonomy.md                   Agentic threat taxonomy reference (standalone)
-controls/                     Individual control files (AG-01 through AO-04, AI-04, AI-05)
+controls/                     Individual control files (AG-01 through AO-04, including AG-04 and AI-06)
 assets/figures/               SVG figures
-audit/                        Structured audit methodology (v0.2)
+audit/                        Structured audit methodology (introduced v0.2; updated v0.3)
   auditor-process.md          Three audit tracks, phase gates, anti-patterns
   prompt-library.md           [OWNER], [SELF], [AUDITOR], [PRODUCT] prompt families
   environment-adapters.md     Platform-specific verification commands
@@ -81,28 +81,34 @@ examples/                     Real-world audit reports
 
 ## The control families
 
-| Family | Controls | SAMM function | v0.2 additions |
+| Family | Controls | SAMM function | v0.3 status |
 |---|---|---|---|
-| **AG** — Governance | AG-01, AG-02, AG-03 | Governance | AG-01 extended: dynamic agent graphs |
-| **AD** — Design | AD-01, AD-02, AD-03, AD-04 | Design | AD-02 extended: mission interview requirement |
-| **AI** — Implementation | AI-01, AI-02, AI-03, **AI-04**, **AI-05** | Implementation | AI-04 (new): Self-Modification Governance; AI-05 (new): Value Constraints |
+| **AG** — Governance | AG-01, AG-02, AG-03, **AG-04** | Governance | AG-04 (new): Inter-Agent Trust Protocol |
+| **AD** — Design | AD-01, AD-02, AD-03, AD-04 | Design | AD-02 extended: delegation, trust ceiling, risk ceiling, blast radius calibration |
+| **AI** — Implementation | AI-01, AI-02, AI-03, **AI-04**, **AI-05**, **AI-06** | Implementation | AI-06 (new): Agent Identity and Credential Governance |
 | **AV** — Verification | AV-01, AV-02, AV-03 | Verification | — |
 | **AO** — Operations | AO-01, AO-02, AO-03, AO-04 | Operations | — |
 
 ---
 
-## v0.2 highlights
+## v0.3 highlights
 
-Three additions that emerged from running real multi-environment audits:
+Five additions that emerged from publication consistency review and real audit feedback:
 
-**1. Evidence taxonomy and Evidence Primacy Axiom (Part 0)**
-A claim about system state — from an agent, a tool, or an audit report — is a hypothesis until verified against primary evidence. Self-report is [inferred] by default and cannot alone upgrade a control above L1. The framework now defines six evidence states with explicit grade caps.
+**1. Trust grading and delegation model calibration**
+Part 0 now defines the trust grading model in full, and AD-02 connects trust ceiling, risk ceiling, and blast radius into a practical delegation decision.
 
-**2. Two new controls (AI-04, AI-05)**
-AI-04 addresses agent self-modification surfaces (cross-session memory, project instructions) — a class of risk not covered by any existing control. AI-05 forces explicit documentation of operational value constraints as security controls, with the "will not" vs "cannot" distinction required for each.
+**2. Two new controls (AG-04, AI-06)**
+AG-04 covers inter-agent trust protocols and provenance for multi-agent communication. AI-06 covers agent identity, credential scope, credential rotation, and delegated credential chains.
 
-**3. Structured audit methodology (audit/ directory)**
-Complete methodology with three audit tracks (self-audit, independent, agent-as-code-auditor), prompt libraries for systematic data collection, environment-specific verification commands, and a reference audit report. The critical ordering constraint: Phase 1 (Mission Interview) must complete before Phase 2 (Data Collection) — this changes which findings are Critical vs Marginal.
+**3. Delegated evidence rule**
+Sub-agent, delegated-tool, and prior-pass claims are [inferred] until the primary auditor independently verifies the underlying artifact.
+
+**4. Report sanitization and bounded severity rules**
+Part 3 now defines how to classify audit findings, avoid unbounded severity claims, and sanitize public reports without erasing risk.
+
+**5. External positioning**
+ASAMM now explicitly positions itself alongside OWASP Top 10 for Agentic Applications and the OWASP AI Testing Guide.
 
 ---
 
@@ -113,6 +119,8 @@ Complete methodology with three audit tracks (self-audit, independent, agent-as-
 | OWASP SAMM | Primary reference; this framework extends it |
 | NIST AI RMF | Controls map to GOVERN, MAP, MEASURE, MANAGE functions |
 | NCSC Secure AI Guidelines | Controls align to Principles 1, 3, 4, 5, 6 |
+| OWASP Top 10 for Agentic Applications | Agentic risk catalog ASAMM operationalizes through maturity controls |
+| OWASP AI Testing Guide | Testing methodology that complements ASAMM's program and control structure |
 | MCP Security Best Practices | Tool and connector controls reference MCP spec §2–6 |
 
 ---
@@ -121,7 +129,7 @@ Complete methodology with three audit tracks (self-audit, independent, agent-as-
 
 This framework uses a draft versioning policy. While in 0.x: the minor version increments for any significant addition (new controls, new methodology sections, new audit tracks). The patch version increments for corrections, consistency fixes, and regenerated artifacts. Control IDs are stable — existing IDs are never reassigned. Stable semantic versioning (1.0+) begins when the framework exits draft status.
 
-Current version: **v0.2.0-draft**
+Current version: **v0.3.0-draft**
 
 See [CHANGELOG.md](CHANGELOG.md) for history.
 

@@ -1,0 +1,68 @@
+<svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Figure 8: Self-audit in five steps</title>
+<desc>Five numbered steps for running an ASAMM self-audit: clone the repo, read the audit prompt, use an approved LLM deployment, request an integrity review, conduct the mission interview. Right panel summarizes the result: first audit in one to two hours, concrete findings with file-level evidence, remediation roadmap.</desc>
+
+<defs>
+<marker id="arr8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+
+<!-- Background -->
+<rect x="20" y="20" width="640" height="260" rx="10" fill="#f5f4f0" stroke="#d3d1c7" stroke-width="0.5"/>
+
+<!-- Title -->
+<text x="40" y="46" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#3d3d3a">Run your first ASAMM audit</text>
+<text x="40" y="62" font-family="Arial, sans-serif" font-size="10" fill="#888780">github.com/scadastrangelove/asamm · audit/samples/ouroboros</text>
+
+<!-- Divider -->
+<line x1="400" y1="80" x2="400" y2="260" stroke="#d3d1c7" stroke-width="1" stroke-dasharray="3 3"/>
+
+<!-- Steps -->
+<!-- Step 1 -->
+<circle cx="56" cy="98" r="12" fill="#185fa5" stroke="#0f3a66" stroke-width="0.5"/>
+<text x="56" y="102" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#ffffff">1</text>
+<text x="78" y="96" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Clone the repo</text>
+<text x="78" y="110" font-family="Arial, sans-serif" font-size="10" fill="#888780">git clone github.com/scadastrangelove/asamm</text>
+
+<!-- Step 2 -->
+<circle cx="56" cy="134" r="12" fill="#185fa5" stroke="#0f3a66" stroke-width="0.5"/>
+<text x="56" y="138" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#ffffff">2</text>
+<text x="78" y="132" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Read the audit prompt</text>
+<text x="78" y="146" font-family="Arial, sans-serif" font-size="10" fill="#888780">audit/samples/ouroboros — "How to run this audit yourself"</text>
+
+<!-- Step 3 -->
+<circle cx="56" cy="170" r="12" fill="#185fa5" stroke="#0f3a66" stroke-width="0.5"/>
+<text x="56" y="174" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#ffffff">3</text>
+<text x="78" y="168" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Use an approved LLM deployment</text>
+<text x="78" y="182" font-family="Arial, sans-serif" font-size="10" fill="#888780">Point it at your project within policy</text>
+
+<!-- Step 4 -->
+<circle cx="56" cy="206" r="12" fill="#185fa5" stroke="#0f3a66" stroke-width="0.5"/>
+<text x="56" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#ffffff">4</text>
+<text x="78" y="204" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Request an integrity review</text>
+<text x="78" y="218" font-family="Arial, sans-serif" font-size="10" fill="#888780">Ask the LLM to review its own audit — this catches errors</text>
+
+<!-- Step 5 -->
+<circle cx="56" cy="242" r="12" fill="#185fa5" stroke="#0f3a66" stroke-width="0.5"/>
+<text x="56" y="246" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#ffffff">5</text>
+<text x="78" y="240" font-family="Arial, sans-serif" font-size="11" font-weight="500" fill="#444441">Conduct the mission interview</text>
+<text x="78" y="254" font-family="Arial, sans-serif" font-size="10" fill="#888780">Answer: what cannot you afford to lose?</text>
+
+<!-- Result panel -->
+<rect x="420" y="90" width="220" height="170" rx="7" fill="#ffffff" stroke="#b5d4f4" stroke-width="0.5"/>
+<rect x="420" y="90" width="220" height="4" rx="2" fill="#185fa5"/>
+<text x="530" y="116" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#185fa5">Result</text>
+
+<text x="530" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#444441">First audit in 1–2 hours</text>
+
+<text x="530" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888780">↓</text>
+
+<text x="530" y="184" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#444441">Concrete findings</text>
+<text x="530" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888780">with file:line evidence</text>
+
+<text x="530" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#888780">↓</text>
+
+<text x="530" y="242" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#444441">Remediation roadmap</text>
+<text x="530" y="256" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888780">ordered by priority and effort</text>
+</svg>

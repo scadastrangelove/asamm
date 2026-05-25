@@ -149,26 +149,45 @@ This assessment asks for evidence of state, not evidence of process. A team may 
 ---
 ---
 
-## 2.7 Audit Methodology Reference *(v0.2)*
+## 2.7 Audit Methodology Reference *(introduced v0.2; updated v0.3)*
 
-The structured audit methodology introduced in v0.2 is in `audit/auditor-process.md`. It defines:
+The structured audit methodology introduced in v0.2 is in the `audit/` directory of the repository. It defines three audit tracks:
 
-- **Three audit tracks:** Track A (self-audit by the development agent), Track B (independent audit by a separate auditor), Track C (agent-as-code-auditor reviewing a codebase it did not build)
-- **Phase gates:** Phase 1 (Mission Interview) must complete before Phase 2 (Data Collection) begins — this is a hard requirement, not a recommendation
-- **Evidence hierarchy:** [empirical] > [config] > [inferred] > [unknown]; [empirical absence] is distinct from [unknown]
-- **Shared responsibility framing:** cloud-hosted agent controls are split into user-side, vendor-side, and structural categories before grading
-- **External verification pass (Phase 4.5):** mandatory for all Track A audits; without it, the report is draft only
+- **Track A — Self-audit:** the development agent audits its own environment. Requires an external verification pass (Phase 4.5) before the report leaves draft status.
+- **Track B — Independent audit:** separate auditor without direct environment access. All agent self-report treated as [inferred].
+- **Track C — Agent-as-code-auditor:** an agent reviews a codebase it did not build. Mission interview must complete before any code access.
 
-**The single most common audit failure:** starting with technical inventory before completing the mission interview. Blast radius cannot be correctly assigned without knowing what the owner cannot afford to lose. Findings discovered through technical inventory alone cannot be prioritized without re-interviewing the owner.
+**Critical ordering constraint:** Phase 1 (Mission Interview) must complete before Phase 2 (Data Collection). Blast radius cannot be correctly assigned without knowing what the owner cannot afford to lose. This is the single most common cause of audits that are technically correct but operationally useless.
 
-Quick-start guidance for greenfield teams:
+**Bounded severity.** *(v0.3)* When a finding's severity depends on a Phase 1 question the owner has not yet answered, the auditor must not manufacture certainty. Express severity as a bounded tuple: `High [bounded by C1]` means "High if C1 is answered unfavorably; may reduce if C1 clarifies the situation." This practice was validated in the PentOPS audit where 5 of 18 findings carried explicit bounds due to unanswered deepening questions. The audit continued — and the bounds gave the owner actionable information about what answers would change which severities.
 
-| If you need... | Go to |
-|---|---|
-| Structured audit process with all phases | `audit/auditor-process.md` |
-| Prompts for systematic data collection | `audit/prompt-library.md` |
-| Environment-specific verification commands | `audit/environment-adapters.md` |
-| Blank report template | `audit/report-template.md` |
-| Multi-environment comparison protocol | `audit/comparative-audit-protocol.md` |
-| Analysis principles and anti-patterns | `audit/analysis-principles.md` |
-| Real-world audit example | `examples/claude-ai-zhet-audit-2026.md` |
+**Phase 0 checklist.** *(v0.3)* Before any data collection, the auditor should classify the engagement:
+
+- **Environment type:** production / staging / dev / personal workstation / hybrid
+- **Data classification:** regulated / commercial secret / internal / public
+- **Attacker model:** opportunistic / targeted / state-level / insider
+- **Shared responsibility:** self-hosted LLM? SaaS tools? vendor auth? cloud infrastructure?
+- **Repository topology:** monorepo / multi-repo / non-git working tree
+- **Audit track:** A (self-audit) / B (independent) / C (agent-as-code-auditor)
+
+This classification determines scope, severity calibration, and which deepening questions to prioritize. Without it, auditors invent categories ad hoc — reducing method parity across audits.
+
+See `audit/auditor-process.md` for the complete process, `audit/prompt-library.md` for data collection prompts, and `audit/environment-adapters.md` for platform-specific verification commands.
+
+**Report sanitization before sharing.** *(v0.3)*
+
+An audit that finds credential leaks will, by construction, contain those credentials in its findings — API keys, OAuth tokens, PATs, internal hostnames, file paths. The irony is structural: the more thorough the audit, the more secrets it captures; the more useful the report, the more dangerous it is to share unsanitized. An audit report that discovers credential leaks and is then shared without redaction *is itself a credential leak* — through the very artifact meant to prevent them.
+
+Before any report leaves the auditor–owner boundary:
+
+1. **Strip all literal secrets.** Replace every token, key, and password with a redacted placeholder: `tvly-dev-eJRPznY…` → `[REDACTED-TAVILY-KEY]`. Keep enough structure to show the finding class (e.g., "API key with default value in settings.py") without the actual credential.
+2. **Strip internal hostnames and IPs** that are not necessary to understand the finding. `192.168.100.206` → `[INTERNAL-HOST]`.
+3. **Strip PII** — real usernames, email addresses, file paths containing usernames (`/Users/arudakov/…` → `/Users/[USER]/…`).
+4. **Triple-check.** Run a grep for known secret patterns (`grep -iE "token|key|password|secret|oauth|pat|tvly|y0__|bearer" report.html`). If any literal credential survives, redact it. Repeat the grep after redaction to confirm.
+5. **Automate where possible.** A `sanitize-report.sh` that applies regex replacements for known patterns is less error-prone than manual review. The script itself should be versioned alongside the audit tooling.
+
+This applies to reports shared for any purpose — peer review, methodology improvement, public case studies, or submission to the ASAMM project.
+
+---
+
+---

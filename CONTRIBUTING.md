@@ -17,10 +17,10 @@ Thank you for considering a contribution. This document explains how to propose 
 
 ---
 
-## What is out of scope for v0.2.x
+## What is out of scope for v0.3.x
 
 - New taxonomy layers or modifier classes
-- Additional framework mappings beyond SAMM, NIST AI RMF, NCSC, MCP
+- Additional framework mappings beyond SAMM, NIST AI RMF, NCSC, OWASP Agentic Top 10, OWASP AI Testing Guide, and MCP
 - Controls that duplicate existing SAMM practices without agentic-specific extension
 - Tooling, automation, or scoring engines (planned for a future version)
 
@@ -35,7 +35,7 @@ Open an Issue with the label `new-control` and include:
 
 **Name:** [plain-English name]
 **SAMM function:** [Governance / Design / Implementation / Verification / Operations]
-**Threat coverage:** [C1–C4, W1, W2 — which classes does this address?]
+**Threat coverage:** [C1–C4, W1, W2, E1–E3 — which classes does this address?]
 **Gap it closes:** [what is currently uncovered without this control?]
 **L1:** [minimum viable implementation]
 **L2:** [managed, repeatable]
@@ -54,7 +54,7 @@ Control IDs (AG-01, AD-02, etc.) are stable within a minor version. You can safe
 
 - GitHub Issues: `AG-02 does not cover MCP server version pinning`
 - Pull request descriptions: `extends AV-01 behavioral test coverage`
-- External documents: `per Agentic SAMM v0.2.0 control AO-01`
+- External documents: `per Agentic SAMM v0.3.0 control AO-01`
 
 If a control ID changes, it will be documented in CHANGELOG.md with a migration note.
 

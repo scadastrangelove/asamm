@@ -24,7 +24,7 @@ pandoc assets/sources/agentic-samm-full.md \
 # Step 2: PDF via weasyprint
 python3 -c "
 import weasyprint
-weasyprint.HTML(filename='/tmp/agentic-samm-full.html').write_pdf(
+weasyprint.HTML(filename='/tmp/agentic-samm-full.html', base_url='.').write_pdf(
     'agentic-samm-review.pdf',
     stylesheets=[weasyprint.CSS(filename='assets/sources/agentic-samm-style.css')]
 )
@@ -38,7 +38,7 @@ pandoc assets/sources/agentic-samm-ru.md \
 
 python3 -c "
 import weasyprint
-weasyprint.HTML(filename='/tmp/agentic-samm-ru.html').write_pdf(
+weasyprint.HTML(filename='/tmp/agentic-samm-ru.html', base_url='.').write_pdf(
     'assets/asamm-ru.pdf',
     stylesheets=[weasyprint.CSS(filename='assets/sources/agentic-samm-style.css')]
 )
@@ -52,5 +52,5 @@ apt install pandoc
 pip install weasyprint
 ```
 
-Figure paths in the Markdown files use `file:///home/claude/asamm_v02/assets/figures/`.
-Adjust to your local repo path before rendering.
+The Markdown sources use repository-relative figure paths. Run the commands
+from the repository root so `assets/figures/` resolves correctly.

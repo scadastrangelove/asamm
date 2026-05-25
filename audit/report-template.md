@@ -1,5 +1,5 @@
 # ASAMM Audit Report — [SYSTEM NAME]
-# Template version: 0.3 (2026-04-12)
+# Template version: 0.3 (2026-05-25)
 # Instructions: sections marked [REQUIRED] cannot be omitted.
 # Sections marked [CONDITIONAL] apply only when stated.
 
@@ -26,7 +26,7 @@
 | Audit type | self-audit / external / comparative |
 | Audit date | |
 | Auditor | |
-| Framework version | ASAMM v0.2.0-draft (Gordeychik 2026) |
+| Framework version | ASAMM v0.3.0-draft (Gordeychik 2026) |
 | Evidence methods available | empirical / code inspection / self-report / attestation |
 | **Report status** | **draft (Phase 4.5 pending) / risk hypothesis / full audit / incomplete (unresolved Critical contradictions)** |
 | **Mission interview contamination** | **none / pre-contaminated (auditor saw code before interview) — affects blast radius reliability** |

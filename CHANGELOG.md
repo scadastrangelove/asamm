@@ -5,6 +5,42 @@ Format: [version] — date — summary
 
 ---
 
+## [0.3.0] — 2026-05-25
+
+### Added
+
+**Part 0 — Foundations:**
+- Full trust grading model (§0.6): A–F source reliability × 1–6 behavioral confirmation, enforcement table, promotion/demotion rules, stale review rule, and calibration examples
+- Delegated evidence rule (§0.5): sub-agent, delegated-tool, and prior-pass claims are [inferred] until independently verified by the primary auditor
+- Figure 7: three operational models (Trust Grading, Blast Radius, Delegation)
+- OWASP Top 10 for Agentic Applications and OWASP AI Testing Guide positioning
+
+**Part 3 — Controls:**
+- AG-04: Inter-Agent Trust Protocol (new control)
+- AI-06: Agent Identity and Credential Governance (new control)
+- Figure 9: 21 controls across five SAMM families
+- Supplemental registry and public report handling guidance: report sanitization, disclosure compression, mission-impact vs exploit-detail separation
+
+**controls/ directory:**
+- `controls/AG-04.md`: full standalone control specification
+- `controls/AI-06.md`: full standalone control specification
+- `controls/README.md`: updated control index
+
+**assets/figures/:**
+- `fig7-three-models.svg`
+- `fig8-quickstart.svg`
+- `fig9-control-families.svg`
+
+### Changed
+
+- `part3-controls.md`: 19 → 21 controls; threat coverage definitions now include ecosystem modifiers E1–E3
+- `taxonomy.md`: Layer C formalized as E1 Disclosure Compression, E2 Composite Accountability, and E3 Development Surface
+- `part2-greenfield.md`: §2.7 audit methodology reference marked as introduced in v0.2 and updated in v0.3
+- `assets/sources/agentic-samm-full.md`: synchronized with v0.3 normative text for PDF generation
+- `README.md`, `CITATION.cff`, `ROADMAP.md`, and `STALE_ARTIFACTS.md`: updated for v0.3 publication consistency
+
+---
+
 ## [0.2.0] — 2026-04-12
 
 ### Added
@@ -54,7 +90,7 @@ Format: [version] — date — summary
 ### Changed
 
 - `part0-foundations.md`: restructured; new sections §0.6–§0.8 added
-- `part3-controls.md`: 17 → 19 controls; evidence taxonomy integrated into §3.1
+- `part3-controls.md`: 17-control set → 19-control set; evidence taxonomy integrated into §3.1
 - `part1-migration.md`: §1.2 expanded; §1.3 two new false positives added
 - `part2-greenfield.md`: §2.7 added
 

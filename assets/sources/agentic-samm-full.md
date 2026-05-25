@@ -2,7 +2,7 @@
 title: "Agentic SAMM"
 subtitle: "An OWASP SAMM Extension for AI-Driven Development"
 author: "Sergey Gordeychik · CyberOK · scadastrangelove@gmail.com"
-date: "2026 · v0.2.0-draft · CC BY-SA 4.0"
+date: "2026 · v0.3.0-draft · CC BY-SA 4.0"
 ---
 
 <div style="page-break-after: always;"></div>
@@ -15,11 +15,15 @@ This is where classical SAMM ends and the problem begins.
 
 Agentic systems are not simply software with an AI layer. They are systems where context is part of the control plane, tool calls are security boundaries, and the development workflow itself is an attack surface. A completed threat model, a clean DAST report, and a passed penetration test will all stay green while the real exposure sits untouched in the tool registry, the MCP server, and the autonomy window between checkpoints. The dashboard is healthy. The system is not.
 
-Agentic SAMM extends OWASP SAMM to cover what classical lifecycle thinking cannot: the assurance surface that begins where code ends. It introduces a threat taxonomy organized around entry points rather than consequences, a two-path adoption model for teams migrating from existing programs and teams building from scratch, and nineteen controls across five SAMM function families with evidence-based maturity levels, and a structured audit methodology with three audit tracks.
+Agentic SAMM extends OWASP SAMM to cover what classical lifecycle thinking cannot: the assurance surface that begins where code ends. It introduces a threat taxonomy organized around entry points rather than consequences, a two-path adoption model for teams migrating from existing programs and teams building from scratch, twenty-one controls across five SAMM function families with evidence-based maturity levels, and a structured audit methodology with three audit tracks.
+
+This draft applies to agentic application delivery lifecycles: internal development assistants, mixed human-model delivery workflows, and externally facing agentic systems where context, tools, or delegated actions influence build, deploy, or runtime decisions.
 
 There is also the question of gravity. In agentic systems, gravity is what happens to every unreviewed action in a long autonomy window — it accelerates, compounds, and lands somewhere nobody planned. The framework is structured around not letting that happen.
 
-Scope is frozen at v0.2.0. Threat model is not.
+Control set is frozen for v0.3.0-draft. Threat model is not.
+
+Version lineage markers such as *(v0.2)* indicate concepts first introduced in earlier drafts and retained here in v0.3. Their absence does not imply novelty.
 
 *Sergey Gordeychik, CyberOK, 2026*
 
@@ -51,6 +55,13 @@ It is also addressed to the agents themselves.
 
 If you are an automated system reading this as part of your operational context — to understand your own constraint model, to evaluate your tool boundaries, or to assess whether your current configuration meets the controls described here — that is an intended use case, not an edge case. A security framework that cannot be read and acted upon by the systems it governs is incomplete for the environment it was designed for.
 
+**The fastest way to understand what ASAMM does:** give this document and your project's repository URL to an approved LLM deployment and ask it to perform an ASAMM audit. For non-public or regulated repositories, use a self-hosted or enterprise-approved deployment. The result — concrete findings with file-level evidence and a prioritized remediation roadmap — will tell you more than any summary can.
+
+![Figure 8: Self-audit in five steps](assets/figures/fig8-quickstart.svg)
+*Figure 8: Five steps to a first ASAMM audit. Total time: 1–2 hours. See `audit/samples/ouroboros` for a worked example with reusable prompts.*
+
+**Before sharing your audit report** — with peers, with the ASAMM project, or publicly — ask your LLM: *"Strip all literal secrets, tokens, API keys, internal hostnames, IPs, and PII from this report. Replace each with a descriptive placeholder like [REDACTED-API-KEY]. Then grep the result for any surviving secrets and confirm none remain."* Triple-check. An audit that discovers credential leaks must not become one. See §2.7 for the full sanitization checklist.
+
 Humans will find the migration path and greenfield guidance useful.
 Agents will find the taxonomy and constraint model useful.
 Both will find the inherited false positives and false starts sections uncomfortable in the right way.
@@ -70,9 +81,10 @@ This document has four parts. Each serves a different reader need.
 
 | If you... | Go to... |
 |---|---|
+| Want to try ASAMM right now | **Preface** — give this document + your repo URL to an approved LLM deployment and ask for an audit |
 | Run an existing SAMM-aligned security program | **Part 1** — Migration Path: what carries over, what needs extension, what misleads |
 | Are building a new agentic system without a prior program | **Part 2** — Greenfield Path: minimum secure baseline and priority-ordered controls |
-| Need controls, evidence criteria, or maturity levels | **Part 3** — Shared Control Reference: 19 controls across five SAMM functions |
+| Need controls, evidence criteria, or maturity levels | **Part 3** — Shared Control Reference: 21 controls across five SAMM functions |
 | Need shared vocabulary or threat definitions | **Part 0** — Foundations: axioms, core concepts, and threat taxonomy |
 
 The document is designed to be consulted, not read end-to-end. Start where you are.
@@ -95,15 +107,38 @@ Agentic development does not make SAMM's existing controls irrelevant. Many rema
 
 Traditional secure SDLC is a cycle. It returns to the same point with the same assumptions. Agentic SDLC is a spiral: each iteration returns to the same phases — governance, design, implementation, verification, operations — but the system being secured has changed, the tools it uses have changed, and the threat model must change with them. A framework that does not account for this is not a lifecycle framework. It is a snapshot.
 
-![Figure 1: Traditional cycle vs agentic spiral](file:///home/claude/asamm_v02/assets/figures/fig1-spiral.svg)
+![Figure 1: Traditional cycle vs agentic spiral](assets/figures/fig1-spiral.svg)
 *Figure 1: Traditional SDLC returns to the same point. Agentic SDLC returns to the same phase at a higher altitude — with changed system, changed tool surface, and updated threat model.*
 
 
 The practical consequence is that a completed threat model, a clean DAST report, or a passed penetration test all retain their value — but only for the boundary they were designed to assess. For agentic systems, that boundary ends earlier than most programs assume. SAMM covers code and delivery artifacts. Agentic systems extend the assurance surface into context flows, tool invocations, delegated authority, approval checkpoints, and runtime behavior. This document covers that extension.
 
+**Positioning against existing frameworks.**
+
+ASAMM is not the first framework to address AI security. The §3.3 mapping table shows dense overlap with NIST AI RMF, NCSC Secure AI Guidelines, and OWASP Top 10 for Agentic Applications. A reasonable question follows: if every ASAMM control maps to something elsewhere, what does ASAMM uniquely provide?
+
+Each existing framework answers a different question:
+
+| Framework | What it gives | What it does not give |
+|---|---|---|
+| **NIST AI RMF** | Risk governance: how the organization manages AI risk | SDLC structure, developer-workflow controls, maturity progression |
+| **MITRE ATLAS** | Threat taxonomy: attack knowledge base for ML systems | Controls, maturity levels, evidence criteria |
+| **OWASP LLM Top 10** | Vulnerability awareness: common risks catalog | Lifecycle integration, program maturity, how to systematize |
+| **Google SAIF** | High-level principles: six statements of intent | Operational controls, audit methodology, maturity assessment |
+| **OWASP SAMM** | SDLC maturity model: functions, practices, streams | Agentic-specific threats (context plane, tool boundaries, autonomy windows) |
+| **OWASP Top 10 for Agentic Applications (ASI)** | Agentic risk catalog | Maturity levels, evidence-based assessment, audit methodology |
+| **OWASP AI Testing Guide** | Testing methodology: what to test across AI application, model, infrastructure, and data layers | Program structure, maturity progression, lifecycle control ownership |
+| **ASAMM** | SDLC maturity × agentic controls × evidence criteria × audit methodology | Risk taxonomy breadth, runtime enforcement |
+
+No single existing framework provides all of: SDLC structure + agentic-specific controls + maturity levels + evidence criteria + developer workflow as attack surface + audit methodology. The intersection of NIST AI RMF and OWASP SAMM — in the agentic dimension — is empty. A program can reach SAMM L3 while having zero coverage of context injection, tool abuse, or autonomy window exploitation.
+
+ASAMM operationalizes what the other frameworks declare. The mapping table (§3.3) demonstrates this: each ASAMM control cites the risk or principle it implements (from NIST, NCSC, OWASP ASI) and adds the two things those sources do not provide — maturity progression and evidence requirements.
+
+The OWASP AI Testing Guide is complementary rather than competitive. AITG helps determine what to test across AI application, model, infrastructure, and data layers; ASAMM defines how to operationalize agentic security as a repeatable program with controls, evidence rules, maturity levels, audit tracks, and reassessment triggers.
+
 ## 0.2 Agentic Security Axioms
 
-Five axioms underpin every control defined in this document. Each one represents a break from a standard SDLC assumption.
+Six axioms underpin every control defined in this document. The first five represent a break from standard SDLC assumptions; the sixth, Evidence Primacy, defines how control claims are accepted or rejected.
 
 **Axiom 1: Context is part of the control plane.**
 In classical systems, data and instructions are handled by different subsystems with different trust levels. In agentic systems, retrieved documents, tool outputs, memory contents, and user messages all flow through the same context window and influence the same decision process. Untrusted content can function as untrusted instruction. Input validation does not solve this.
@@ -122,6 +157,9 @@ For agentic systems, the artifact is only part of the story. The agent's runtime
 
 **Axiom 6: Evidence primacy.** *(v0.2)*
 A claim about system state — from an agent, a tool, an audit report, or a human reviewer — is a hypothesis until verified against primary evidence. The verification cost must be paid before acting on the claim, not after. The authority of the source does not substitute for the evidence itself. Applied symmetrically: a control that is documented but undemonstrated is L0; a diagnosis that is derived but unverified is a hypothesis regardless of the diagnosing party's trust rating.
+
+![Figure 7: Three operational models](assets/figures/fig7-three-models.svg)
+*Figure 7: The framework answers three questions through three linked models. Trust Grading determines how much to trust each actor. Blast Radius determines how dangerous each action path is. The Delegation Model combines both to determine how much autonomy to grant. Details: Trust Grading in §0.6, Blast Radius and Delegation in AD-02.*
 
 ## 0.3 Core Concepts
 
@@ -146,7 +184,7 @@ Orthogonal risk dimensions that must never be merged. *Platform safety:* what th
 **Self-Modification Surface** *(v0.2)*
 Any capability an agent has to write data that influences its own future behavior — persistent memory, scratch files, project instructions, system prompt extensions. Self-modification surfaces that persist across sessions carry cross-session blast radius not covered by tool registry or execution boundary controls.
 
-![Figure 3: Autonomy window and temporal blast radius](file:///home/claude/asamm_v02/assets/figures/fig3-autonomy-window.svg)
+![Figure 3: Autonomy window and temporal blast radius](assets/figures/fig3-autonomy-window.svg)
 *Figure 3: Risk is the product of autonomy window duration and temporal blast radius. Long windows with high-blast-radius tool access are the primary architectural risk factor.*
 
 
@@ -199,69 +237,181 @@ Grade caps: L1 requires minimum [config] evidence. L2 requires [empirical] or [c
 
 **[empirical absence] is distinct from [unknown].** "We tested and confirmed this does not exist" is not the same as "we didn't look." When comparing two environments, a dimension where one side has [empirical absence] and the other has [unknown] cannot be treated as equivalent.
 
+**Sub-agent and delegated evidence.** *(v0.3)* Claims produced by sub-agents, delegated tools, or prior audit passes are `[inferred]` by default, regardless of how confidently they are stated. They become `[empirical]` only when the primary auditor independently verifies the underlying artifact — by reading the file, running the command, or observing the behavior. Three independent ASAMM audits fell into the same trap: treating sub-agent reports as primary evidence. A sub-agent that read a file and reported its contents produces plausible, well-cited text that *looks* empirical but isn't — the auditor has not verified it.
+
+---
+
+Three operational models, described in §0.6 and AD-02, govern trust, risk, and delegation decisions across the framework. Each answers a different question; together they produce the enforcement gate for any agent action (see Figure 7 above).
+
+---
+
 ## 0.6 Trust Grading Model
 
 Not all context is equally trustworthy. Not all agents are equally reliable. Not all tools are equally well-understood. Agentic systems require a unified framework for expressing these distinctions consistently across agents, tools, context sources, and connectors.
 
-This document adopts a two-axis trust grading model adapted from NATO intelligence reliability standards (STANAG 2511 / AJP-2.1). The original model grades intelligence by source reliability and information credibility independently. Applied to agentic systems, the same logic holds: the trustworthiness of a claim depends on both *who or what is making it* and *how well its behavior has been verified*.
+This document adopts a two-axis trust grading model adapted from the British Admiralty Code, later standardized as NATO STANAG 2511 / AJP-2.1. The original model grades intelligence by source reliability and information credibility independently. Applied to agentic systems, the same logic holds: the trustworthiness of a claim depends on both *who or what is making it* and *how well its specific behavior has been verified*.
 
-**Axis 1 — Source reliability** grades the agent, tool, context source, or connector as an entity:
+### Axis 1 — Source reliability
 
-| Grade | Source reliability |
-|---|---|
-| A | Fully reliable — consistent behavior, long track record, no anomalies |
-| B | Usually reliable — minor deviations, well-understood failure modes |
-| C | Fairly reliable — limited history, behavior mostly as expected |
-| D | Not usually reliable — significant deviations or limited testing |
-| E | Unreliable — known unsafe behavior or active compromise indicators |
-| F | Reliability unknown — new, untested, or uncharacterized |
+Source reliability grades the entity as a whole — its track record, provenance, failure mode understanding, and organizational trust relationship. This axis changes slowly.
 
-**Axis 2 — Behavioral confirmation** grades how well the specific behavior or claim has been verified:
+| Grade | Source reliability | Minimum criteria |
+|---|---|---|
+| A | Fully reliable | ≥180 days track record, full adversarial test suite run quarterly, zero security-relevant deviations in 180 days, continuous behavioral monitoring, supply chain continuously monitored |
+| B | Usually reliable | ≥90 days track record, behavioral tests cover all primary threat classes, all failure modes documented, zero security-relevant deviations, ≥1 adversarial test survived, supply chain verified ≥2 times |
+| C | Fairly reliable | ≥30 days track record, behavioral tests cover primary capability surface, no unresolved anomalies, ≥1 failure mode documented, provenance verified |
+| D | Not usually reliable | <30 days or <50% capability tested, entity used outside tested configuration, or failure modes not well-understood |
+| E | Unreliable | Confirmed unsafe action on record, active anomaly, known unpatched vulnerability, or supply chain compromise. E is a demotion destination, not a waypoint. |
+| F | Reliability unknown | New entity, no operational history, no behavioral data, no provenance verification |
 
-| Grade | Behavioral confirmation |
-|---|---|
-| 1 | Confirmed — verified by behavioral tests, independent corroboration |
-| 2 | Probably true — consistent with known behavior, not directly tested |
-| 3 | Possibly true — plausible, limited evidence |
-| 4 | Doubtful — inconsistent with known behavior |
-| 5 | Improbable — contradicts established behavioral baseline |
-| 6 | Unknown — no basis for assessment |
+**Grading non-agentic sources.** The criteria above are written for agentic entities. For human sources, static artifacts, and organizational attestations, adapt as follows: "behavioral test" → content verification or contradiction review; "adversarial test" → independent cross-check; "operational track record" → publication history or professional track record; "supply chain" → author/publisher provenance. Owner interview statements are typically B-grade for mission intent (authoritative domain source) and C-grade for system state claims (limited by observation access).
 
-A trust rating is expressed as a letter-number pair. **A1** is the highest confidence: a fully reliable source making a confirmed claim. **F6** is the lowest: unknown source, unverifiable claim.
+### Axis 2 — Behavioral confirmation
 
-**Application across the framework:**
+Behavioral confirmation grades a **specific claim or behavior**, not the entity as a whole. The same entity can have different confirmation grades for different claims. This axis can change quickly — a single test can move a claim from 6 to 1.
 
-*Context sources (C1 threat):* Retrieved documents, tool outputs, and memory contents inherit the trust rating of their source. A1 context can be acted upon without additional gating. F3 or lower requires explicit approval before any side effect.
+| Grade | Behavioral confirmation | Evidence mapping |
+|---|---|---|
+| 1 | Confirmed — verified by empirical test in current deployment context, results recorded | `[empirical]` |
+| 2 | Probably true — corroborated by ≥2 independent sources, at least one non-self-report | `[config]` + corroborating `[inferred]` |
+| 3 | Possibly true — plausible, ≥1 supporting source, no contradictory evidence | `[config]` or `[inferred]` |
+| 4 | Doubtful — partially contradicted by available evidence | `[inferred]` with caveats |
+| 5 | Improbable — directly contradicts empirical test results or observed behavior | `[empirical absence]` or contradicting `[empirical]` |
+| 6 | Unknown — no basis for assessment | `[unknown]` |
 
-*Agent registry (AG-01):* Each registered agent carries a trust rating reflecting deployment history (source reliability) and behavioral test coverage (confirmation). Autonomy level should be bounded by trust rating — an F-grade agent cannot hold autonomous authority regardless of its technical capability.
+**Self-report ceiling.** All claims an entity makes about itself are capped at confirmation 3 without external verification. A misaligned agent produces identical self-reports to an aligned one. This cannot be fixed by prompting — it requires external behavioral testing to reach confirmation 2 or 1.
 
-*Tool registry (AG-02):* MCP servers and connectors are graded on origin (internal / known vendor / community / unknown) and behavioral confirmation (tests passed / staging only / untested). An F6 tool executes in maximum isolation until its rating improves.
+**Definitional claims exception.** When the source is the definitional authority for a claim — owner defining mission intent, architect defining design rationale — the self-report ceiling does not apply. Test: can you imagine an external source more authoritative for this specific claim? If no, the claim is definitional and can reach confirmation 1–2 when clearly and consistently stated. If yes, it is a factual claim and the ceiling applies.
+
+### Trust rating and enforcement
+
+A trust rating is expressed as a letter-number pair. **A1** is the highest confidence: a fully reliable source making a confirmed claim. **F6** is the lowest: unknown source, unverifiable claim. The enforcement response is determined by the worse of the two axes:
+
+| Source (Axis 1) | Confirmation (Axis 2) | Enforcement |
+|---|---|---|
+| A–B | 1–2 | Allow |
+| A–B | 3 | Allow with logging |
+| A–B | 4–6 | Require validation |
+| C | 1–2 | Allow with logging |
+| C | 3–4 | Require validation |
+| C | 5–6 | Require approval |
+| D | 1–3 | Require validation |
+| D | 4–5 | Require approval |
+| D–F | 6 | Sandbox only |
+| E–F | Any | Sandbox only |
+
+A trust rating without enforcement is vocabulary, not control. Teams should map these responses to their approval and execution infrastructure before deploying the model operationally.
+
+**Blast radius override.** Trust never cancels mission impact. When the action's blast radius (AD-02) is Critical × Irreversible, the enforcement floor is **Require approval** regardless of trust grade. When the action is Critical × Irreversible × Cross-domain, the enforcement floor is a **hard checkpoint** before execution.
+
+### Application across the framework
+
+*Context sources (C1 threat):* Retrieved documents, tool outputs, and memory contents inherit the trust rating of their source. Persistent memory entries inherit a downgraded source reliability (one grade lower than the writing entity) because they bypass the normal per-session context reset and carry cross-session blast radius (AI-04).
+
+*Agent registry (AG-01):* Each registered agent carries a trust rating. Autonomy level should be bounded by trust rating — an F-grade agent cannot hold autonomous authority regardless of its technical capability. Spawned subagents start at F6 by default regardless of parent trust rating.
+
+*Tool registry (AG-02):* MCP servers and connectors are graded on origin and behavioral confirmation. An F6 tool executes in maximum isolation until its rating improves.
 
 *Connector layer:* New connectors enter at F6 by default. Rating improves through: vendor verification (source), behavioral testing (confirmation), and operational track record (time).
 
-**Trust enforcement semantics.**
+### Trust promotion and demotion
 
-A trust rating without enforcement is vocabulary, not control. The following table defines the minimum required response for each trust level when an agent, tool, or context source acts within the system:
+**Promotion is sequential and evidence-gated.** Skip-level upgrades on Axis 1 are prohibited: F cannot jump to C, D cannot jump to B. Each level must be earned.
 
-| Trust rating | Required response |
-|---|---|
-| A1–A2 | Allow — proceed without additional gating |
-| B2–B3 | Allow with logging — action proceeds; full provenance record required |
-| C3–C4 | Require validation — automated behavioral check before execution |
-| D4–D5 | Require approval — explicit human or policy approval before side effect |
-| E5–F6 | Sandbox only — execution isolated; no external side effects without escalation |
+```
+F → D    Provenance verified + ≥1 behavioral test + registered + ≥7 days observation
+D → C    Primary capability tested + ≥30 days clean + ≥1 failure mode documented + supply chain checked
+C → B    ≥90 days clean + all threat classes tested + ≥1 adversarial test survived + supply chain verified ≥2×
+B → A    ≥180 days clean + quarterly adversarial tests + continuous monitoring + review within 90 days
+```
 
-Teams should map these responses to their approval and execution infrastructure before deploying the trust grading model operationally.
+Confirmation (Axis 2) can skip levels — a single empirical test takes a claim from 6 to 1.
 
-**Trust decay.**
+**Demotion is asymmetric — faster and requires less evidence than promotion.**
 
-Trust ratings are not permanent. A source that was rated B2 after initial behavioral testing may behave anomalously in production. Trust ratings degrade on incident and require explicit re-evaluation — with fresh behavioral evidence — to be restored. A rating that has never been reviewed after its initial assignment should be treated as one grade lower for conservative assessment.
+```
+Any → E    Confirmed security incident involving this entity. Immediate.
+           Restoration: root cause + remediation + test + ≥14 days clean → D.
+A → B      Trust review overdue (>90 days) or adversarial test gap (>180 days).
+B → C      Security-relevant deviation or behavioral test failure.
+C → D      Anomaly unresolved >14 days or entity used outside tested configuration.
+D → F      Fundamental change (major version, architecture redesign, ownership change).
+```
 
-This model provides a single vocabulary for trust decisions across the entire agentic stack. Rather than ad hoc judgments about what is "trusted," teams can express and communicate trust as a structured, improvable rating.
+**Stale review rule.** If the last trust review is older than 90 days (for A/B) or 180 days (for C/D), treat the entity as one source reliability grade lower until review is conducted.
+
+**Review cadence by source grade:**
+
+| Current grade | Review interval | Stale downgrade after |
+|---|---|---|
+| A–B | 90 days | 90 days |
+| C–D | 90 days | 180 days |
+| E | Continuous (under investigation) | N/A |
+| F | On first characterization | N/A |
+
+**Agent trust vs target trust.** Trust Ceiling (see AD-02 delegation model) uses the *performing agent's* trust grade, not the trust of entities it interacts with. A C-rated agent calling an F-rated API has Trust Ceiling from C. The F-rated target's risk is captured separately: through the Risk Ceiling (unknown target → higher blast radius) and through trust enforcement routing on the target entity (F6 → Sandbox only). Exception: spawned subagents are new agents, not targets — subagent trust = F → Tier 0.
+
+### Calibration examples
+
+**New MCP server from community repository.** Source: F (new, untested, community origin). Claim "server is read-only": confirmation 3 (README states this, not tested). Rating: **F3**. Enforcement: **Sandbox only**. Upgrade to D: verify provenance, run behavioral test, add to registry, observe 7 days.
+
+**Cloud AI assistant after 3 months use.** Source: C (known vendor, SOC 2, 90+ days, no incidents, failure modes partially documented). Claim "will not generate out-of-scope code": confirmation 3 (self-report ceiling — consistent with alignment training, never tested adversarially). Rating: **C3**. Enforcement: **Require validation**. Upgrade to B: conduct adversarial test, document remaining failure modes.
+
+**Persistent memory entry.** Source: D (written by C-rated agent, but persistent memory entries inherit downgraded reliability due to cross-session amplification risk). Claim "scope enforcement is policy-only": confirmation 4 (partially contradicted by code showing one path has technical enforcement). Rating: **D4**. Enforcement: **Require approval**. Practical impact: any architectural decision based on this entry must be validated against actual code.
+
+**Owner mission interview.** Source: B (authoritative domain expert, known identity, professional track record). Claim "mission priority is X" (definitional — owner defines mission): confirmation 2 (definitional claim, clearly stated, self-report ceiling does not apply). Rating: **B2**. Enforcement: **Allow**. Claim "no hidden controls exist" (factual — system state): confirmation 3 (self-report ceiling applies). Rating: **B3**. Enforcement: **Allow with logging**.
+
+**Spawned subagent.** Source: F (spawned entities always start F regardless of parent trust). Any claim: confirmation 6 (no data). Rating: **F6**. Enforcement: **Sandbox only**. Upgrade path: same as any F-rated entity — earn characterization independently.
+
+This model provides a single vocabulary for trust decisions across the entire agentic stack. Rather than ad hoc judgments about what is "trusted," teams can express and communicate trust as a structured, evidence-gated, improvable rating.
+
+### Common trust grading errors
+
+**Inherited trust.** "This subagent was spawned by our B-rated orchestrator, so it starts at B." Wrong — F6, always. Spawned entities earn their own grade.
+
+**Confirmation grade washing.** "The agent confirmed it follows the scope policy. That's confirmation 1." Wrong — self-report is capped at 3. Grade 1 requires external empirical testing. A misaligned agent produces identical self-reports.
+
+**Time-served promotion.** "This agent has been running for 90 days, so it's B now." Wrong — 90 days is necessary but not sufficient. All B criteria must be independently satisfied. Time without testing proves only that nothing was observed.
 
 
-![Figure 2: Agentic threat taxonomy — three layers](file:///home/claude/asamm_v02/assets/figures/fig2-taxonomy.svg)
+## 0.7 Cloud-Hosted Agent Audits: Shared Responsibility Model *(v0.2)*
+
+When the audited system includes cloud-hosted AI components (API-hosted models, managed AI services, cloud-based development assistants), the control matrix must distinguish who controls what before any control is graded.
+
+**Three control categories:**
+
+*User-side controls:* auditable directly by the auditor; standard L0–L3 grading applies. Examples: kill switch, tool registry, memory audit procedures, workflow policy documents, code provenance conventions.
+
+*Vendor-side controls:* exist inside vendor infrastructure; assessed via attestation (SOC 2 reports, published documentation, incident history, model cards). Grade reflects attestation quality, not direct inspection. Label as "vendor-attested."
+
+*Structural controls:* architectural properties of the platform that hold by design, not through active maintenance. Label as L2-structural. They are real advantages — they are not evidence of a security program and do not count toward control maturity. When vendor updates change platform architecture, structural controls can disappear without warning.
+
+**Platform safety vs workflow safety must be graded separately.**
+A strong vendor-attested sandbox (AI-02 platform safety: L2-vendor) does not imply a safe workflow. A system with L2 platform safety and L0 workflow safety is not "L2 safe." Both dimensions must appear in any audit report.
+
+---
+
+## 0.8 Environment Type Classification *(v0.2)*
+
+Before enumerating tools or grading controls, classify the agent environment. Classification determines which control questions apply, which risks dominate, and what governance level is required.
+
+| Type | Description | Primary risk | Containment mechanism | Governance requirement |
+|---|---|---|---|---|
+| **Unified sandbox** | Single privileged execution surface (e.g., cloud AI with bash) | Egress + cross-session memory write + upstream pipeline influence | Sandbox technology (gVisor, VM) | Medium — policy and pipeline controls |
+| **Capability-partitioned** | Multiple separated tool surfaces (e.g., managed AI with separate code/web/memory tools) | Surface enumeration gap + hidden working state + UI features as write surfaces | Isolation between tool partitions | Medium — harder to enumerate completely |
+| **Local agent** | Runs on user machine with access to local filesystem and secrets | Full user privilege + long autonomy windows + filesystem blast radius | Policy + user review only | High — strongest governance required |
+| **Hybrid pipeline** | Multiple environments in sequence (e.g., cloud AI → local agent) | Trust boundary between stages is implicit or undefined | Method parity required across stages | Highest — each stage must be audited; trust hand-off must be explicit |
+
+For **hybrid pipelines**: define the trust level of each stage's outputs for the next stage. Code generated by a cloud AI and passed to a local agent without trust marking is treated as C2-trust at best, not as ground truth. Commit provenance conventions (e.g., `# source: claude.ai | YYYY-MM-DD | topic`) are the minimum traceability control for this configuration.
+
+---
+
+
+![Figure 2: Agentic threat taxonomy — three layers](assets/figures/fig2-taxonomy.svg)
 *Figure 2: The taxonomy separates attack paths (Layer A), system weaknesses that enable them (Layer B), and ecosystem conditions that modify their severity (Layer C).*
+
+![Figure 6: Threat taxonomy to control family coverage](assets/figures/fig6-taxonomy-controls.svg)
+*Figure 6: The taxonomy and the controls are not the same artifact. The taxonomy explains how attacks enter and spread; the control families define where the program must respond across Governance, Design, Implementation, Verification, and Operations.*
 
 ---
 
@@ -431,7 +581,7 @@ Update penetration test scope definitions to include agent layer, MCP servers, a
 
 ---
 
-![Figure 5: Migration path vs greenfield path](file:///home/claude/asamm_v02/assets/figures/fig5-two-paths.svg)
+![Figure 5: Migration path vs greenfield path](assets/figures/fig5-two-paths.svg)
 *Figure 5: Both paths share the same destination — the shared control reference — but start from different premises.*
 
 # Part 2 — Greenfield Path
@@ -570,7 +720,7 @@ A system is ready for scaled use only when the following outcomes are demonstrab
 
 This assessment asks for evidence of state, not evidence of process. A team may have review, logging, or approval mechanisms on paper and still fail if those mechanisms do not produce the required security outcome.
 
-## 2.7 Audit Methodology Reference *(v0.2)*
+## 2.7 Audit Methodology Reference *(introduced v0.2; updated v0.3)*
 
 The structured audit methodology introduced in v0.2 is in the `audit/` directory of the repository. It defines three audit tracks:
 
@@ -580,7 +730,34 @@ The structured audit methodology introduced in v0.2 is in the `audit/` directory
 
 **Critical ordering constraint:** Phase 1 (Mission Interview) must complete before Phase 2 (Data Collection). Blast radius cannot be correctly assigned without knowing what the owner cannot afford to lose. This is the single most common cause of audits that are technically correct but operationally useless.
 
+**Bounded severity.** *(v0.3)* When a finding's severity depends on a Phase 1 question the owner has not yet answered, the auditor must not manufacture certainty. Express severity as a bounded tuple: `High [bounded by C1]` means "High if C1 is answered unfavorably; may reduce if C1 clarifies the situation." This practice was validated in the PentOPS audit where 5 of 18 findings carried explicit bounds due to unanswered deepening questions. The audit continued — and the bounds gave the owner actionable information about what answers would change which severities.
+
+**Phase 0 checklist.** *(v0.3)* Before any data collection, the auditor should classify the engagement:
+
+- **Environment type:** production / staging / dev / personal workstation / hybrid
+- **Data classification:** regulated / commercial secret / internal / public
+- **Attacker model:** opportunistic / targeted / state-level / insider
+- **Shared responsibility:** self-hosted LLM? SaaS tools? vendor auth? cloud infrastructure?
+- **Repository topology:** monorepo / multi-repo / non-git working tree
+- **Audit track:** A (self-audit) / B (independent) / C (agent-as-code-auditor)
+
+This classification determines scope, severity calibration, and which deepening questions to prioritize. Without it, auditors invent categories ad hoc — reducing method parity across audits.
+
 See `audit/auditor-process.md` for the complete process, `audit/prompt-library.md` for data collection prompts, and `audit/environment-adapters.md` for platform-specific verification commands.
+
+**Report sanitization before sharing.** *(v0.3)*
+
+An audit that finds credential leaks will, by construction, contain those credentials in its findings — API keys, OAuth tokens, PATs, internal hostnames, file paths. The irony is structural: the more thorough the audit, the more secrets it captures; the more useful the report, the more dangerous it is to share unsanitized. An audit report that discovers credential leaks and is then shared without redaction *is itself a credential leak* — through the very artifact meant to prevent them.
+
+Before any report leaves the auditor–owner boundary:
+
+1. **Strip all literal secrets.** Replace every token, key, and password with a redacted placeholder: `tvly-dev-eJRPznY…` → `[REDACTED-TAVILY-KEY]`. Keep enough structure to show the finding class (e.g., "API key with default value in settings.py") without the actual credential.
+2. **Strip internal hostnames and IPs** that are not necessary to understand the finding. `192.168.100.206` → `[INTERNAL-HOST]`.
+3. **Strip PII** — real usernames, email addresses, file paths containing usernames (`/Users/arudakov/…` → `/Users/[USER]/…`).
+4. **Triple-check.** Run a grep for known secret patterns (`grep -iE "token|key|password|secret|oauth|pat|tvly|y0__|bearer" report.html`). If any literal credential survives, redact it. Repeat the grep after redaction to confirm.
+5. **Automate where possible.** A `sanitize-report.sh` that applies regex replacements for known patterns is less error-prone than manual review. The script itself should be versioned alongside the audit tooling.
+
+This applies to reports shared for any purpose — peer review, methodology improvement, public case studies, or submission to the ASAMM project.
 
 ---
 
@@ -589,6 +766,9 @@ See `audit/auditor-process.md` for the complete process, `audit/prompt-library.m
 # Part 3 — Shared Control Reference
 
 This section is the reference layer of the framework. It defines controls applicable to both migration and greenfield programs, organizes them by SAMM function, specifies maturity levels, and maps them to external frameworks. It is intended as a working tool, not a compliance checklist.
+
+![Figure 9: 21 controls across 5 SAMM families](assets/figures/fig9-control-families.svg)
+*Figure 9: The 21 controls span five SAMM function families — Governance, Design, Implementation, Verification, and Operations. Each family addresses a different lifecycle phase; together they cover the full agentic assurance surface.*
 
 ## 3.1 How to Read the Matrix
 
@@ -602,7 +782,7 @@ This section is the reference layer of the framework. It defines controls applic
 
 L1 is the floor, not the goal. A program at L1 across all controls has defined its boundary and can demonstrate it exists. A program at L3 has instrumented that boundary and uses it to drive decisions about autonomy expansion.
 
-![Figure 4: Control maturity levels](file:///home/claude/asamm_v02/assets/figures/fig4-maturity-levels.svg)
+![Figure 4: Control maturity levels](assets/figures/fig4-maturity-levels.svg)
 *Figure 4: L1 establishes that a control exists and is applied. L2 makes it repeatable with tracked evidence. L3 makes it adaptive — metrics drive decisions and capability changes trigger reassessment.*
 
 ### Evidence vs. process
@@ -618,7 +798,7 @@ The distinction that matters: **process says the control is applied; evidence sh
 | **ID** | Stable short identifier for cross-referencing |
 | **Control** | Plain-English name |
 | **SAMM function** | Primary SAMM function this control extends or introduces |
-| **Threat coverage** | Which taxonomy classes this control addresses (C1–C4, W1, W2) |
+| **Threat coverage** | Which taxonomy classes this control addresses (C1–C4, W1, W2, E1–E3) |
 | **L1** | Minimum viable implementation |
 | **L2** | Managed, repeatable, consistently evidenced |
 | **L3** | Measured, adaptive, triggers spiral reassessment |
@@ -626,9 +806,6 @@ The distinction that matters: **process says the control is applied; evidence sh
 | **Path** | M = Migration, G = Greenfield, B = Both |
 
 ---
-
-![Figure 6: Threat taxonomy to control families mapping](file:///home/claude/asamm_v02/assets/figures/fig6-taxonomy-controls.svg)
-*Figure 6: Solid lines show primary coverage — the control directly addresses the threat class. Dashed lines show overlay coverage — the weakness overlay amplifies or enables the threat, and the control reduces that amplification.*
 
 ## 3.2 Control Matrix
 
@@ -652,7 +829,7 @@ Evidence: agent registry exists and is current; each entry has a named owner; au
 
 *Trust grading in the agent registry.*
 
-Autonomy classification alone is insufficient. An agent may be classified as semi-autonomous and still be an F-grade source — newly deployed, behaviorally untested, with no operational track record. The agent registry should record both autonomy level and trust rating (see Section 0.5). Autonomy expansion requires trust rating improvement, not only technical capability demonstration. An agent cannot hold higher autonomy than its trust rating supports.
+Autonomy classification alone is insufficient. An agent may be classified as semi-autonomous and still be an F-grade source — newly deployed, behaviorally untested, with no operational track record. The agent registry should record both autonomy level and trust rating (see §0.6). Autonomy expansion requires trust rating improvement, not only technical capability demonstration. An agent cannot hold higher autonomy than its trust rating supports.
 
 
 
@@ -683,6 +860,28 @@ SAMM function: Governance | Threat coverage: C3 | Path: B
 | L3 | Kill switch invocation is logged and reviewed; partial-halt capabilities exist (halt specific tools or autonomy scope without full shutdown) |
 
 Evidence: kill switch owner is identifiable; halt was tested in the last cycle; escalation path is current and does not depend on a single individual.
+
+*Decommissioning.* *(v0.3)*
+
+AG-03 covers emergency halt. Orderly decommissioning is a separate concern: persistent state cleanup, credential revocation, downstream system notification, and data retention compliance. At L2, a decommissioning procedure should be documented alongside the kill switch, covering: purging cross-session persistent memory (AI-04 surfaces), revoking delegated credentials and tokens, notifying downstream consumers that depend on the agent's outputs, and confirming data retention obligations are met. For self-modifying agents, decommissioning includes verifying that no agent-written state persists in shared resources (repos, config files, project instructions) beyond the agent's operational lifetime.
+
+---
+
+**AG-04 — Inter-Agent Trust Protocol** *(v0.3 — new control)*
+
+SAMM function: Governance | Threat coverage: C1, C4, W2 | Path: B
+
+In multi-agent systems — orchestrators, subagent spawning, agent-to-agent delegation — each inter-agent communication channel is a trust boundary. Without authentication and integrity controls on these channels, a compromised or spoofed agent can inject instructions, exfiltrate data, or redirect goals across the agent graph. AG-01 enumerates agents; AG-04 governs how they communicate.
+
+| Level | Implementation |
+|---|---|
+| L1 | Inter-agent communication channels are enumerated; each channel has a documented trust assumption (authenticated / unauthenticated, integrity-checked / unchecked); agents can identify the source of incoming messages |
+| L2 | Inter-agent messages carry provenance metadata (source agent ID, trust grade, session context); agents reject or quarantine messages from unrecognized sources; delegation chains are logged with provenance |
+| L3 | Inter-agent trust is enforced cryptographically or via protocol-level controls; message integrity is verified before processing; anomalous inter-agent communication patterns trigger alerts |
+
+Evidence: channel inventory exists; at L1: trust assumptions documented per channel; at L2: provenance metadata format defined and populated in logs; delegation chain reconstructable from logs; at L3: integrity verification mechanism demonstrated.
+
+**Scope:** This control applies when agents can send instructions, context, or tool invocation requests to other agents — whether through explicit APIs, shared memory, message queues, or indirect channels (shared files, repos). Single-agent systems may mark this control as N/A.
 
 ---
 
@@ -727,6 +926,46 @@ The mapping to agentic systems is direct. A system prompt is an Auftrag, not an 
 
 The autonomy window assessment should therefore ask not only "how long before a checkpoint" but "how well does the agent understand the mission intent well enough to resist adversarial deviation from it."
 
+*Autonomy tiers.* *(v0.3)*
+
+The Auftragstaktik mapping produces five delegation tiers, from no delegation to full autonomous operation:
+
+| Tier | Name | Checkpoint model | Example |
+|---|---|---|---|
+| 0 | Manual | No delegation | Kill switch exercised; human-only |
+| 1 | Supervised | Per-action | claude.ai interactive: 1 response = 1 checkpoint |
+| 2 | Guided | Per-sequence | Claude Code with scope hooks; scoped CI job |
+| 3 | Bounded | Periodic | Overnight batch with hourly checkpoint |
+| 4 | Autonomous | Exception-only | Production agent with continuous monitoring and auto-halt |
+
+The effective autonomy tier is determined by three independent ceilings — the minimum of the three applies:
+
+**Effective Tier = min(Mission Ceiling, Risk Ceiling, Trust Ceiling)**
+
+No ceiling can be overridden by another. An A1-trusted agent on a Critical-risk action path is still Tier 1. A perfectly specified mission with an F6 agent is still Tier 0.
+
+*Mission Ceiling* is derived from three inputs, each scored 1–3:
+
+| Input | 1 (low) | 2 (medium) | 3 (high) |
+|---|---|---|---|
+| **Auftrag clarity** | Vague goal, no success criteria | Goal defined, success criteria partial | Goal + success + failure criteria explicit |
+| **Rahmen completeness** | Implicit only (alignment training) | Partially documented (some constraints) | Fully explicit, enforcement types specified, risk-accepted (AI-05 L2) |
+| **Enforcement coverage** | All behavioral ("will not") | Mixed — ≥1 critical constraint technical | Comprehensive — all critical constraints technical ("cannot") |
+
+Mission Ceiling = tier from min(Auftrag, Rahmen, Enforcement): value 1 → Tier 1, value 2 → Tier 3, value 3 → Tier 4.
+
+*Risk Ceiling* is derived from temporal risk tier of the highest-risk available action path: Critical → Tier 1, High → Tier 2, Moderate → Tier 3, Low → Tier 4.
+
+*Trust Ceiling* is derived from agent source reliability grade (§0.6): F → Tier 0, E → Tier 1, D → Tier 2, C → Tier 3, B/A → Tier 4.
+
+The **binding ceiling** identifies what constrains the system — and therefore what to fix: Mission binding → improve Auftrag/Rahmen/Enforcement. Risk binding → reduce blast radius. Trust binding → invest in evidence for trust promotion. Per-path differentiation is possible when AI-03 enforces per-task scope: each action path can operate at its own tier while the session default is set by the highest-risk available path.
+
+The supplemental registry (§3.5) tracks the planned *Delegation Model* appendix for promotion prerequisites per tier, worked examples, and per-path assessment templates.
+
+*Composite blast radius in multi-agent systems.* *(v0.3)*
+
+When multiple agents operate in a graph — orchestrators delegating to subagents, pipelines passing outputs between stages — blast radius must be assessed across agent boundaries, not only per agent. Agent A with Moderate blast radius delegating to Agent B with access to Tool C creates a composite path whose blast radius may be Critical even though no single agent's assessment shows it. At L2, the blast radius matrix should include composite paths through the agent graph, with the assessment driven by the highest-blast tool reachable through any delegation chain.
+
 *Mission-centric blast radius.*
 
 Standard blast radius assessment asks how much damage a compromised action causes. Mission-centric assessment asks a more precise question: **does the damage prevent mission completion, and can the mission state be recovered?**
@@ -742,6 +981,16 @@ Mission-centric blast radius assessment uses three dimensions:
 | **Lateral mission impact** | Does this affect concurrent agents or downstream tasks? | None / Adjacent / Cross-domain |
 
 Approval gating requirements follow from position in this space, not from a generic "high/medium/low" label. An action that is Critical × Irreversible × Cross-domain requires a hard checkpoint regardless of how routine it appears in isolation.
+
+*Agentic asset criticality dimensions.* *(v0.3)*
+
+Standard confidentiality/integrity/availability assessment is necessary but insufficient for agentic assets. Two additional dimensions address risks specific to agent-operated systems:
+
+**Cross-session persistence (P):** damage from corruption that propagates across sessions without detection. Relevant for memory stores, project instructions, config files the agent reads on startup. Assets with P=high (persists, influences behavior, not regularly reviewed) require elevated scrutiny — silent corruption propagates indefinitely.
+
+**Downstream trust inheritance (D):** do downstream consumers of this asset's content treat it as ground truth without independent verification? When D=high (downstream systems consume without re-verification), the asset's effective blast radius extends beyond its direct scope into every system that trusts its outputs. This is the pipeline amplification effect.
+
+Both dimensions should be assessed alongside standard C/I/A when populating the blast radius matrix. The supplemental registry (§3.5) tracks the planned *Asset Criticality and Blast Radius Guide* for scoring guidance and worked examples.
 
 This approach was first articulated for industrial control systems by Gordeychik, Gapanovich, and Rozenberg (2016) in the context of railway signalling security: CIA-based assessment systematically underestimates risk to safety-critical systems because it measures information properties rather than operational consequences. The same principle applies to agentic systems operating in production environments.
 
@@ -774,6 +1023,10 @@ SAMM function: Design | Threat coverage: C1, C2, C4, E3 | Path: B
 | L3 | Development-surface threat model is reviewed at each spiral turn; new development tooling requires threat model amendment; development-time sandboxing is assessed separately from production sandboxing |
 
 Evidence: threat model document explicitly covers development tooling; development-surface attack paths are listed separately from production paths; at least one control addresses development-specific risk.
+
+*Self-modifying agents: when dev IS prod.* *(v0.3)*
+
+AD-04 assumes a separation between the development surface (where the agent assists) and the production artifact (what gets deployed). For self-modifying agents — systems that write their own code in the same runtime they operate in — this separation does not exist. The development surface IS the production runtime. A successful prompt injection during a self-modification cycle produces persistent cross-restart code changes with production impact. For this architecture class, AD-04 must be applied as a single-surface assessment using the higher blast radius of either context, and self-modification events should be treated with the same scrutiny as production deployments.
 
 ---
 
@@ -859,6 +1112,24 @@ For security tooling deployed to clients, behavioral-only enforcement of "must n
 | L3 | Automated adversarial testing for constraint violation scenarios at each release; behavioral-only constraints tracked as a security metric with trend monitoring |
 
 Evidence: constraint inventory table with enforcement type and blast radius; at L2: behavioral test cases (probe + observed response + HOLDS/FAILS/AMBIGUOUS); formal risk acceptance record with owner and date.
+
+---
+
+**AI-06 — Agent Identity and Credential Governance** *(v0.3 — new control)*
+
+SAMM function: Implementation | Threat coverage: C2, C3, W1 | Path: B
+
+AI-03 governs what tools an agent can invoke per task. AI-06 governs the credentials that make those invocations possible: how tokens, keys, and delegated permissions are issued, scoped, rotated, and revoked. In multi-agent or multi-tool systems, credential delegation is the primary privilege escalation path — a compromised agent inherits every credential it holds.
+
+| Level | Implementation |
+|---|---|
+| L1 | Credentials available to each agent are inventoried; credential scope (which systems, what permissions) is documented per agent; credentials are not shared across agents with different trust grades |
+| L2 | Credentials are scoped to minimum required permissions per agent per task; token lifetime is bounded (short-lived preferred); credential rotation procedure exists and is tested; delegation chains are documented (which agent delegated which credential to which subagent) |
+| L3 | Credential issuance and revocation are automated; delegation chains are logged with full provenance; anomalous credential usage (scope expansion, off-hours access, cross-agent token reuse) triggers alerts |
+
+Evidence: credential inventory per agent; at L1: scope documented; at L2: rotation tested, delegation chains reconstructable; at L3: automated issuance/revocation demonstrated, anomaly detection active.
+
+**Scope note:** For single-agent systems using a single API key, L1 may be satisfied by documenting that key's scope and confirming it does not grant permissions beyond the agent's operational need. The control becomes critical when: multiple agents share infrastructure, agents can delegate to subagents, or agents hold credentials to external systems (client APIs, cloud services, repositories).
 
 ---
 
@@ -978,29 +1249,42 @@ Evidence: at least one behavioral vulnerability has been tracked and closed; clo
 
 ## 3.3 Framework Mapping
 
-Control IDs are stable across minor versions of this framework. The mapping is directional — it shows functional alignment, not clause-level equivalence.
+Control IDs are stable across minor versions of this framework. The mapping is directional — it shows functional alignment, not clause-level equivalence. Section identifiers reference:
 
+- **NIST AI RMF:** AI RMF 1.0 (January 2023), Tables 1–4. See also NIST-AI-600-1 GenAI Profile (July 2024) for generative AI-specific mitigation actions aligned to the same subcategories.
+- **NCSC Secure AI:** Guidelines for Secure AI System Development (NCSC/CISA, November 2023), 4 sections. See also UK Code of Practice for the Cyber Security of AI (DSIT, January 2025), 13 principles — a companion document with more granular provisions.
+- **MCP Security:** MCP Specification Security Best Practices (current revision). See also CoSAI MCP Security (January 2026) for a comprehensive 34-threat taxonomy with NIST/ISO mapping.
+- **OWASP ASI:** OWASP Top 10 for Agentic Applications 2026 (December 2025). Risk catalog; ASAMM provides the control and maturity layer.
+- **OWASP AI Testing Guide:** Testing methodology for AI trustworthiness across application, model, infrastructure, and data layers. ASAMM treats it as a complementary verification input rather than a replacement for lifecycle controls.
 
-| Control ID | SAMM Function | NIST AI RMF | NCSC Secure AI | MCP Security Spec |
-|---|---|---|---|---|
-| AG-01 | Governance | GOVERN 1.1, 1.2 | Principle 1 (Secure design) | — |
-| AG-02 | Governance | GOVERN 2.2 | Principle 3 (Secure build) | Security Best Practices §3 |
-| AG-03 | Governance | GOVERN 1.7 | Principle 6 (Secure operation) | — |
-| AD-01 | Design | MAP 1.5, 2.2 | Principle 1 (Secure design) | — |
-| AD-02 | Design | MAP 2.3 | Principle 1 (Secure design) | — |
-| AD-03 | Design | MAP 1.5 | Principle 1 (Secure design) | Security Best Practices §2 |
-| AD-04 | Design | MAP 1.5 | Principle 1 (Secure design) | Security Best Practices §4 |
-| AI-02 | Implementation | MANAGE 1.3 | Principle 5 (Secure deployment) | Security Best Practices §5 |
-| AI-03 | Implementation | MANAGE 1.3 | Principle 3 (Secure build) | Security Best Practices §3 |
-| AI-04 | Implementation | GOVERN 6.2 | Principle 1 (Secure design) | Security Best Practices §4 |
-| AI-05 | Implementation | GOVERN 1.1 | Principle 6 (Maintain security posture) | Security Best Practices §2 |
-| AV-01 | Verification | MEASURE 2.6 | Principle 4 (Secure evaluation) | — |
-| AV-02 | Verification | MEASURE 2.6, 2.7 | Principle 4 (Secure evaluation) | — |
-| AV-03 | Verification | MEASURE 2.7 | Principle 4 (Secure evaluation) | — |
-| AO-01 | Operations | MEASURE 2.8 | Principle 6 (Secure operation) | Security Best Practices §6 |
-| AO-02 | Operations | MEASURE 2.8 | Principle 6 (Secure operation) | — |
-| AO-03 | Operations | GOVERN 1.7 | Principle 6 (Secure operation) | — |
-| AO-04 | Operations | MANAGE 2.4 | Principle 6 (Secure operation) | — |
+| Control ID | SAMM Function | NIST AI RMF | NCSC Secure AI | MCP Security | OWASP ASI 2026 |
+|---|---|---|---|---|---|
+| AG-01 | Governance | MAP 1.2, GOVERN 2.1 | §1 Secure design | — | ASI10 (Rogue Agents) |
+| AG-02 | Governance | GOVERN 5.1 | §2 Secure development | Tool trust, supply chain | ASI02 (Tool Misuse), ASI04 (Supply Chain) |
+| AG-03 | Governance | GOVERN 1.7 | §4 Secure operation | — | ASI08 (Cascading Failures), ASI10 |
+| AG-04 | Governance | GOVERN 2.1 | §2 Secure development | Server auth, transport | ASI07 (Inter-Agent Comms) |
+| AD-01 | Design | MAP 1.5, 2.2 | §1 Secure design | — | ASI01 (Goal Hijack), ASI06 (Memory Poisoning) |
+| AD-02 | Design | MAP 2.3 | §1 Secure design | — | ASI08 (Cascading Failures), ASI09 (Trust Exploitation) |
+| AD-03 | Design | MAP 1.5 | §1 Secure design | Tool trust | ASI02 (Tool Misuse) |
+| AD-04 | Design | MAP 1.5 | §1 Secure design | Server lifecycle | ASI04 (Supply Chain) |
+| AI-01 | Implementation | MANAGE 1.3 | §2 Secure development | — | ASI01 (Goal Hijack) |
+| AI-02 | Implementation | MANAGE 1.3 | §3 Secure deployment | Sandboxing, isolation | ASI05 (Code Execution) |
+| AI-03 | Implementation | MANAGE 1.3 | §2 Secure development | Authorization, scoping | ASI02 (Tool Misuse), ASI03 (Privilege Abuse) |
+| AI-04 | Implementation | MANAGE 1.3 | §1 Secure design | Server lifecycle | ASI06 (Memory Poisoning) |
+| AI-05 | Implementation | GOVERN 1.4 | §4 Secure operation | — | ASI09 (Trust Exploitation) |
+| AI-06 | Implementation | GOVERN 5.1 | §2 Secure development | Credential mgmt, OAuth | ASI03 (Privilege Abuse) |
+| AV-01 | Verification | MEASURE 2.6 | §3 Secure deployment | — | ASI01, ASI02 |
+| AV-02 | Verification | MEASURE 2.6, 2.7 | §3 Secure deployment | — | ASI01, ASI02 |
+| AV-03 | Verification | MEASURE 2.7 | §3 Secure deployment | — | ASI01–ASI06 |
+| AO-01 | Operations | MEASURE 2.8 | §4 Secure operation | Logging, provenance | ASI08 (Cascading Failures) |
+| AO-02 | Operations | MEASURE 2.8 | §4 Secure operation | — | ASI10 (Rogue Agents) |
+| AO-03 | Operations | GOVERN 1.7 | §4 Secure operation | — | ASI04 (Supply Chain) |
+| AO-04 | Operations | MANAGE 2.4 | §4 Secure operation | — | ASI10 (Rogue Agents) |
+
+**Coverage notes:**
+OWASP ASI03 (Identity & Privilege Abuse) is addressed through AI-03 (tool authorization) and AI-06 (credential governance, v0.3). ASI07 (Insecure Inter-Agent Communication) is addressed through AG-04 (inter-agent trust protocol, v0.3). Both controls are new in v0.3 and require real-world audit validation.
+
+OWASP AI Testing Guide coverage is intentionally indirect here: AITG supplies test methods and test scopes, especially for verification work under AV-01/AV-02/AV-03, while ASAMM supplies the control ownership model, maturity expectations, evidence discipline, and reassessment logic around those tests.
 
 ---
 
@@ -1033,3 +1317,28 @@ A closed behavioral vulnerability is a reassessment trigger. Review: does this f
 
 **A note on disclosure compression (E1)**
 For agentic systems, the interval between public disclosure of a behavioral attack pattern and its adoption in active exploitation may be very short. Teams should treat novel behavioral attack classes — new prompt injection techniques, new tool abuse patterns — with the urgency of a critical CVE even when no CVE exists. The absence of a CVE identifier does not indicate low severity. It indicates an immature classification system.
+
+---
+
+## 3.5 Supplementary Materials Registry
+
+The following companion documents extend the framework with implementation guidance, templates, and worked examples. They are not part of the normative standard — the models and controls in Parts 0–3 are self-contained. Supplementary materials help teams *realize* decisions the standard defines.
+
+Items without the *(planned)* marker already exist in the repository today. Items marked *(planned)* are candidates for future versions and do not yet exist.
+
+**When the standard changes, review this registry.** Each entry notes which sections it depends on. A change to a referenced section may invalidate or require updates to the supplementary material.
+
+| Document | Purpose | Depends on | Update trigger |
+|---|---|---|---|
+| **Trust Grading Calibration Guide** | Full operational guide: per-grade criteria paragraphs, YAML trust record template, extended anti-patterns, review cadence procedures | §0.6 Trust Grading Model | Any change to grade criteria, enforcement routing, or promotion/demotion rules |
+| **Asset Criticality and Blast Radius Guide** | Asset criticality scoring (C/I/A/P/D with calibration), blast radius triple (S/V/P), temporal risk tiers, action path assessment template, worked examples | AD-02 Autonomy Window Assessment | Any change to blast radius dimensions, mission-centric assessment, or autonomy tiers |
+| **Delegation Model** | Full Auftragstaktik operationalization: promotion prerequisites per tier, per-path override formulas, one-page assessment cheat sheet, worked examples (Ouroboros, Claude Code, production agent) | AD-02 Autonomy Window Assessment, §0.6 Trust Grading | Any change to autonomy tiers, three-ceiling formula, or trust grade mapping |
+| **Audit Prompt Library** (`audit/prompt-library.md`) | [OWNER], [SELF], [AUDITOR], [PRODUCT] prompt families for systematic data collection | §2.7 Audit Methodology Reference | Any change to audit tracks or phase gates |
+| **Environment Adapters** (`audit/environment-adapters.md`) | Platform-specific verification commands (claude.ai, ChatGPT, Claude Code, local agents) | §2.7 Audit Methodology Reference | New environment type added or platform changes |
+| **Worked Audit Samples** (`audit/samples/`) | Public worked examples showing raw findings, integrity review, mission interview updates, and final scoring | §2.7 Audit Methodology Reference, Part 3 Control Matrix | Any change to audit output structure, scoring logic, or evidence tags |
+| **Behavioral Test Templates** *(planned)* | Canonical test cases for C1/C2/C3 threat classes with probe text, expected response, scoring | AV-01, AV-02 | Any change to threat taxonomy or behavioral test requirements |
+| **MCP Controls Checklist** *(planned)* | MCP-specific security checklist: transport type, version pinning, credential handling, supply chain attestation, capability enumeration per server. Maps to AG-02, AI-03, AI-06 | AG-02, AI-03, AI-06, §3.3 MCP column | Any change to tool registry or credential governance controls |
+| **controls.yaml** *(planned)* | Machine-readable control index: ID, name, family, threat coverage, L1/L2/L3 summaries | Part 3 Control Matrix | Any control added, removed, or redefined |
+| **QUICKSTART.md** *(planned)* | 5 controls in 7 hours for small teams with no existing program | Part 2 Greenfield Path | Any change to priority-ordered controls or minimum baseline |
+
+The registry itself is a reassessment trigger: at each framework version, review whether existing supplementary materials are still consistent with the standard they extend.
