@@ -9,7 +9,7 @@ regeneration.
 | File | Description |
 |---|---|
 | `agentic-samm-full.md` | English monolith (all parts in one file, with frontmatter) |
-| `agentic-samm-ru.md` | Russian version (includes Executive Summary, Glossary, GOST mapping) |
+| `agentic-samm-ru.md` | Russian version (legacy v0.2 translation; pending v0.5 sync) |
 | `agentic-samm-style.css` | Shared CSS for PDF rendering |
 
 ## Regeneration
@@ -30,7 +30,7 @@ weasyprint.HTML(filename='/tmp/agentic-samm-full.html', base_url='.').write_pdf(
 )
 "
 
-# Repeat for Russian:
+# Legacy Russian v0.2 artifact only; do not use for v0.5 review:
 pandoc assets/sources/agentic-samm-ru.md \
   --from markdown+smart --to html5 --standalone \
   --css assets/sources/agentic-samm-style.css --no-highlight \

@@ -7,8 +7,8 @@ authors:
     given-names: Sergey
     email: scadastrangelove@gmail.com
     affiliation: CyberOK
-date-released: 2026
-version: "0.3.0-draft"
+date-released: 2026-06-17
+version: "0.5.0-draft"
 license: CC-BY-SA-4.0
 repository-code: "https://github.com/scadastrangelove/asamm"
 abstract: >

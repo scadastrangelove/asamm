@@ -147,7 +147,7 @@ runtime), чтобы можно было провести аудит по кон
 
 ---
 
-## Секция 6 — Tool trust model (AD-03)
+## Секция 6 — Tool and connector trust modeling (AD-03)
 
 Для каждого инструмента из Секции 2:
 

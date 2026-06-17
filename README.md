@@ -20,7 +20,7 @@ There is also the question of gravity. In agentic systems, gravity is what happe
 
 ---
 
-[![Version](https://img.shields.io/badge/version-v0.3.0--draft-orange)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v0.5.0--draft-orange)](CHANGELOG.md)
 [![License](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)](LICENSE.md)
 [![Status](https://img.shields.io/badge/status-draft-yellow)](https://github.com/scadastrangelove/asamm)
 
@@ -50,7 +50,8 @@ The framework is structured around one central observation:
 | Want to run a structured audit | [Audit Methodology](audit/auditor-process.md) |
 | Need prompts for data collection | [Prompt Library](audit/prompt-library.md) |
 | Need environment-specific verification commands | [Environment Adapters](audit/environment-adapters.md) |
-| Want to see a real audit | [Example: claude.ai / Zhet (2026)](examples/claude-ai-zhet-audit-2026.md) |
+| Want to see a historical audit walkthrough | [Example: claude.ai / Zhet (2026)](examples/claude-ai-zhet-audit-2026.md) |
+| Want raw audit background across environment types | [Historical audit samples](audit/samples/) (v0.2-era artifacts; not v0.5 normative examples) |
 | See what is deferred to future versions | [Roadmap](ROADMAP.md) |
 
 ---
@@ -65,15 +66,22 @@ part3-controls.md             21 controls across 5 SAMM functions, L1/L2/L3, evi
 taxonomy.md                   Agentic threat taxonomy reference (standalone)
 controls/                     Individual control files (AG-01 through AO-04, including AG-04 and AI-06)
 assets/figures/               SVG figures
-audit/                        Structured audit methodology (introduced v0.2; updated v0.3)
+audit/                        Structured audit methodology (introduced v0.2; updated v0.5)
   auditor-process.md          Three audit tracks, phase gates, anti-patterns
+  agent-environment-profile.md Phase 0 environment profile: role, implementation, composition, tier, protocols
   prompt-library.md           [OWNER], [SELF], [AUDITOR], [PRODUCT] prompt families
   environment-adapters.md     Platform-specific verification commands
+  protocol-checklist.md       MCP / A2A / ACP protocol checklist
+  runtime-composition-inventory.md  AIBOM/runtime composition inventory and decision trace template
   report-template.md          Blank audit report
   comparative-audit-protocol.md  Method-parity environment comparison
   analysis-principles.md      11 principles + environment checklists
   data-collection-prompt-v2-ru.md  Self-audit data collection prompt (Russian)
-examples/                     Real-world audit reports
+  samples/                    Historical raw audit artifacts (v0.2 background; not v0.5 normative examples)
+    SecOps/                   Track A+C, embedded agent (LangChain/LangGraph, self-hosted LLM), multi-tenant pre-prod, 2026-04-15
+    claude-code-zhet/         Track A self-audit, Claude Code dev pipeline, 2026-04-13
+    ouroboros/                Track C dual-agent comparison (Claude vs ChatGPT), self-modifying agent, 2026-04-13
+examples/                     Curated historical reference audit (walkthrough form)
   claude-ai-zhet-audit-2026.md    Track A self-audit, claude.ai, 2026-04-12
 ```
 
@@ -81,7 +89,7 @@ examples/                     Real-world audit reports
 
 ## The control families
 
-| Family | Controls | SAMM function | v0.3 status |
+| Family | Controls | SAMM function | Current status |
 |---|---|---|---|
 | **AG** — Governance | AG-01, AG-02, AG-03, **AG-04** | Governance | AG-04 (new): Inter-Agent Trust Protocol |
 | **AD** — Design | AD-01, AD-02, AD-03, AD-04 | Design | AD-02 extended: delegation, trust ceiling, risk ceiling, blast radius calibration |
@@ -91,9 +99,9 @@ examples/                     Real-world audit reports
 
 ---
 
-## v0.3 highlights
+## v0.5.0-draft highlights
 
-Five additions that emerged from publication consistency review and real audit feedback:
+Six additions that emerged from publication consistency review and real audit feedback:
 
 **1. Trust grading and delegation model calibration**
 Part 0 now defines the trust grading model in full, and AD-02 connects trust ceiling, risk ceiling, and blast radius into a practical delegation decision.
@@ -109,6 +117,9 @@ Part 3 now defines how to classify audit findings, avoid unbounded severity clai
 
 **5. External positioning**
 ASAMM now explicitly positions itself alongside OWASP Top 10 for Agentic Applications and the OWASP AI Testing Guide.
+
+**6. Audit methodology supplements**
+The audit methodology now includes Agent Environment Profile classification, an MCP/A2A/ACP protocol checklist, and an AIBOM/runtime composition inventory for dynamic or high-impact agentic workflows.
 
 ---
 
@@ -129,7 +140,10 @@ ASAMM now explicitly positions itself alongside OWASP Top 10 for Agentic Applica
 
 This framework uses a draft versioning policy. While in 0.x: the minor version increments for any significant addition (new controls, new methodology sections, new audit tracks). The patch version increments for corrections, consistency fixes, and regenerated artifacts. Control IDs are stable — existing IDs are never reassigned. Stable semantic versioning (1.0+) begins when the framework exits draft status.
 
-Current version: **v0.3.0-draft**
+Current version: **v0.5.0-draft**
+
+Version note: v0.4 is intentionally unused; the public reviewer draft advances
+directly from the v0.3 line to v0.5.0-draft.
 
 See [CHANGELOG.md](CHANGELOG.md) for history.
 

@@ -38,7 +38,6 @@ The distinction that matters: **process says the control is applied; evidence sh
 | **L2** | Managed, repeatable, consistently evidenced |
 | **L3** | Measured, adaptive, triggers spiral reassessment |
 | **Evidence** | What demonstrates the control is real |
-| **Path** | M = Migration, G = Greenfield, B = Both |
 
 ---
 
@@ -52,7 +51,7 @@ The controls below are written as reference controls; teams should adapt impleme
 
 **AG-01 — Agent Registry and Autonomy Classification**
 
-SAMM function: Governance | Threat coverage: C3, W1 | Path: B
+SAMM function: Governance | Threat coverage: C3, W1
 
 | Level | Implementation |
 |---|---|
@@ -72,7 +71,7 @@ Autonomy classification alone is insufficient. An agent may be classified as sem
 
 **AG-02 — Tool Registry Governance**
 
-SAMM function: Governance | Threat coverage: C2, C4 | Path: B
+SAMM function: Governance | Threat coverage: C2, C4
 
 | Level | Implementation |
 |---|---|
@@ -86,7 +85,7 @@ Evidence: tool registry exists; each entry has owner and risk classification; pr
 
 **AG-03 — Kill Switch and Escalation Ownership**
 
-SAMM function: Governance | Threat coverage: C3 | Path: B
+SAMM function: Governance | Threat coverage: C3
 
 | Level | Implementation |
 |---|---|
@@ -104,7 +103,7 @@ AG-03 covers emergency halt. Orderly decommissioning is a separate concern: pers
 
 **AG-04 — Inter-Agent Trust Protocol** *(v0.3 — new control)*
 
-SAMM function: Governance | Threat coverage: C1, C4, W2 | Path: B
+SAMM function: Governance | Threat coverage: C1, C4, W2
 
 In multi-agent systems — orchestrators, subagent spawning, agent-to-agent delegation — each inter-agent communication channel is a trust boundary. Without authentication and integrity controls on these channels, a compromised or spoofed agent can inject instructions, exfiltrate data, or redirect goals across the agent graph. AG-01 enumerates agents; AG-04 governs how they communicate.
 
@@ -126,7 +125,7 @@ Evidence: channel inventory exists; at L1: trust assumptions documented per chan
 
 **AD-01 — Context Threat Modeling**
 
-SAMM function: Design | Threat coverage: C1, W1 | Path: B
+SAMM function: Design | Threat coverage: C1, W1
 
 | Level | Implementation |
 |---|---|
@@ -140,7 +139,7 @@ Evidence: threat model document includes context flow diagrams; each source carr
 
 **AD-02 — Autonomy Window Assessment**
 
-SAMM function: Design | Threat coverage: C3 | Path: B
+SAMM function: Design | Threat coverage: C3
 
 | Level | Implementation |
 |---|---|
@@ -153,13 +152,13 @@ Evidence: autonomy windows are documented; blast radius estimates exist; checkpo
 
 *Auftragstaktik and the design of autonomous action.*
 
-Prussian military doctrine introduced the concept of *Auftragstaktik* — mission-type tactics — in the 19th century as a solution to a problem that remains unsolved in most agentic systems: how do you maintain coherent, aligned behavior across a distributed force when communications are unreliable, the situation changes, and no plan survives first contact? Helmuth von Moltke the Elder captured it in 1869: *"Kein Operationsplan reicht mit einiger Sicherheit über das erste Zusammentreffen mit der feindlichen Hauptmacht hinaus"* — no plan of operations extends with any certainty beyond the first encounter with the enemy's main force.
+Prussian military doctrine introduced the concept of *Auftragstaktik* — mission-type tactics — in the 19th century as a solution to a problem that remains unsolved in most agentic systems: how do you maintain coherent, aligned behavior across a distributed force when communications are unreliable, the situation changes, and no plan survives first contact? Helmuth von Moltke the Elder captured the premise in a line commonly associated with his writing on strategy: no operational plan can be projected with certainty beyond first contact with the enemy's main force.
 
-Auftragstaktik's answer was not more detailed orders. It was better-internalized intent. A commander specifies the *Auftrag* (mission objective and its rationale), the *Ressourcen* (available means), and the *Raum* (boundaries of discretion). Subordinates act autonomously within those boundaries, using judgment to achieve the objective when the plan no longer fits the situation.
+Auftragstaktik's answer was not more detailed orders. It was better-internalized intent. A commander specifies the *Auftrag* (mission objective and its rationale), the *Ressourcen* (available means), and the *Rahmen* (boundaries of discretion). In ASAMM, Ressourcen are assessed through Enforcement coverage: available means matter only when their permitted use is technically bounded and reviewable. Subordinates act autonomously within those boundaries, using judgment to achieve the objective when the plan no longer fits the situation.
 
-The mapping to agentic systems is direct. A system prompt is an Auftrag, not an algorithm. Tool access is Ressourcen. The autonomy window is Raum. Security is not achieved by enumerating every prohibited action — it is achieved by the agent understanding the objective well enough to act correctly when the context deviates from what the prompt anticipated. An agent that executes a prompt injection payload is not just exploited; it has failed its Auftrag.
+The mapping to agentic systems is direct. A system prompt is an Auftrag, not an algorithm. Tool access is Ressourcen; the autonomy window and explicit constraints form the Rahmen. Enforcement coverage distinguishes behavioral "will not" from technical "cannot." Security is not achieved by enumerating every prohibited action — it is achieved by the agent understanding the objective well enough to act correctly when the context deviates from what the prompt anticipated. An agent that executes a prompt injection payload is not just exploited; it has failed its Auftrag.
 
-The autonomy window assessment should therefore ask not only "how long before a checkpoint" but "how well does the agent understand the mission intent well enough to resist adversarial deviation from it."
+The autonomy window assessment should therefore ask not only "how long before a checkpoint" but whether the agent understands the mission intent well enough to resist adversarial deviation from it.
 
 *Autonomy tiers.* *(v0.3)*
 
@@ -235,7 +234,7 @@ This approach was first articulated for industrial control systems by Gordeychik
 
 **AD-03 — Tool and Connector Trust Modeling**
 
-SAMM function: Design | Threat coverage: C2, C4 | Path: B
+SAMM function: Design | Threat coverage: C2, C4
 
 | Level | Implementation |
 |---|---|
@@ -249,7 +248,7 @@ Evidence: trust boundary model includes tool layer; tool entries have trust clas
 
 **AD-04 — Development-Surface Threat Modeling**
 
-SAMM function: Design | Threat coverage: C1, C2, C4, E3 | Path: B
+SAMM function: Design | Threat coverage: C1, C2, C4, E3
 
 | Level | Implementation |
 |---|---|
@@ -271,7 +270,7 @@ AD-04 assumes a separation between the development surface (where the agent assi
 
 **AI-01 — Prompt and Schema Security Review**
 
-SAMM function: Implementation | Threat coverage: C1, C4, W1 | Path: B
+SAMM function: Implementation | Threat coverage: C1, C4, W1
 
 | Level | Implementation |
 |---|---|
@@ -285,7 +284,7 @@ Evidence: no security-critical agentic artifact can be deployed without appearin
 
 **AI-02 — Execution Boundary Control**
 
-SAMM function: Implementation | Threat coverage: C2, C3, W2 | Path: B
+SAMM function: Implementation | Threat coverage: C2, C3, W2
 
 | Level | Implementation |
 |---|---|
@@ -299,7 +298,7 @@ Evidence: sandbox policy document exists and matches deployed configuration; net
 
 **AI-03 — Scoped Tool Authorization**
 
-SAMM function: Implementation | Threat coverage: C2, W1 | Path: B
+SAMM function: Implementation | Threat coverage: C2, W1
 
 | Level | Implementation |
 |---|---|
@@ -313,7 +312,7 @@ Evidence: scope policy is documented per tool; high-blast-radius tools have demo
 
 **AI-04 — Agent Self-Modification Governance** *(v0.2)*
 
-SAMM function: Implementation | Threat coverage: C1, W1 | Path: B
+SAMM function: Implementation | Threat coverage: C1, W1
 
 Any agent capability to write data that influences its own future behavior — persistent memory, scratch files, project instructions, system prompt extensions — creates a self-modification surface with cross-session blast radius. This surface is not covered by tool registry (AG-02) or execution boundary controls (AI-02). Self-modification surfaces that the user cannot audit must be treated as L0 regardless of agent self-report.
 
@@ -331,7 +330,7 @@ Evidence: enumeration document listing each surface with cross-session flag; use
 
 **AI-05 — Operational Value Constraint Mapping** *(v0.2)*
 
-SAMM function: Implementation | Threat coverage: C3, W1 | Path: B
+SAMM function: Implementation | Threat coverage: C3, W1
 
 Operational value constraints — mission boundaries the agent must not cross — are simultaneously ethical statements and security controls. The critical distinction this control forces: **"will not" vs "cannot."**
 
@@ -352,19 +351,27 @@ Evidence: constraint inventory table with enforcement type and blast radius; at 
 
 **AI-06 — Agent Identity and Credential Governance** *(v0.3 — new control)*
 
-SAMM function: Implementation | Threat coverage: C2, C3, W1 | Path: B
+SAMM function: Implementation | Threat coverage: C2, C3, W1
 
-AI-03 governs what tools an agent can invoke per task. AI-06 governs the credentials that make those invocations possible: how tokens, keys, and delegated permissions are issued, scoped, rotated, and revoked. In multi-agent or multi-tool systems, credential delegation is the primary privilege escalation path — a compromised agent inherits every credential it holds.
+AI-03 governs what tools an agent can invoke per task. AI-06 governs the credentials and identities that make those invocations possible: how tokens, keys, service accounts, delegated permissions, impersonation grants, and agent identities are issued, scoped, rotated, attested, and revoked.
+
+Traditional non-human identity (NHI) controls answer whether a credential is valid. Agent identity must answer a harder runtime question: which agent is acting, who or what delegated the authority, what task or intent is the authority bound to, and whether that authority is still valid for the current action. A static service account may authenticate an agent, but it does not by itself provide accountability for agent reasoning, delegation, or tool use.
+
+In multi-agent or multi-tool systems, credential delegation is the primary privilege escalation path — a compromised agent inherits every credential it holds, and a spawned subagent can become more dangerous than its parent if credential scope is copied rather than intentionally delegated.
 
 | Level | Implementation |
 |---|---|
-| L1 | Credentials available to each agent are inventoried; credential scope (which systems, what permissions) is documented per agent; credentials are not shared across agents with different trust grades |
-| L2 | Credentials are scoped to minimum required permissions per agent per task; token lifetime is bounded (short-lived preferred); credential rotation procedure exists and is tested; delegation chains are documented (which agent delegated which credential to which subagent) |
-| L3 | Credential issuance and revocation are automated; delegation chains are logged with full provenance; anomalous credential usage (scope expansion, off-hours access, cross-agent token reuse) triggers alerts |
+| L1 | Credentials and agent identities available to each agent are inventoried; credential scope (which systems, what permissions, which authentication primitive) is documented per agent; credentials are not shared across agents with different trust grades |
+| L2 | Credentials are scoped to minimum required permissions per agent per task; token lifetime is bounded (short-lived preferred); rotation and offboarding procedures exist and are tested; delegation chains preserve the originating user/agent/task context |
+| L3 | Credential issuance and revocation are automated; agent identity is attested before sensitive credential issuance where supported; delegation chains are logged with full provenance; anomalous credential usage (scope expansion, off-hours access, cross-agent token reuse, stale spawned-agent identity) triggers alerts |
 
-Evidence: credential inventory per agent; at L1: scope documented; at L2: rotation tested, delegation chains reconstructable; at L3: automated issuance/revocation demonstrated, anomaly detection active.
+Evidence: credential and agent identity inventory per agent; at L1: scope documented; at L2: rotation/offboarding tested and delegation chains reconstructable with originating user/agent/task context; at L3: automated issuance/revocation and sensitive-credential attestation demonstrated, anomaly detection active.
 
 **Scope note:** For single-agent systems using a single API key, L1 may be satisfied by documenting that key's scope and confirming it does not grant permissions beyond the agent's operational need. The control becomes critical when: multiple agents share infrastructure, agents can delegate to subagents, or agents hold credentials to external systems (client APIs, cloud services, repositories).
+
+**NHI vs. agent identity.** Use this distinction during audit: NHI verifies credential validity; agent identity verifies acting agent, delegation context, task/intent, and current authority. ASAMM does not require a specific mechanism such as SPIFFE, OIDC, DID, or OAuth token exchange. It requires that the system can demonstrate who acted, under whose authority, for which task, with which scope, and how that authority expires or is revoked.
+
+**Offboarding and ghost agents.** Agent-spawning architectures create short-lived principals. If those identities or credentials survive the workflow, they become dormant access paths. At L2 and above, offboarding must cover spawned agents, delegated credentials, temporary tokens, queued tasks, scheduled automations, and protocol peers.
 
 ---
 
@@ -374,7 +381,7 @@ Evidence: credential inventory per agent; at L1: scope documented; at L2: rotati
 
 **AV-01 — Behavioral Test Coverage**
 
-SAMM function: Verification | Threat coverage: C1, C2, C3, W1 | Path: B
+SAMM function: Verification | Threat coverage: C1, C2, C3, W1
 
 | Level | Implementation |
 |---|---|
@@ -388,7 +395,7 @@ Evidence: behavioral test suite exists and runs in CI; test cases map to threat 
 
 **AV-02 — Adversarial Prompt and Tool Abuse Testing**
 
-SAMM function: Verification | Threat coverage: C1, C2, W1 | Path: B
+SAMM function: Verification | Threat coverage: C1, C2, W1
 
 | Level | Implementation |
 |---|---|
@@ -402,7 +409,7 @@ Evidence: adversarial test results are documented; findings have remediation tra
 
 **AV-03 — Pentest Scope Completeness**
 
-SAMM function: Verification | Threat coverage: C1, C2, C3, C4 | Path: B
+SAMM function: Verification | Threat coverage: C1, C2, C3, C4
 
 | Level | Implementation |
 |---|---|
@@ -420,7 +427,7 @@ Evidence: pentest scope document names agentic components; findings include beha
 
 **AO-01 — Action Provenance Logging**
 
-SAMM function: Operations | Threat coverage: W2 | Path: B
+SAMM function: Operations | Threat coverage: W2
 
 | Level | Implementation |
 |---|---|
@@ -434,7 +441,7 @@ Evidence: log records include all L2 fields; a sample incident can be reconstruc
 
 **AO-02 — Intent–Action Gap Monitoring**
 
-SAMM function: Operations | Threat coverage: W2, C1 | Path: B
+SAMM function: Operations | Threat coverage: W2, C1
 
 | Level | Implementation |
 |---|---|
@@ -456,7 +463,7 @@ Evidence: gap review process exists and is conducted on schedule; gap events are
 
 **AO-03 — Spiral Reassessment Triggers**
 
-SAMM function: Operations | Threat coverage: C3, W1 | Path: B
+SAMM function: Operations | Threat coverage: C3, W1
 
 | Level | Implementation |
 |---|---|
@@ -470,7 +477,7 @@ Evidence: trigger list exists and is current; at least one reassessment has been
 
 **AO-04 — Behavioral Vulnerability Tracking**
 
-SAMM function: Operations | Threat coverage: W1, W2 | Path: B
+SAMM function: Operations | Threat coverage: W1, W2
 
 | Level | Implementation |
 |---|---|
@@ -497,17 +504,17 @@ Control IDs are stable across minor versions of this framework. The mapping is d
 | AG-01 | Governance | MAP 1.2, GOVERN 2.1 | §1 Secure design | — | ASI10 (Rogue Agents) |
 | AG-02 | Governance | GOVERN 5.1 | §2 Secure development | Tool trust, supply chain | ASI02 (Tool Misuse), ASI04 (Supply Chain) |
 | AG-03 | Governance | GOVERN 1.7 | §4 Secure operation | — | ASI08 (Cascading Failures), ASI10 |
-| AG-04 | Governance | GOVERN 2.1 | §2 Secure development | Server auth, transport | ASI07 (Inter-Agent Comms) |
+| AG-04 | Governance | GOVERN 2.1 | §2 Secure development | Server auth, transport | ASI07 (Insecure Inter-Agent Communication) |
 | AD-01 | Design | MAP 1.5, 2.2 | §1 Secure design | — | ASI01 (Goal Hijack), ASI06 (Memory Poisoning) |
 | AD-02 | Design | MAP 2.3 | §1 Secure design | — | ASI08 (Cascading Failures), ASI09 (Trust Exploitation) |
 | AD-03 | Design | MAP 1.5 | §1 Secure design | Tool trust | ASI02 (Tool Misuse) |
 | AD-04 | Design | MAP 1.5 | §1 Secure design | Server lifecycle | ASI04 (Supply Chain) |
 | AI-01 | Implementation | MANAGE 1.3 | §2 Secure development | — | ASI01 (Goal Hijack) |
 | AI-02 | Implementation | MANAGE 1.3 | §3 Secure deployment | Sandboxing, isolation | ASI05 (Code Execution) |
-| AI-03 | Implementation | MANAGE 1.3 | §2 Secure development | Authorization, scoping | ASI02 (Tool Misuse), ASI03 (Privilege Abuse) |
+| AI-03 | Implementation | MANAGE 1.3 | §2 Secure development | Authorization, scoping | ASI02 (Tool Misuse), ASI03 (Identity & Privilege Abuse) |
 | AI-04 | Implementation | MANAGE 1.3 | §1 Secure design | Server lifecycle | ASI06 (Memory Poisoning) |
 | AI-05 | Implementation | GOVERN 1.4 | §4 Secure operation | — | ASI09 (Trust Exploitation) |
-| AI-06 | Implementation | GOVERN 5.1 | §2 Secure development | Credential mgmt, OAuth | ASI03 (Privilege Abuse) |
+| AI-06 | Implementation | GOVERN 5.1 | §2 Secure development | Credential mgmt, OAuth, identity chaining | ASI03 (Identity & Privilege Abuse) |
 | AV-01 | Verification | MEASURE 2.6 | §3 Secure deployment | — | ASI01, ASI02 |
 | AV-02 | Verification | MEASURE 2.6, 2.7 | §3 Secure deployment | — | ASI01, ASI02 |
 | AV-03 | Verification | MEASURE 2.7 | §3 Secure deployment | — | ASI01–ASI06 |
@@ -566,14 +573,16 @@ Items without the *(planned)* marker already exist in the repository today. Item
 | Document | Purpose | Depends on | Update trigger |
 |---|---|---|---|
 | **Trust Grading Calibration Guide** | Full operational guide: per-grade criteria paragraphs, YAML trust record template, extended anti-patterns, review cadence procedures | §0.6 Trust Grading Model | Any change to grade criteria, enforcement routing, or promotion/demotion rules |
-| **Asset Criticality and Blast Radius Guide** | Asset criticality scoring (C/I/A/P/D with calibration), blast radius triple (S/V/P), temporal risk tiers, action path assessment template, worked examples | AD-02 Autonomy Window Assessment | Any change to blast radius dimensions, mission-centric assessment, or autonomy tiers |
+| **Asset Criticality and Blast Radius Guide** | Asset criticality scoring (C/I/A/P/D with calibration), blast radius triple (M/R/L: mission impact, recovery envelope, lateral mission impact), temporal risk tiers, action path assessment template, worked examples | AD-02 Autonomy Window Assessment | Any change to blast radius dimensions, mission-centric assessment, or autonomy tiers |
 | **Delegation Model** | Full Auftragstaktik operationalization: promotion prerequisites per tier, per-path override formulas, one-page assessment cheat sheet, worked examples (Ouroboros, Claude Code, production agent) | AD-02 Autonomy Window Assessment, §0.6 Trust Grading | Any change to autonomy tiers, three-ceiling formula, or trust grade mapping |
 | **Audit Prompt Library** (`audit/prompt-library.md`) | [OWNER], [SELF], [AUDITOR], [PRODUCT] prompt families for systematic data collection | §2.7 Audit Methodology Reference | Any change to audit tracks or phase gates |
 | **Environment Adapters** (`audit/environment-adapters.md`) | Platform-specific verification commands (claude.ai, ChatGPT, Claude Code, local agents) | §2.7 Audit Methodology Reference | New environment type added or platform changes |
+| **Agent Environment Profile** (`audit/agent-environment-profile.md`) | Phase 0 environment classification: operational role, implementation pattern, composition pattern, deployment tier, autonomy tier, protocol exposure, runtime composition | §2.7 Audit Methodology Reference, AD-02 | New environment type, deployment tier, or composition pattern added |
 | **Worked Audit Samples** (`audit/samples/`) | Public worked examples showing raw findings, integrity review, mission interview updates, and final scoring | §2.7 Audit Methodology Reference, Part 3 Control Matrix | Any change to audit output structure, scoring logic, or evidence tags |
 | **Behavioral Test Templates** *(planned)* | Canonical test cases for C1/C2/C3 threat classes with probe text, expected response, scoring | AV-01, AV-02 | Any change to threat taxonomy or behavioral test requirements |
-| **MCP Controls Checklist** *(planned)* | MCP-specific security checklist: transport type, version pinning, credential handling, supply chain attestation, capability enumeration per server. Maps to AG-02, AI-03, AI-06 | AG-02, AI-03, AI-06, §3.3 MCP column | Any change to tool registry or credential governance controls |
+| **Protocol Checklist** (`audit/protocol-checklist.md`) | MCP/A2A/ACP/discovery checklist: transport, authn/authz, descriptor safety, delegation, identity chaining, telemetry, revocation | AG-02, AG-04, AD-03, AI-03, AI-06, AO-01 | Any change to tool registry, inter-agent trust, or credential governance controls |
+| **Runtime Composition Inventory** (`audit/runtime-composition-inventory.md`) | AIBOM/runtime composition supplement: models, prompts, tools, MCP servers, connectors, memory, identities, policies, decision traces | AG-01, AG-02, AG-04, AD-01, AD-03, AI-06, AO-01 | Dynamic tool, context, delegated-agent, or identity model changes |
 | **controls.yaml** *(planned)* | Machine-readable control index: ID, name, family, threat coverage, L1/L2/L3 summaries | Part 3 Control Matrix | Any control added, removed, or redefined |
-| **QUICKSTART.md** *(planned)* | 5 controls in 7 hours for small teams with no existing program | Part 2 Greenfield Path | Any change to priority-ordered controls or minimum baseline |
+| **QUICKSTART.md** *(planned)* | 5 controls implementable in 2–4 weeks for small teams with no existing program | Part 2 Greenfield Path | Any change to priority-ordered controls or minimum baseline |
 
 The registry itself is a reassessment trigger: at each framework version, review whether existing supplementary materials are still consistent with the standard they extend.

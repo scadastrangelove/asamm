@@ -1,6 +1,6 @@
 # ASAMM Audit Methodology
 
-This directory contains the structured audit methodology introduced in ASAMM v0.2 and updated in ASAMM v0.3.
+This directory contains the structured audit methodology introduced in ASAMM v0.2 and updated in ASAMM v0.5.
 All documents are in English except `data-collection-prompt-v2-ru.md` (Russian).
 
 ## How to use
@@ -8,8 +8,11 @@ All documents are in English except `data-collection-prompt-v2-ru.md` (Russian).
 | Document | Purpose | Start here if... |
 |---|---|---|
 | `auditor-process.md` | Complete audit process: phases, tracks, gates, anti-patterns | Running any ASAMM audit |
+| `agent-environment-profile.md` | Environment/profile classification: role, implementation, composition, tier, protocols, runtime composition | Scoping an audit before grading controls |
 | `prompt-library.md` | Structured prompts for [OWNER], [SELF], [AUDITOR], [PRODUCT] | Conducting data collection |
 | `environment-adapters.md` | Platform-specific verification commands (claude.ai, ChatGPT, Claude Code, local agents) | Auditing a specific AI environment |
+| `protocol-checklist.md` | MCP / A2A / ACP protocol checklist mapped to ASAMM controls | Auditing protocol-mediated tools, delegation, or discovery |
+| `runtime-composition-inventory.md` | AIBOM/runtime composition inventory for dynamic tools, context, identities, and delegated agents | Auditing dynamic or high-impact agentic workflows |
 | `report-template.md` | Blank audit report with all mandatory sections | Writing an audit report |
 | `comparative-audit-protocol.md` | Method-parity comparison of two environments | Evaluating two environments for the same workflow |
 | `analysis-principles.md` | 11 principles derived from practice + environment checklists | Reviewing findings or designing an audit |
@@ -35,6 +38,10 @@ Requirement: mission interview must complete before any code access.
 This is a hard requirement, not a recommendation.  
 An audit that starts with technical inventory cannot produce mission-centric findings
 without re-interviewing the owner.
+
+Phase 0 must also produce an Agent Environment Profile. The profile is not a
+maturity score; it determines which controls, evidence prompts, and supplements
+are mandatory for the audit scope.
 
 ## Evidence hierarchy
 

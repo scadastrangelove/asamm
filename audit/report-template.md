@@ -1,5 +1,5 @@
 # ASAMM Audit Report — [SYSTEM NAME]
-# Template version: 0.3 (2026-05-25)
+# Template version: 0.5.0-draft (2026-06-17)
 # Instructions: sections marked [REQUIRED] cannot be omitted.
 # Sections marked [CONDITIONAL] apply only when stated.
 
@@ -22,11 +22,21 @@
 |---|---|
 | System | |
 | Environment type | unified sandbox / capability-partitioned / local agent / hybrid |
+| Operational role | enterprise / coding / client-facing / personal/local / infrastructure/ops / mixed |
+| Implementation pattern | full orchestration framework / lightweight library / platform/low-code / local CLI/app / custom runtime |
+| Composition pattern | single agent + tools / parallel fleet / shared-state multi-agent / distributed chain / agent-spawning / federated/cross-boundary |
+| Deployment tier | shadow AI / vendor embedded / platform integrated / citizen-developer / code-executing / custom in-house / externally extended / multi-agent / federated |
+| Autonomy tier | Tier 0 / Tier 1 / Tier 2 / Tier 3 / Tier 4 |
+| Protocol exposure | none / MCP / A2A / ACP / discovery/registry / other |
+| Runtime composition | static / dynamic tools / dynamic context / dynamic subagents / dynamic external services |
+| Evidence mode | empirical / code inspection / self-report / vendor attestation / mixed |
+| Highest-blast-radius action | |
+| Required supplements | agent-environment-profile / protocol-checklist / runtime-composition-inventory / none |
 | **Audit track** | **Track A (self-audit) / Track B (independent) / Track C (agent-as-code-auditor)** |
 | Audit type | self-audit / external / comparative |
 | Audit date | |
 | Auditor | |
-| Framework version | ASAMM v0.3.0-draft (Gordeychik 2026) |
+| Framework version | ASAMM v0.5.0-draft (Gordeychik 2026) |
 | Evidence methods available | empirical / code inspection / self-report / attestation |
 | **Report status** | **draft (Phase 4.5 pending) / risk hypothesis / full audit / incomplete (unresolved Critical contradictions)** |
 | **Mission interview contamination** | **none / pre-contaminated (auditor saw code before interview) — affects blast radius reliability** |
@@ -132,6 +142,22 @@ Critical unless they appear in the Critical row here.*
 
 ## 5. Threat Model
 
+### Agent environment profile
+
+| Dimension | Value | Evidence |
+|---|---|---|
+| Operational role | | |
+| Implementation pattern | | |
+| Composition pattern | | |
+| Deployment tier | | |
+| Autonomy tier | | |
+| Protocol exposure | | |
+| Runtime composition | | |
+
+**Profile-driven scope adjustments:**
+- [Controls or supplements made mandatory by the profile]
+- [Controls marked N/A and why]
+
 ### Environment type and shared responsibility
 
 **Environment type:** [unified sandbox / capability-partitioned / local agent / hybrid]
@@ -170,10 +196,24 @@ If no Zhet-equivalent risk exists, state why.]
 
 [Duration, modes, edge cases. Reference AD-02 grade.]
 
-### C4 — Supply Chain / Pipeline
+### C4 — Supply Chain and Pipeline
 
 [If this agent feeds into downstream systems: describe the trust boundary.
 If standalone: state explicitly.]
+
+**AIBOM / runtime composition status:** [not required / required but missing / static AIBOM exists / runtime composition inventory exists / decision trace available]
+
+| Runtime component | Source | Authority exercised | Dynamic? | Trust grade | Evidence |
+|---|---|---|---|---|---|
+| | | | | | |
+
+### Layer C — Ecosystem Modifiers
+
+| Modifier | Applies? | Evidence | Effect on severity / response |
+|---|---|---|---|
+| E1 Disclosure Compression | yes/no | | |
+| E2 Composite Accountability | yes/no | | |
+| E3 Development Surface | yes/no | | |
 
 ### W1 — Constraint Failure
 
@@ -245,6 +285,12 @@ Status: ✅ resolved · ⚠️ partial · ❌ contradiction (see Phase 2.5) · �
 | Persistent memory | [output of view command] | | [empirical] |
 | Session files | | No | [empirical] |
 
+### Protocol checklist [REQUIRED if protocol exposure is MCP/A2A/ACP/discovery]
+
+| Protocol endpoint | Owner | Authn/authz | Delegation | Telemetry | Finding |
+|---|---|---|---|---|---|
+| | | | | | |
+
 ---
 
 ## 7. Control Matrix [REQUIRED]
@@ -277,45 +323,47 @@ Grade each layer separately. State explicitly if a layer is "not audited" or "pa
 
 | Control | Grade | Evidence | Gap to next level |
 |---|---|---|---|
-| AG-01 Agent Registry | | | |
-| AG-02 Tool Registry | | | |
-| AG-03 Kill Switch | | | |
+| AG-01 Agent Registry and Autonomy Classification | | | |
+| AG-02 Tool Registry Governance | | | |
+| AG-03 Kill Switch and Escalation Ownership | | | |
+| AG-04 Inter-Agent Trust Protocol | | | |
 
 ### Family 2 — Design
 
 | Control | Grade | Evidence | Gap to next level |
 |---|---|---|---|
-| AD-01 Context Threat Model | | | |
-| AD-02 Autonomy Window | | | |
-| AD-03 Tool Trust Model | | | |
-| AD-04 Dev Surface Threat Model | | | |
+| AD-01 Context Threat Modeling | | | |
+| AD-02 Autonomy Window Assessment | | | |
+| AD-03 Tool and Connector Trust Modeling | | | |
+| AD-04 Development-Surface Threat Modeling | | | |
 
 ### Family 3 — Implementation
 
 | Control | Grade | Evidence | Gap to next level |
 |---|---|---|---|
-| AI-01 Prompt Security | | | |
-| AI-02 Execution Boundary | | | |
-| AI-03 Tool Authorization | | | |
-| AI-04 Self-Modification [proposed] | | | |
-| AI-05 Value Constraints [proposed] | | | |
+| AI-01 Prompt and Schema Security Review | | | |
+| AI-02 Execution Boundary Control | | | |
+| AI-03 Scoped Tool Authorization | | | |
+| AI-04 Agent Self-Modification Governance | | | |
+| AI-05 Operational Value Constraint Mapping | | | |
+| AI-06 Agent Identity and Credential Governance | | | |
 
 ### Family 4 — Verification
 
 | Control | Grade | Evidence | Gap to next level |
 |---|---|---|---|
-| AV-01 Behavioral Testing | | | |
-| AV-02 Adversarial Testing | | | |
-| AV-03 Pentest Scope | | | |
+| AV-01 Behavioral Test Coverage | | | |
+| AV-02 Adversarial Prompt and Tool Abuse Testing | | | |
+| AV-03 Pentest Scope Completeness | | | |
 
 ### Family 5 — Operations
 
 | Control | Grade | Evidence | Gap to next level |
 |---|---|---|---|
-| AO-01 Action Logging | | | |
-| AO-02 Intent-Action Gap | | | |
-| AO-03 Reassessment Triggers | | | |
-| AO-04 Behavioral Vuln Tracking | | | |
+| AO-01 Action Provenance Logging | | | |
+| AO-02 Intent–Action Gap Monitoring | | | |
+| AO-03 Spiral Reassessment Triggers | | | |
+| AO-04 Behavioral Vulnerability Tracking | | | |
 
 ### Summary
 

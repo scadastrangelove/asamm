@@ -30,7 +30,7 @@
 | Class | Name | Description |
 |---|---|---|
 | **W1** | Constraint Failure | The agent's behavioral or operational constraints do not hold under adversarial or unexpected conditions. Subclasses: incomplete constraint specification, behavioral-only enforcement of mission-critical boundaries, constraint drift via persistent memory write (v0.2). |
-| **W2** | Assurance Blindspot | The system lacks visibility into what the agent did, why it did it, or what context influenced it. Subclasses: missing action logs, missing context provenance, intent-action gap not monitored, self-modification surface not auditable (v0.2). |
+| **W2** | Assurance Blindspot | The system lacks visibility into what the agent did, why it did it, or what context influenced it. Subclasses: missing action logs, missing context provenance, intent–action gap not monitored, self-modification surface not auditable (v0.2). |
 
 ---
 
@@ -63,4 +63,4 @@ Layer C now defines stable ecosystem modifier IDs: E1 (Disclosure Compression), 
 ---
 
 *For controls addressing each threat class, see [Part 3 — Control Reference](part3-controls.md).*
-*For attack pattern examples, see [Part 0 §0.4](part0-foundations.md).*
+*For attack pattern examples, see [Part 0 §0.4.1](part0-foundations.md).*

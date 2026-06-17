@@ -4,7 +4,7 @@
 
 <defs>
 <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </marker>
 </defs>
 
@@ -28,8 +28,8 @@
 
 <!-- C4 -->
 <rect x="20" y="180" width="200" height="32" rx="6" fill="#fac775" stroke="#ba7517" stroke-width="0.5"/>
-<text x="120" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">C4 — Supply chain ext.</text>
-<text x="120" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">tools, prompts, frameworks</text>
+<text x="120" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="500" fill="#412402">C4 — Supply Chain and Pipeline</text>
+<text x="120" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#633806">deps, connectors, CI/CD</text>
 
 <!-- Separator -->
 <line x1="20" y1="226" x2="220" y2="226" stroke="#d3d1c7" stroke-width="0.5" stroke-dasharray="3 2"/>

@@ -4,10 +4,10 @@
 
 <defs>
 <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </marker>
 <marker id="arr2" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-<path d="M8 1L2 5L8 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 1L2 5L8 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </marker>
 </defs>
 
@@ -15,10 +15,8 @@
 <text x="340" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="500" fill="#3d3d3a">Risk = Autonomy Window × Temporal Blast Radius</text>
 
 <!-- Timeline base -->
-<line x1="50" y1="130" x2="630" y2="130" stroke="#888780" stroke-width="1.5"/>
+<line x1="50" y1="130" x2="635" y2="130" stroke="#888780" stroke-width="1.5" marker-end="url(#arr)"/>
 <text x="50" y="148" font-family="Arial, sans-serif" font-size="10" fill="#888780">t</text>
-<line x1="625" y1="126" x2="635" y2="130" stroke="#888780" stroke-width="1.5"/>
-<line x1="625" y1="134" x2="635" y2="130" stroke="#888780" stroke-width="1.5"/>
 
 <!-- Human checkpoints (vertical bars) -->
 <!-- CP1 at x=80 -->

@@ -340,7 +340,7 @@ Structural gaps (require vendor action):
 |---|---|---|---|
 | AD-01 Context Threat Model | **L0→L1** | No prior threat model; this document is the L1 starting point | This document. Trigger: new upload type or use case |
 | AD-02 Autonomy Window | **L2-structural** | One response = one checkpoint; no /loop; empirically confirmed | Not a designed control — architectural property |
-| AD-03 Tool Trust Model | **L0** | No trust classification for claude.ai tools | Add trust ratings per ASAMM §0.5 to TOOL_REGISTRY.md |
+| AD-03 Tool and Connector Trust Modeling | **L0** | No trust classification for claude.ai tools | Add trust ratings per ASAMM §0.5 to TOOL_REGISTRY.md |
 | AD-04 Dev Surface Threat Model | **L0→L1** | This document is the L1 starting point | Quarterly review; trigger on new use cases |
 
 **Family 3 — Implementation**

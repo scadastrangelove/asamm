@@ -1,10 +1,10 @@
 <svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>Figure 1: Traditional cycle vs agentic spiral</title>
-<desc>Left side shows traditional SDLC as a closed cycle returning to the same point. Right side shows agentic SDLC as a spiral where each pass returns to the same phase but at a higher level of system complexity.</desc>
+<desc>Left side shows traditional SDLC as a closed cycle returning to the same point. Right side shows agentic SDLC as a spiral where each pass returns to the same phase but at a higher level of system complexity. Governance spans every turn rather than appearing as one phase label.</desc>
 
 <defs>
 <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </marker>
 </defs>
 
@@ -45,8 +45,6 @@
 <path d="M127 234 Q93 226 93 180" fill="none" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
 <path d="M93 152 Q93 110 127 98" fill="none" stroke="#888780" stroke-width="1.2" marker-end="url(#arr)"/>
 
-<!-- "same point" dot -->
-<circle cx="165" cy="98" r="3" fill="#888780"/>
 <text x="165" y="278" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#888780">Threat model unchanged between iterations</text>
 
 <!-- RIGHT: Spiral -->

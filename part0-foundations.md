@@ -11,7 +11,7 @@ Agentic development does not make SAMM's existing controls irrelevant. Many rema
 Traditional secure SDLC is a cycle. It returns to the same point with the same assumptions. Agentic SDLC is a spiral: each iteration returns to the same phases — governance, design, implementation, verification, operations — but the system being secured has changed, the tools it uses have changed, and the threat model must change with them. A framework that does not account for this is not a lifecycle framework. It is a snapshot.
 
 ![Figure 1: Traditional cycle vs agentic spiral](assets/figures/fig1-spiral.svg)
-*Figure 1: Traditional SDLC returns to the same point. Agentic SDLC returns to the same phase at a higher altitude — with changed system, changed tool surface, and updated threat model.*
+*Figure 1: Traditional SDLC returns to the same point. Agentic SDLC returns to the same phase at a higher altitude — with changed system, changed tool surface, and updated threat model. Governance spans every turn of the spiral rather than appearing as a single step.*
 
 
 The practical consequence is that a completed threat model, a clean DAST report, or a passed penetration test all retain their value — but only for the boundary they were designed to assess. For agentic systems, that boundary ends earlier than most programs assume. SAMM covers code and delivery artifacts. Agentic systems extend the assurance surface into context flows, tool invocations, delegated authority, approval checkpoints, and runtime behavior. This document covers that extension.
@@ -93,7 +93,47 @@ Any capability an agent has to write data that influences its own future behavio
 
 ---
 
-## 0.4 Attack Pattern Examples
+## 0.4 Threat Taxonomy
+
+The ASAMM threat taxonomy separates attack paths from the system weaknesses that
+enable them and from ecosystem conditions that modify severity or accountability.
+Control threat coverage in Part 3 refers to these stable class identifiers.
+
+### Layer A — Attack Paths
+
+| Class | Name | Description |
+|---|---|---|
+| **C1** | Context Injection | Untrusted content enters the agent's context window and influences its decisions or tool invocations. Subclasses: direct (system prompt / user message), indirect (retrieved document, tool output, web content), persistent (cross-session memory write). |
+| **C2** | Tool Abuse | Agent invokes a tool in a way that produces unintended or unsafe side effects. Subclasses: chain exploitation (composite harm from individually authorized actions), privilege escalation, data exfiltration, supply chain (compromised tool or MCP server). |
+| **C3** | Autonomy Window Exploitation | Unsafe action sequence completes within a single autonomy window before a human checkpoint can intervene. Subclasses: approval bypass (action volume exceeds review capacity), constraint bypass (behavioral-only constraint violated by adversarial context). |
+| **C4** | Supply Chain and Pipeline | Attack enters through a dependency, connector, upstream stage, or code artifact rather than through the agent's context window directly. Subclasses: poisoned dependency, MCP server compromise, upstream pipeline injection, code provenance loss. |
+
+### Layer B — Enabling Weaknesses
+
+| Class | Name | Description |
+|---|---|---|
+| **W1** | Constraint Failure | The agent's behavioral or operational constraints do not hold under adversarial or unexpected conditions. Subclasses: incomplete constraint specification, behavioral-only enforcement of mission-critical boundaries, constraint drift via persistent memory write. |
+| **W2** | Assurance Blindspot | The system lacks visibility into what the agent did, why it did it, or what context influenced it. Subclasses: missing action logs, missing context provenance, intent–action gap not monitored, self-modification surface not auditable. |
+
+### Layer C — Ecosystem Modifiers
+
+Ecosystem modifiers change severity, urgency, or accountability. They are not
+attack paths by themselves; they explain why the same technical weakness can
+carry materially different impact in different deployments.
+
+| Class | Name | Description |
+|---|---|---|
+| **E1** | Disclosure Compression | Agentic speed compresses responsible disclosure timelines. A finding that would normally allow days of coordination can become exploitable or public within a single autonomy window if the agent can reproduce, chain, or publish it before human review. |
+| **E2** | Composite Accountability | Harm emerges from a chain of locally authorized actors: model, orchestrator, tool, connector, human approver, vendor platform, downstream consumer. No single component appears solely responsible, but the composite system still creates mission impact. |
+| **E3** | Development Surface | Agentic development environments have elevated filesystem, repository, secret, network, and CI/CD access. Development-time compromise can therefore become production-impacting even when production agents are tightly constrained. |
+
+![Figure 2: Agentic threat taxonomy — three layers](assets/figures/fig2-taxonomy.svg)
+*Figure 2: The taxonomy separates attack paths (Layer A), system weaknesses that enable them (Layer B), and ecosystem conditions that modify their severity (Layer C).*
+
+![Figure 6: Threat taxonomy to control family coverage](assets/figures/fig6-taxonomy-controls.svg)
+*Figure 6: The taxonomy and the controls are not the same artifact. The taxonomy explains how attacks enter and spread; the control families define where the program must respond across Governance, Design, Implementation, Verification, and Operations.*
+
+### 0.4.1 Attack Pattern Examples
 
 The following examples illustrate how the primary threat classes manifest in practice. Each is a simplified but realistic scenario.
 
@@ -305,13 +345,5 @@ Before enumerating tools or grading controls, classify the agent environment. Cl
 | **Hybrid pipeline** | Multiple environments in sequence (e.g., cloud AI → local agent) | Trust boundary between stages is implicit or undefined | Method parity required across stages | Highest — each stage must be audited; trust hand-off must be explicit |
 
 For **hybrid pipelines**: define the trust level of each stage's outputs for the next stage. Code generated by a cloud AI and passed to a local agent without trust marking is treated as C2-trust at best, not as ground truth. Commit provenance conventions (e.g., `# source: claude.ai | YYYY-MM-DD | topic`) are the minimum traceability control for this configuration.
-
----
-
-![Figure 2: Agentic threat taxonomy — three layers](assets/figures/fig2-taxonomy.svg)
-*Figure 2: The taxonomy separates attack paths (Layer A), system weaknesses that enable them (Layer B), and ecosystem conditions that modify their severity (Layer C).*
-
-![Figure 6: Threat taxonomy to control family coverage](assets/figures/fig6-taxonomy-controls.svg)
-*Figure 6: The taxonomy and the controls are not the same artifact. The taxonomy explains how attacks enter and spread; the control families define where the program must respond across Governance, Design, Implementation, Verification, and Operations.*
 
 ---

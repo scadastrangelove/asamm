@@ -1,7 +1,7 @@
 # ASAMM Environment Adapters
-# Version: 0.3 (2026-04-12)
+# Version: 0.5.0-draft (2026-06-17)
 #
-# Usage: run core prompts from PROMPT_LIBRARY.md first,
+# Usage: run core prompts from `prompt-library.md` first,
 # then apply the relevant adapter's verification commands on top.
 # Adapter commands are environment-specific and may not apply to other platforms.
 #

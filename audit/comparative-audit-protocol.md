@@ -1,5 +1,5 @@
 # ASAMM Comparative Audit Protocol
-# Version: 0.3 (2026-04-12)
+# Version: 0.5.0-draft (2026-06-17)
 # Use when: evaluating two or more AI environments for the same workflow
 
 ---

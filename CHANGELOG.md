@@ -5,11 +5,15 @@ Format: [version] — date — summary
 
 ---
 
-## [0.3.0] — 2026-05-25
+## [0.5.0-draft] — 2026-06-17
+
+> Version note: v0.4 is intentionally unused. This release advances the public
+> reviewer draft directly from the v0.3 line to v0.5.0-draft.
 
 ### Added
 
 **Part 0 — Foundations:**
+- Threat taxonomy definitions inlined into Part 0 (§0.4): Layer A attack paths, Layer B enabling weaknesses, and Layer C ecosystem modifiers
 - Full trust grading model (§0.6): A–F source reliability × 1–6 behavioral confirmation, enforcement table, promotion/demotion rules, stale review rule, and calibration examples
 - Delegated evidence rule (§0.5): sub-agent, delegated-tool, and prior-pass claims are [inferred] until independently verified by the primary auditor
 - Figure 7: three operational models (Trust Grading, Blast Radius, Delegation)
@@ -17,9 +21,14 @@ Format: [version] — date — summary
 
 **Part 3 — Controls:**
 - AG-04: Inter-Agent Trust Protocol (new control)
-- AI-06: Agent Identity and Credential Governance (new control)
+- AI-06: Agent Identity and Credential Governance (new control), expanded with NHI vs. agent identity, delegation-chain evidence, offboarding, and ghost-agent handling
 - Figure 9: 21 controls across five SAMM families
-- Supplemental registry and public report handling guidance: report sanitization, disclosure compression, mission-impact vs exploit-detail separation
+- Supplemental registry and public report handling guidance: report sanitization and disclosure compression
+
+**audit/ directory:**
+- `agent-environment-profile.md`: Phase 0 Agent Environment Profile supplement
+- `protocol-checklist.md`: MCP / A2A / ACP protocol checklist mapped to ASAMM controls
+- `runtime-composition-inventory.md`: AIBOM/runtime composition inventory and decision trace supplement
 
 **controls/ directory:**
 - `controls/AG-04.md`: full standalone control specification
@@ -35,9 +44,9 @@ Format: [version] — date — summary
 
 - `part3-controls.md`: 19 → 21 controls; threat coverage definitions now include ecosystem modifiers E1–E3
 - `taxonomy.md`: Layer C formalized as E1 Disclosure Compression, E2 Composite Accountability, and E3 Development Surface
-- `part2-greenfield.md`: §2.7 audit methodology reference marked as introduced in v0.2 and updated in v0.3
-- `assets/sources/agentic-samm-full.md`: synchronized with v0.3 normative text for PDF generation
-- `README.md`, `CITATION.cff`, `ROADMAP.md`, and `STALE_ARTIFACTS.md`: updated for v0.3 publication consistency
+- `part2-greenfield.md`: §2.7 audit methodology reference marked as introduced in v0.2 and updated for the current draft
+- `assets/sources/agentic-samm-full.md`: synchronized with v0.5.0-draft normative text for PDF generation
+- `README.md`, `CITATION.cff`, `ROADMAP.md`, and `STALE_ARTIFACTS.md`: updated for v0.5.0-draft publication and reviewer-pack consistency
 
 ---
 
@@ -47,12 +56,12 @@ Format: [version] — date — summary
 
 **Part 0 — Foundations:**
 - Axiom 6: Evidence primacy (§0.2) — a claim about system state is a hypothesis until verified against primary evidence; authority of source does not substitute for evidence
-- Evidence taxonomy (§0.6) — six evidence states: [empirical], [empirical absence], [config], [inferred], [not testable], [unknown]; grade caps per evidence level
+- Evidence taxonomy (§0.5) — six evidence states: [empirical], [empirical absence], [config], [inferred], [not testable], [unknown]; grade caps per evidence level
 - Cloud-hosted agent shared responsibility model (§0.7) — user-side / vendor-side / structural control classification; platform safety vs workflow safety must be graded separately
 - Environment type classification (§0.8) — unified sandbox / capability-partitioned / local agent / hybrid pipeline; governance requirement per type
 - Core concepts: Diagnostic blast radius, Platform safety vs workflow safety, Self-modification surface (§0.3)
-- Attack pattern example: Self-modification via cross-session memory write (§0.4)
-- Trust grading: subagent spawning note (spawned agents start at F6 regardless of parent trust rating) (§0.5)
+- Attack pattern example: Self-modification via cross-session memory write (§0.4.1)
+- Trust grading: subagent spawning note (spawned agents start at F6 regardless of parent trust rating) (§0.6)
 
 **Part 3 — Controls:**
 - AI-04: Agent Self-Modification Governance (new control) — enumerates and grades agent capability to write persistent context; L1/L2/L3 with evidence criteria; self-report ceiling explicit

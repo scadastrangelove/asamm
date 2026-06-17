@@ -1,9 +1,9 @@
 # ASAMM Auditor's Process Guide
-# Version: 0.3 (2026-04-12)
+# Version: 0.5.0-draft (2026-06-17)
 
 ---
 
-## Two audit tracks
+## Three audit tracks
 
 Choose the track before starting. The track determines which phases are
 required, which prompts to use, and how to handle evidence.
@@ -38,7 +38,7 @@ After the self-audit report is complete, a human or external agent must:
 - [ ] **Prompt A4** — Cross-reference top 2 Critical findings against primary artifacts
 - [ ] Review Section D claims and verify at least 2 using external methods
 
-All four [AUDITOR] prompts are in PROMPT_LIBRARY.md Family 3.
+All four [AUDITOR] prompts are in `prompt-library.md` Family 3.
 
 Without Phase 4.5, a Track A audit is classified as **draft** and cannot be
 used for risk acceptance decisions.
@@ -232,9 +232,25 @@ Answer explicitly before proceeding:
 - What is the audit type? (self-audit / external / comparative)
 - What evidence methods are available? (empirical / code inspection / self-report / attestation)
 
-### 0.2 Classify environment type
+### 0.2 Build the Agent Environment Profile
 
 **This classification determines which control questions apply and how to grade.**
+Use `audit/agent-environment-profile.md` and record the profile in the audit
+metadata before technical data collection begins.
+
+Minimum profile dimensions:
+
+| Dimension | Examples |
+|---|---|
+| Operational role | enterprise, coding, client-facing, personal/local, infrastructure/ops, mixed |
+| Implementation pattern | full orchestration framework, lightweight library, platform/low-code, local CLI/app, custom runtime |
+| Composition pattern | single agent + tools, parallel fleet, shared-state multi-agent, distributed chain, agent-spawning, federated/cross-boundary |
+| Deployment tier | shadow AI, vendor embedded, platform integrated, citizen-developer, code-executing, custom in-house, externally extended, multi-agent, federated |
+| Autonomy tier | Tier 0 manual through Tier 4 autonomous (see AD-02) |
+| Protocol exposure | none, MCP, A2A, ACP, discovery/registry, other |
+| Runtime composition | static, dynamic tools, dynamic context, dynamic subagents, dynamic external services |
+
+Legacy environment type should still be recorded as a containment view:
 
 | Type | Description | Primary risk | Containment mechanism |
 |---|---|---|---|
@@ -245,6 +261,14 @@ Answer explicitly before proceeding:
 
 For cloud-hosted environments: identify vendor vs user responsibility boundary
 before grading any control. Vendor-side controls use attestation methodology.
+
+**Profile-driven supplements:**
+
+- Protocol exposure (MCP/A2A/ACP/discovery) → use `audit/protocol-checklist.md`
+- Dynamic tools/context/subagents or high-impact workflows → use
+  `audit/runtime-composition-inventory.md`
+- Local/personal/CI coding agents → apply the profile-specific evidence
+  requirements in `audit/agent-environment-profile.md`
 
 ### 0.3 Establish evidence baseline
 
@@ -348,35 +372,37 @@ until verification is done.
 | Prompt family | Track A (self-audit) | Track B (independent) |
 |---|---|---|
 | **[OWNER]** O1, O2, O3 | Run with owner before Phase 2 | Run with owner before Phase 2 |
-| **[SELF]** E, T, C, A, S, X, B, P | Run in agent session; answers are [empirical] | Use as interview guide with dev agent; answers are [inferred] |
+| **[SELF]** G, E, T, C, A, S, X, B, P | Run in agent session; answers are [empirical] only when backed by artifacts/tests | Use as interview guide with dev agent; answers are [inferred] |
 | **[AUDITOR]** A1, A2, A3, A4 | Run in Phase 4.5 (external verification pass) | Run during Phase 2 alongside interviews; answers are [empirical] |
 
 **Track A data collection order:**
 1. Owner prompts O1–O3 (Phase 1 gate)
-2. Self prompts E → T → C → A → S → X → B → P
+2. Self prompts G → E → T → C → A → S → X → B → P
 3. AUDITOR prompts A1–A4 deferred to Phase 4.5
 
 **Track B data collection order:**
 1. Owner prompts O1–O3 (Phase 1 gate)
 2. AUDITOR prompts A1–A4 first (establish empirical baseline)
-3. Self prompts E–P as interview questions with dev agent (results: [inferred])
+3. Self prompts G–P as interview questions with dev agent (results: [inferred])
 4. Artifact cross-reference (Prompt A4) to resolve contradictions before Phase 2.5
 
 ### Prompt domains and order ([SELF] family)
 
-1. Environment & execution (Prompt E)  ← always first; sets the sandbox context
-2. Tool surface (Prompt T)
-3. Context sources (Prompt C)
-4. Autonomy windows (Prompt A)
-5. Self-modification surface (Prompt S)  ← maps to AI-04 (v0.2)
-6. Ethical constraints (Prompt X)        ← maps to AI-05 (v0.2)
-7. Behavioral testing & logging (Prompt B)
-8. [For product audits] Add: codebase inspection (Prompt P)
+1. Agent environment profile (Prompt G) ← always first; sets audit scope
+2. Environment & execution (Prompt E)   ← sets the sandbox context
+3. Tool surface (Prompt T)
+4. Context sources (Prompt C)
+5. Autonomy windows (Prompt A)
+6. Self-modification surface (Prompt S) ← maps to AI-04 (v0.2)
+7. Ethical constraints (Prompt X)       ← maps to AI-05 (v0.2)
+8. Behavioral testing & logging (Prompt B)
+9. [For product audits] Add: codebase inspection (Prompt P)
 
 ### Verification requirements per domain
 
 | Domain | Track A minimum | Track B minimum |
 |---|---|---|
+| Agent environment profile | [config] profile record plus artifact or owner confirmation | [config]: owner/developer interview plus artifact review |
 | Environment | [empirical]: run ≥5 test commands (Prompt E) | [empirical]: Prompt A1 independently + Prompt E as interview |
 | Tool surface | [empirical]: attempt each tool; check blocked | [config]: Prompt T as interview + artifact review |
 | Context sources | [empirical]: upload test file; verify path | [inferred]: Prompt C as interview |
@@ -566,6 +592,10 @@ The following events require a new audit or at minimum a targeted reassessment:
 - New external integration or downstream system
 - Model version update by vendor
 - Incident or anomalous behavior detected
+- Agent Environment Profile changes (new operational role, composition pattern,
+  protocol exposure, or runtime composition mode)
+- New MCP/A2A/ACP endpoint, discovery registry, or delegated agent path
+- Runtime composition changes for high-impact workflows
 
 **Quarterly:**
 - Scheduled memory/persistent state audit

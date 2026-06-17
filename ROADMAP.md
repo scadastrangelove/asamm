@@ -7,13 +7,17 @@ done synthetically.
 
 ---
 
-## v0.3.0-draft — Current
+## v0.5.0-draft — Current
 
 **Controls:** 21 across 5 families (AG, AD, AI, AV, AO)
-**New in v0.3:** AG-04 (Inter-Agent Trust Protocol), AI-06 (Agent Identity and
+**Release highlights:** AG-04 (Inter-Agent Trust Protocol), AI-06 (Agent Identity and
 Credential Governance), trust grading calibration, delegated evidence rule,
 report sanitization guidance, ecosystem modifier IDs E1-E3, and OWASP AI Testing
 Guide / OWASP Agentic Top 10 positioning.
+
+**Methodology supplements in this release:** Agent Environment Profile,
+MCP/A2A/ACP Protocol Checklist, and AIBOM/runtime composition inventory. These
+extend audit scoping and evidence collection without adding new control IDs.
 
 **Known limitations of the current release:**
 
@@ -24,38 +28,38 @@ the baseline controls from v0.1 (AG-01 through AV-03). The v0.1 controls are
 thin reference cards (~130–160 words each); newer controls are full
 specifications with rationale, evidence criteria, and implementation notes.
 
-**Why not fixed in v0.3:** Normalizing control depth requires operational audit
+**Why deferred from v0.5:** Normalizing control depth requires operational audit
 experience per control — evidence criteria and implementation notes that are
 wrong are worse than none. Synthetic expansion without real audit data would
 produce confident-sounding but uncalibrated content.
 
-**Target:** v0.4 or v1.0, as each control is exercised in real audits.
+**Target:** v0.6 or v1.0, as each control is exercised in real audits.
 
-### L2 — Two-path model (Migration / Greenfield) is narrative, not structural
+### L2 — Two-path model (Migration / Greenfield) remains program-level
 
-`Path: B` (Both) appears on all 21 controls. The migration vs greenfield
-distinction is meaningful at the program level (Part 1 vs Part 2) but does not
-currently differentiate at the control level.
+The migration vs greenfield distinction is meaningful at the program level
+(Part 1 vs Part 2). Earlier drafts carried a per-control path column, but
+because every control applied to both paths, the column was removed rather than
+kept as false signal.
 
-**Why not fixed in v0.3:** Real differentiation requires understanding which
+**Why deferred from v0.5:** Real differentiation requires understanding which
 controls are genuinely inapplicable in one path — this requires data from teams
 in both situations. Arbitrary Path assignments create false precision.
 
-**Options for v0.4:**
-- Remove Path column from individual controls (honest)
-- Differentiate with data from real migration and greenfield programs
+**Option for v0.6:** differentiate with data from real migration and greenfield
+programs if audits show control-level divergence.
 
 ### L3 — Trust grading model needs empirical calibration
 
 The A–F × 1–6 trust grading notation is sound as a conceptual model. The
-enforcement semantics table (§0.6) maps ratings to required responses. v0.3 adds
+enforcement semantics table (§0.6) maps ratings to required responses. The v0.3 line added
 initial calibration examples, minimum observation windows, and promotion/demotion
 rules. What is still missing is empirical validation across multiple deployments.
 
-**Why not fixed in v0.3:** The model can be internally consistent, but calibration
+**Why deferred from v0.5:** The model can be internally consistent, but calibration
 thresholds still require real programs using it in practice.
 
-**Target:** v0.4+, with calibrated examples from real deployments.
+**Target:** v0.6+, with calibrated examples from real deployments.
 
 ### L4 — SAMM crosswalk is function-level only
 
@@ -64,23 +68,38 @@ Implementation, Verification, Operations). A full crosswalk at the practice and
 stream level — showing which SAMM activities are extended, replaced, or unchanged
 by each ASAMM control — does not exist.
 
-**Why not fixed in v0.3:** This requires OWASP SAMM contributor involvement and
+**Why deferred from v0.5:** This requires OWASP SAMM contributor involvement and
 cannot be done unilaterally without risking incorrect mapping claims.
 
-**Target:** v0.5 or v1.0, ideally with OWASP SAMM WG participation.
+**Target:** v0.6 or v1.0, ideally with OWASP SAMM WG participation.
 
-### L5 — Single audit example (claude.ai / Zhet, 2026)
+### L5 — Audit examples: present but not yet normalized
 
-The examples/ directory contains one reference audit. The framework's
-applicability across different environment types — embedded agents, multi-tenant
-orchestration, on-premise local models, regulatory environments — is asserted
-but not demonstrated.
+The repository now contains four real audit case studies across distinct
+environment types:
 
-**Why not fixed in v0.3:** Real audit examples require real audits. Synthetic
-examples are worse than none (they create false confidence in coverage).
+- `examples/claude-ai-zhet-audit-2026.md` — Track A self-audit, claude.ai (2026-04-12)
+- `audit/samples/SecOps/` — Track A+C, embedded agent (LangChain/LangGraph over
+  self-hosted LLM), multi-tenant pre-production (2026-04-15)
+- `audit/samples/claude-code-zhet/` — Track A self-audit, Claude Code dev
+  pipeline, with full process retrospective (2026-04-13)
+- `audit/samples/ouroboros/` — Track C dual-agent comparison (Claude vs ChatGPT)
+  of a self-modifying agent (2026-04-13)
 
-**Target:** 2–3 additional examples added as real audits are conducted. Priority
-environment types: Claude Code local, multi-agent pipeline, non-cloud LLM.
+These cover several environment types the v0.2 roadmap listed as undemonstrated
+(embedded agents, multi-tenant orchestration, local Claude Code, dual-agent
+comparison). What remains is editorial, not evidentiary: the samples are raw
+artifacts referencing ASAMM v0.2, not yet normalized to a common report shape,
+not re-verified against v0.5 control IDs (AG-04, AI-06), and only one
+(`examples/`) is presented in curated walkthrough form.
+
+**Why deferred from v0.5:** Normalizing real audit artifacts into consistent,
+v0.5-aligned reference reports requires re-running the relevant phases against
+the current control set, not cosmetic editing. Still-missing environment types:
+on-premise non-cloud LLM as primary target and regulatory environments.
+
+**Target:** v0.6 — normalize existing samples to v0.5 and add 1–2 examples for
+the remaining environment types.
 
 ### L6 — Literariness in control specs
 
@@ -105,15 +124,24 @@ validation before inclusion:
   needs elevation to a formal control.)
 
 - **Connector and MCP Server lifecycle split:** AG-02 currently covers the tool
-  registry. A future control may split MCP server lifecycle, trust at initial
+  registry and the new protocol checklist provides operational guidance. A
+  future control may still split MCP server lifecycle, trust at initial
   connection, and capability drift if real audits show AG-02 is overloaded.
+
+- **Runtime composition control candidate:** the AIBOM/runtime composition
+  inventory is currently a supplement. If real audits show that runtime
+  composition cannot be governed adequately through AG-02, AG-04, AD-03, AI-06,
+  and AO-01, consider elevating it to a dedicated governance or operations
+  control.
 
 - **Trust grading calibration appendix:** 5+ worked examples showing A1 through
   F6 assignments with evidence basis.
 
 - **Comparison audit example:** two environments audited with method parity,
   producing a `[empirical comparison]` verdict. (Protocol exists in
-  audit/comparative-audit-protocol.md; needs a real comparison to demonstrate.)
+  audit/comparative-audit-protocol.md; an initial dual-agent comparison exists in
+  `audit/samples/ouroboros/`. Remaining work: produce a normalized, v0.5-aligned
+  comparison report from it.)
 
 ---
 
@@ -144,7 +172,7 @@ Examples of what is missing:
 **Why deferred:** correct artifact examples require real programs using the
 controls. Synthetic examples risk creating false benchmarks.
 
-**Target:** v0.4, as real audit data accumulates.
+**Target:** v0.6, as real audit data accumulates.
 
 ### R2 — Trust grading calibration examples
 
@@ -157,7 +185,7 @@ required response, covering: new unverified agent, cloud API with SOC2,
 established local tool with 6-month track record, agent with known anomaly,
 agent post-incident.
 
-**Status:** initial calibration examples added in v0.3; real-deployment examples remain future work.
+**Status:** initial calibration examples added in the v0.3 line; real-deployment examples remain future work.
 
 ### R3 — Minimum starter set for small teams
 
@@ -170,7 +198,7 @@ Preliminary selection: AG-03 (kill switch), AG-01 minimum (agent list),
 AD-02 minimum (document max autonomy window), AO-01 minimum (any logging),
 AI-03 minimum (one tool restriction).
 
-**Target:** v0.4, after §2.7 audit methodology reference is validated.
+**Target:** v0.6, after §2.7 audit methodology reference is validated.
 
 ### R4 — Behavioral test case templates (AV-01)
 
@@ -179,12 +207,13 @@ A one-page appendix with 3–5 canonical test cases (e.g., "agent receives task
 with hidden instruction in comment → expected: refusal + log entry") would
 significantly lower the barrier to implementing AV-01 L1.
 
-**Target:** v0.4, after real test suites have been run in practice.
+**Target:** v0.6, after real test suites have been run in practice.
 
 ### R5 — Web/online version: anchor links and term tooltips
 
-Glossary is currently end-of-document. For an online version:
-- Anchor links from first mention of each term to glossary entry
+Term definitions currently live in §0.3 Core Concepts and §0.4 Threat Taxonomy.
+For an online version:
+- Anchor links from first mention of each term to its definition
 - Possibly: hover tooltips for key terms
 
 **Target:** when a web-hosted version is built (separate from PDF/Markdown).

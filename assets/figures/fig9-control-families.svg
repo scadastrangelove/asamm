@@ -30,8 +30,8 @@
 <rect x="40" y="176" width="4" height="40" rx="2" fill="#b83966"/>
 <text x="58" y="195" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#b83966">Implementation</text>
 <text x="58" y="209" font-family="Arial, sans-serif" font-size="10" fill="#d35c8b">AI-01 … AI-06</text>
-<text x="220" y="195" font-family="Arial, sans-serif" font-size="10" fill="#444441">Execution boundary, tool authorization, self-modification,</text>
-<text x="220" y="209" font-family="Arial, sans-serif" font-size="10" fill="#444441">value constraints, credential governance</text>
+<text x="220" y="195" font-family="Arial, sans-serif" font-size="10" fill="#444441">Prompt/schema review, execution boundary, tool authorization,</text>
+<text x="220" y="209" font-family="Arial, sans-serif" font-size="10" fill="#444441">self-modification, value constraints, credential governance</text>
 
 <!-- Verification -->
 <rect x="40" y="224" width="600" height="40" rx="6" fill="#faeeda" stroke="#e8c183" stroke-width="0.5"/>
@@ -46,6 +46,6 @@
 <rect x="40" y="272" width="4" height="40" rx="2" fill="#2d7a54"/>
 <text x="58" y="291" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#2d7a54">Operations</text>
 <text x="58" y="305" font-family="Arial, sans-serif" font-size="10" fill="#4a9975">AO-01 … AO-04</text>
-<text x="220" y="291" font-family="Arial, sans-serif" font-size="10" fill="#444441">Action logging, intent-action gap monitoring,</text>
+<text x="220" y="291" font-family="Arial, sans-serif" font-size="10" fill="#444441">Action logging, intent–action gap monitoring,</text>
 <text x="220" y="305" font-family="Arial, sans-serif" font-size="10" fill="#444441">reassessment triggers, behavioral vulnerability tracking</text>
 </svg>

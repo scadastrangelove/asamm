@@ -149,7 +149,7 @@ This assessment asks for evidence of state, not evidence of process. A team may 
 ---
 ---
 
-## 2.7 Audit Methodology Reference *(introduced v0.2; updated v0.3)*
+## 2.7 Audit Methodology Reference *(introduced v0.2; updated v0.5)*
 
 The structured audit methodology introduced in v0.2 is in the `audit/` directory of the repository. It defines three audit tracks:
 
@@ -161,18 +161,18 @@ The structured audit methodology introduced in v0.2 is in the `audit/` directory
 
 **Bounded severity.** *(v0.3)* When a finding's severity depends on a Phase 1 question the owner has not yet answered, the auditor must not manufacture certainty. Express severity as a bounded tuple: `High [bounded by C1]` means "High if C1 is answered unfavorably; may reduce if C1 clarifies the situation." This practice was validated in the PentOPS audit where 5 of 18 findings carried explicit bounds due to unanswered deepening questions. The audit continued — and the bounds gave the owner actionable information about what answers would change which severities.
 
-**Phase 0 checklist.** *(v0.3)* Before any data collection, the auditor should classify the engagement:
+**Phase 0 Agent Environment Profile.** *(v0.3)* Before any data collection, the auditor should produce an Agent Environment Profile that classifies the engagement across at least:
 
-- **Environment type:** production / staging / dev / personal workstation / hybrid
-- **Data classification:** regulated / commercial secret / internal / public
-- **Attacker model:** opportunistic / targeted / state-level / insider
-- **Shared responsibility:** self-hosted LLM? SaaS tools? vendor auth? cloud infrastructure?
-- **Repository topology:** monorepo / multi-repo / non-git working tree
-- **Audit track:** A (self-audit) / B (independent) / C (agent-as-code-auditor)
+- **Operational role:** coding agent, CI agent, personal assistant, embedded product agent, ops agent, research agent, or other
+- **Implementation pattern:** SaaS agent, local CLI agent, IDE agent, framework-built agent, CI/CD agent, multi-agent orchestrator, or custom runtime
+- **Composition pattern:** single agent, agent plus tools, agent plus RAG, multi-agent, agent plus workflow engine, or agent plus human approval loop
+- **Deployment tier:** personal workstation, developer environment, staging, CI, production, customer tenant, or regulated environment
+- **Autonomy tier and protocol exposure:** autonomy window, MCP/A2A/ACP/discovery exposure, and whether runtime composition changes during execution
+- **Data classification, attacker model, shared responsibility, repository topology, and audit track**
 
-This classification determines scope, severity calibration, and which deepening questions to prioritize. Without it, auditors invent categories ad hoc — reducing method parity across audits.
+This profile determines scope, severity calibration, required supplements, and which deepening questions to prioritize. Protocol exposure triggers `audit/protocol-checklist.md`; dynamic tools, delegated agents, high-impact workflows, or runtime identity changes trigger `audit/runtime-composition-inventory.md`. Without this profile, auditors invent categories ad hoc — reducing method parity across audits.
 
-See `audit/auditor-process.md` for the complete process, `audit/prompt-library.md` for data collection prompts, and `audit/environment-adapters.md` for platform-specific verification commands.
+See `audit/auditor-process.md` for the complete process, `audit/agent-environment-profile.md` for profile criteria, `audit/prompt-library.md` for data collection prompts, and `audit/environment-adapters.md` for platform-specific verification commands.
 
 **Report sanitization before sharing.** *(v0.3)*
 

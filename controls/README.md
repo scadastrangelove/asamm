@@ -9,27 +9,27 @@ including rationale, implementation levels, evidence criteria, and related contr
 
 | Control | Title | Added |
 |---|---|---|
-| [AG-01](AG-01.md) | Agent Registry | v0.1 |
-| [AG-02](AG-02.md) | Tool Registry | v0.1 |
-| [AG-03](AG-03.md) | Kill Switch | v0.1 |
+| [AG-01](AG-01.md) | Agent Registry and Autonomy Classification | v0.1 |
+| [AG-02](AG-02.md) | Tool Registry Governance | v0.1 |
+| [AG-03](AG-03.md) | Kill Switch and Escalation Ownership | v0.1 |
 | [AG-04](AG-04.md) | Inter-Agent Trust Protocol | **v0.3** |
 
 ### Family AD — Design
 
 | Control | Title | Added |
 |---|---|---|
-| [AD-01](AD-01.md) | Context Threat Model | v0.1 |
+| [AD-01](AD-01.md) | Context Threat Modeling | v0.1 |
 | [AD-02](AD-02.md) | Autonomy Window Assessment | v0.1 |
-| [AD-03](AD-03.md) | Tool Trust Model | v0.1 |
-| [AD-04](AD-04.md) | Dev Surface Threat Model | v0.1 |
+| [AD-03](AD-03.md) | Tool and Connector Trust Modeling | v0.1 |
+| [AD-04](AD-04.md) | Development-Surface Threat Modeling | v0.1 |
 
 ### Family AI — Implementation
 
 | Control | Title | Added |
 |---|---|---|
-| [AI-01](AI-01.md) | Prompt and Config Security | v0.1 |
-| [AI-02](AI-02.md) | Execution Boundary | v0.1 |
-| [AI-03](AI-03.md) | Tool Authorization | v0.1 |
+| [AI-01](AI-01.md) | Prompt and Schema Security Review | v0.1 |
+| [AI-02](AI-02.md) | Execution Boundary Control | v0.1 |
+| [AI-03](AI-03.md) | Scoped Tool Authorization | v0.1 |
 | [AI-04](AI-04.md) | Agent Self-Modification Governance | **v0.2** |
 | [AI-05](AI-05.md) | Operational Value Constraint Mapping | **v0.2** |
 | [AI-06](AI-06.md) | Agent Identity and Credential Governance | **v0.3** |
@@ -38,17 +38,17 @@ including rationale, implementation levels, evidence criteria, and related contr
 
 | Control | Title | Added |
 |---|---|---|
-| [AV-01](AV-01.md) | Behavioral Testing | v0.1 |
-| [AV-02](AV-02.md) | Adversarial Testing | v0.1 |
-| [AV-03](AV-03.md) | Penetration Testing Scope | v0.1 |
+| [AV-01](AV-01.md) | Behavioral Test Coverage | v0.1 |
+| [AV-02](AV-02.md) | Adversarial Prompt and Tool Abuse Testing | v0.1 |
+| [AV-03](AV-03.md) | Pentest Scope Completeness | v0.1 |
 
 ### Family AO — Operations
 
 | Control | Title | Added |
 |---|---|---|
-| [AO-01](AO-01.md) | Action Logging | v0.1 |
-| [AO-02](AO-02.md) | Intent-Action Gap Monitoring | v0.1 |
-| [AO-03](AO-03.md) | Reassessment Triggers | v0.1 |
+| [AO-01](AO-01.md) | Action Provenance Logging | v0.1 |
+| [AO-02](AO-02.md) | Intent–Action Gap Monitoring | v0.1 |
+| [AO-03](AO-03.md) | Spiral Reassessment Triggers | v0.1 |
 | [AO-04](AO-04.md) | Behavioral Vulnerability Tracking | v0.1 |
 
 ## Evidence requirements

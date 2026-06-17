@@ -1,6 +1,6 @@
 <svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>Figure 7: Three operational models</title>
-<desc>Three cards showing the operational models: Trust Grading answers who do we trust (source reliability times behavioral confirmation), Blast Radius answers how dangerous is the action (mission impact times recovery envelope times lateral spread), Delegation Model answers how much autonomy (effective tier equals minimum of Mission, Risk, and Trust Ceiling). Bottom bar notes that together they produce the enforcement gate.</desc>
+<desc>Three cards showing the operational models: Trust Grading answers who do we trust (source reliability times behavioral confirmation), Blast Radius answers how dangerous is the action (mission impact times recovery envelope times lateral mission impact), Delegation Model answers how much autonomy (effective tier equals minimum of Mission, Risk, and Trust Ceiling). Bottom bar notes that together they produce the enforcement gate.</desc>
 
 <!-- Background strip -->
 <rect x="20" y="20" width="640" height="220" rx="10" fill="#edf5fb" stroke="#b5d4f4" stroke-width="0.5"/>
@@ -25,8 +25,8 @@
 <text x="256" y="100" font-family="Arial, sans-serif" font-size="12" font-weight="500" fill="#ba7517">Blast Radius</text>
 <text x="256" y="115" font-family="Arial, sans-serif" font-size="10" font-style="italic" fill="#888780">how dangerous is the action?</text>
 <text x="256" y="136" font-family="Arial, sans-serif" font-size="10" fill="#444441">Asset: C / I / A + P + D</text>
-<text x="256" y="150" font-family="Arial, sans-serif" font-size="10" fill="#444441">Scope × irreversibility</text>
-<text x="256" y="164" font-family="Arial, sans-serif" font-size="10" fill="#444441">  × lateral propagation</text>
+<text x="256" y="150" font-family="Arial, sans-serif" font-size="10" fill="#444441">Mission impact × recovery</text>
+<text x="256" y="164" font-family="Arial, sans-serif" font-size="10" fill="#444441">  × lateral mission impact</text>
 <text x="256" y="178" font-family="Arial, sans-serif" font-size="10" fill="#444441">mission impact, not severity</text>
 <text x="256" y="192" font-family="Arial, sans-serif" font-size="10" fill="#444441">critical × irreversible → approval</text>
 <text x="256" y="206" font-family="Arial, sans-serif" font-size="10" fill="#444441">composite across agent graph</text>
