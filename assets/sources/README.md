@@ -9,8 +9,11 @@ regeneration.
 | File | Description |
 |---|---|
 | `agentic-samm-full.md` | English monolith (all parts in one file, with frontmatter) |
+| `agentic-samm-zh-CN.md` | Simplified Chinese community translation draft for v0.5.0-draft |
+| `ASAMM-zh-CN-glossary.md` | zh-CN terminology glossary, aligned where possible with OWASP China translations |
 | `agentic-samm-ru.md` | Russian version (legacy v0.2 translation; pending v0.5 sync) |
 | `agentic-samm-style.css` | Shared CSS for PDF rendering |
+| `agentic-samm-style.zh-CN.css` | CJK-capable CSS override for the zh-CN PDF |
 
 ## Regeneration
 
@@ -27,6 +30,20 @@ import weasyprint
 weasyprint.HTML(filename='/tmp/agentic-samm-full.html', base_url='.').write_pdf(
     'agentic-samm-review.pdf',
     stylesheets=[weasyprint.CSS(filename='assets/sources/agentic-samm-style.css')]
+)
+"
+
+# Simplified Chinese community translation draft:
+pandoc assets/sources/agentic-samm-zh-CN.md \
+  --from markdown+smart --to html5 --standalone \
+  --css assets/sources/agentic-samm-style.zh-CN.css --no-highlight \
+  -o /tmp/agentic-samm-zh-CN.html
+
+python3 -c "
+import weasyprint
+weasyprint.HTML(filename='/tmp/agentic-samm-zh-CN.html', base_url='.').write_pdf(
+    'assets/asamm-zh-CN.pdf',
+    stylesheets=[weasyprint.CSS(filename='assets/sources/agentic-samm-style.zh-CN.css')]
 )
 "
 

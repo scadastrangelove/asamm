@@ -56,6 +56,23 @@ The framework is structured around one central observation:
 
 ---
 
+## PDFs and translations
+
+| Artifact | Language | Status |
+|---|---|---|
+| [agentic-samm-review.pdf](agentic-samm-review.pdf) | English | v0.5.0-draft review PDF |
+| [assets/asamm-zh-CN.pdf](assets/asamm-zh-CN.pdf) | Simplified Chinese / zh-CN | Community translation draft for OWASP Mainland China review |
+| [assets/sources/agentic-samm-zh-CN.md](assets/sources/agentic-samm-zh-CN.md) | Simplified Chinese / zh-CN | Core monolith translation source |
+| [assets/sources/ASAMM-zh-CN-glossary.md](assets/sources/ASAMM-zh-CN-glossary.md) | Simplified Chinese / zh-CN | Terminology glossary aligned where possible with OWASP China translations |
+| [assets/asamm-ru.pdf](assets/asamm-ru.pdf) | Russian | Legacy v0.2 translation artifact; pending v0.5 sync |
+
+The zh-CN translation is a community draft, not an official OWASP China
+publication. It preserves control IDs, threat IDs, evidence tags, filenames,
+URLs, and code blocks in English for cross-language audit consistency. Figures
+remain in English in this first localization pass.
+
+---
+
 ## Document structure
 
 ```
@@ -83,6 +100,11 @@ audit/                        Structured audit methodology (introduced v0.2; upd
     ouroboros/                Track C dual-agent comparison (Claude vs ChatGPT), self-modifying agent, 2026-04-13
 examples/                     Curated historical reference audit (walkthrough form)
   claude-ai-zhet-audit-2026.md    Track A self-audit, claude.ai, 2026-04-12
+assets/sources/               PDF source monoliths and rendering CSS
+  agentic-samm-full.md        English source for the review PDF
+  agentic-samm-zh-CN.md       Simplified Chinese community translation draft
+  ASAMM-zh-CN-glossary.md     zh-CN terminology glossary
+assets/asamm-zh-CN.pdf        Simplified Chinese community translation draft PDF
 ```
 
 ---

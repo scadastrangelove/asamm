@@ -8,6 +8,7 @@ pandoc + weasyprint. Source files are in `assets/sources/`.
 | File | Language | Generated from |
 |---|---|---|
 | `agentic-samm-review.pdf` | English | `assets/sources/agentic-samm-full.md` |
+| `assets/asamm-zh-CN.pdf` | Simplified Chinese / zh-CN | `assets/sources/agentic-samm-zh-CN.md` (community translation draft) |
 | `assets/asamm-ru.pdf` | Russian | `assets/sources/agentic-samm-ru.md` (v0.2 translation; pending v0.5 sync) |
 
 > Two byte-identical copies of the Russian PDF (`asamm-ru-old.pdf`,
@@ -18,10 +19,17 @@ The English PDF source includes all v0.5.0-draft additions: AG-04, AI-06, trust 
 calibration, delegated evidence rules, ecosystem modifiers E1-E3, and the updated
 audit methodology reference (§2.7).
 
+The zh-CN PDF is a community translation draft prepared for OWASP Mainland
+China review. It follows the v0.5.0-draft English monolith, preserves IDs and
+evidence tags in English, and keeps figure internals in English for this first
+localization pass.
+
 ## Reviewer pack scope
 
 The v0.5 reviewer pack should treat `agentic-samm-review.pdf` and
 `assets/sources/agentic-samm-full.md` as the current review artifacts.
+The zh-CN PDF/source pair is synchronized to the v0.5.0-draft text but is a
+translation artifact, not a separate normative source.
 The Russian PDF is retained as a legacy translation artifact and should not be
 used to review v0.5 normative changes.
 

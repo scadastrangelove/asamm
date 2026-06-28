@@ -5,6 +5,17 @@ Format: [version] — date — summary
 
 ---
 
+## [Unreleased]
+
+### Added
+
+- Simplified Chinese / zh-CN community translation draft for ASAMM v0.5.0-draft:
+  `assets/sources/agentic-samm-zh-CN.md`, `assets/asamm-zh-CN.pdf`,
+  `assets/sources/ASAMM-zh-CN-glossary.md`, and
+  `assets/sources/agentic-samm-style.zh-CN.css`.
+
+---
+
 ## [0.5.0-draft] — 2026-06-17
 
 > Version note: v0.4 is intentionally unused. This release advances the public
